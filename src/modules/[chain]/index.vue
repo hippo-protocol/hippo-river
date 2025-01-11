@@ -361,10 +361,6 @@ const amount = computed({
                     @click="dialog.open('delegate', { validator_address: item.delegation.validator_address }, updateState)">
                     {{ $t('account.btn_delegate') }}
                   </label>
-                  <label for="withdraw" class="btn !btn-xs !btn-primary btn-ghost rounded-sm mr-2"
-                    @click="dialog.open('withdraw', { validator_address: item.delegation.validator_address }, updateState)">
-                    {{ $t('index.btn_withdraw_reward') }}
-                  </label>
                   <label
                     for="unbond"
                     class="btn !btn-xs !btn-primary btn-ghost rounded-sm"
@@ -386,11 +382,17 @@ const amount = computed({
         </table>
       </div>
 
-      <div class="grid grid-cols-3 gap-4 px-4 pb-6 mt-4">
+      <div class="grid grid-cols-4 gap-4 px-4 pb-6 mt-4">
         <label for="PingTokenConvert" class="btn btn-primary text-white">{{ $t('index.btn_swap') }}</label>
         <label for="send" class="btn !bg-yes !border-yes text-white" @click="dialog.open('send', {}, updateState)">{{ $t('account.btn_send') }}</label>
         <label for="delegate" class="btn !bg-info !border-info text-white"
           @click="dialog.open('delegate', {}, updateState)">{{ $t('account.btn_delegate') }}</label>
+          <label
+            for="withdraw"
+            class="btn !bg-lime-500 !border-info text-white"
+            @click="dialog.open('withdraw', {}, updateState)"
+            >{{ $t('index.btn_withdraw_reward') }}</label
+          >
         <RouterLink to="/wallet/receive" class="btn !bg-info !border-info text-white hidden">{{ $t('index.receive') }}</RouterLink>
       </div>
       <Teleport to="body">
