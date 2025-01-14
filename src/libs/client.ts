@@ -368,4 +368,12 @@ export class CosmosRestClient extends BaseRestClient<RequestRegistry> {
   async getInterchainSecurityConsumerValidators(chain_id: string) {
     return this.request(this.registry.interchain_security_consumer_validators, {chain_id});
   }
+
+
+
+  //RPC
+  async getBlocksByHeight(minHeight: string | number, maxHeight: string | number) {
+    return this.request(this.registry.block_by_height, { minHeight, maxHeight });
+  }
+
 }
