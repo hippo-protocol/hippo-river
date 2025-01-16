@@ -3,6 +3,7 @@ import { computed, ref } from '@vue/reactivity';
 import { useBaseStore, useFormatter } from '@/stores';
 import TxsInBlocksChart from '@/components/charts/TxsInBlocksChart.vue';
 import { watch } from 'vue';
+import PaginationBar from '@/components/PaginationBar.vue';
 
 const props = defineProps(['chain']);
 
@@ -16,18 +17,25 @@ const list = computed(() => {
   return base.latestBlocks.block_metas || [];
 });
 
+const pageSize = 20;
+const onPageChange = (page: number) => {
+  base.fetchBlocks(
+    Number(base.latest.block.header.height) - page * pageSize,
+    Number(base.latest.block.header.height) - (page - 1) * pageSize
+  );
+};
+
 watch(
   () => base.latest,
   (newLatest) => {
     if (newLatest && list.value.length === 0) {
       base.fetchBlocks(
-        Number(newLatest.block.header.height) - 25,
+        Number(newLatest.block.header.height) - pageSize,
         newLatest.block.header.height
       );
     }
-  },
+  }
 );
-
 </script>
 <template>
   <div>
@@ -79,8 +87,11 @@ watch(
             </span>
           </div>
         </RouterLink>
-        <!-- TODO pagination -->
-        <!-- <PaginationBar :total="store?.proposals[tab]?.pagination?.total" :limit="pageRequest.limit" :callback="page" /> -->
+        <PaginationBar
+          :total="base.latest.block?.header.height"
+          :limit="pageSize"
+          :callback="onPageChange"
+        />
       </div>
     </div>
   </div>
