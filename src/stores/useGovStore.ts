@@ -9,6 +9,7 @@ export const useGovStore = defineStore('govStore', {
   state: () => {
     return {
       params: {
+        all: {},
         deposit: {},
         voting: {},
         tally: {},
@@ -29,7 +30,7 @@ export const useGovStore = defineStore('govStore', {
     initial() {
       this.$reset();
       this.fetchParams();
-      this.fetchProposals('2');
+      this.fetchProposals('0');
     },
     async fetchProposals(status: string, pagination?: PageRequest) {
       //if (!this.loading[status]) {
@@ -39,14 +40,14 @@ export const useGovStore = defineStore('govStore', {
       );
 
       //filter spam proposals
-      if(proposals?.proposals) {
+      if (proposals?.proposals) {
         proposals.proposals = proposals.proposals.filter((item) => {
-          const title = item.content?.title || item.title || ""
-          return title.toLowerCase().indexOf("airdrop")===-1
+          const title = item.content?.title || item.title || '';
+          return title.toLowerCase().indexOf('airdrop') === -1;
         });
       }
 
-      if (status === '2') {
+      if (status === '0' || status === '2') {
         proposals?.proposals?.forEach((item) => {
           this.fetchTally(item.proposal_id).then((res) => {
             item.final_tally_result = res?.tally;
@@ -58,17 +59,18 @@ export const useGovStore = defineStore('govStore', {
                 this.walletstore.currentAddress
               )
                 .then((res) => {
-                  item.voterStatus = res?.vote?.option || 'VOTE_OPTION_NO_WITH_VETO'
+                  item.voterStatus =
+                    res?.vote?.option || 'VOTE_OPTION_NO_WITH_VETO';
                   // 'No With Veto';
                 })
                 .catch((reject) => {
-                  item.voterStatus = 'VOTE_OPTION_NO_WITH_VETO'
+                  item.voterStatus = 'VOTE_OPTION_NO_WITH_VETO';
                 });
             } catch (error) {
-              item.voterStatus = 'VOTE_OPTION_NO_WITH_VETO'
+              item.voterStatus = 'VOTE_OPTION_NO_WITH_VETO';
             }
           } else {
-            item.voterStatus = 'VOTE_OPTION_NO_WITH_VETO'
+            item.voterStatus = 'VOTE_OPTION_NO_WITH_VETO';
           }
         });
       }
