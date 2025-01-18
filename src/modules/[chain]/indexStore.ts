@@ -141,20 +141,27 @@ export const useIndexModule = defineStore('module-index', {
       return gov.proposals['2'];
     },
 
-    stats() {
-      const base = useBaseStore();
+    stakingApr(){
       const bank = useBankStore();
       const staking = useStakingStore();
       const mintStore = useMintStore();
-      const formatter = useFormatter();
       const distributionStore = useDistributionStore();
-
 
       // APR = Inflation * (Total supply / Total staked) * (1 - Community tax)
       const stakingApr =
         Number(mintStore.inflation) *
         (Number(bank.supply.amount) / Number(staking.pool.bonded_tokens)) *
         (1 - Number(distributionStore.params.community_tax));
+
+        return stakingApr;
+    },
+
+    stats() {
+      const base = useBaseStore();
+      const bank = useBankStore();
+      const staking = useStakingStore();
+      const mintStore = useMintStore();
+      const formatter = useFormatter();
 
       return [
         {
@@ -202,7 +209,7 @@ export const useIndexModule = defineStore('module-index', {
           title: 'Staking APR',
           color: 'success',
           icon: 'mdi-chart-multiple',
-          stats: formatter.formatDecimalToPercent(stakingApr.toString()),
+          stats: formatter.formatDecimalToPercent(this.stakingApr.toString()),
           change: 0,
         },
         {

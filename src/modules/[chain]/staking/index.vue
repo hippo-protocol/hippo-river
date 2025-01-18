@@ -182,8 +182,13 @@ const list = computed(() => {
 });
 
 const apr = computed(() => {
-  return store.stats.find((stat) => stat.title === 'Staking APR')?.stats;
+  const formatter = useFormatter();
+  return formatter.formatDecimalToPercent(store.stakingApr.toString());
 });
+
+const calcActualApr = (apr: number, commission: number) => {
+  return apr * (1 - commission) * 100;
+};
 
 const fetchAvatar = (identity: string) => {
   // fetch avatar from keybase
@@ -409,6 +414,7 @@ loadAvatars();
                 <th scope="col" class="text-right uppercase">
                   {{ $t('staking.commission') }}
                 </th>
+                <th scope="col" class="text-right uppercase">ACTUAL APR</th>
                 <th scope="col" class="text-center uppercase">
                   {{ $t('staking.actions') }}
                 </th>
@@ -520,6 +526,9 @@ loadAvatars();
                       v.commission?.commission_rates?.rate
                     )
                   }}
+                </td>
+                <td class="text-right text-xs">
+                  {{ calcActualApr(store.stakingApr, Number(v.commission?.commission_rates?.rate) || 0).toFixed(2) }}%
                 </td>
                 <!-- 👉 Action -->
                 <td class="text-center">
