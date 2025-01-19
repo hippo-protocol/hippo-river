@@ -363,17 +363,7 @@ export const useDashboard = defineStore('dashboard', {
     setupDefault() {
       if (this.length > 0) {
         const blockchain = useBlockchain();
-        const keys = Object.keys(this.favoriteMap)
-        for (let i = 0; i < keys.length; i++) {
-          if (!blockchain.chainName && this.chains[keys[i]] && this.favoriteMap[keys[i]]) {
-            blockchain.setCurrent(keys[i]);
-            break
-          }
-        }
-        if (!blockchain.chainName) {
-          const [first] = Object.keys(this.chains);
-          blockchain.setCurrent(first);
-        }
+        blockchain.setCurrent('hippo-protocol');
         this.loadingPrices()
       }
     },
