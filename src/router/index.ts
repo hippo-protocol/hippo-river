@@ -16,7 +16,7 @@ router.beforeEach((to) => {
     if(chain){
       const blockchain= useBlockchain()
       if(chain !== blockchain.chainName) {
-        blockchain.setCurrent(chain.toString())
+        blockchain.setCurrent('hippo-protocol')
       }
     } 
 })

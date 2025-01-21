@@ -23,7 +23,7 @@ const blockchain = useBlockchain();
 blockchain.randomSetupEndpoint();
 const baseStore = useBaseStore();
 
-const current = ref(''); // the current chain
+const current = ref('hippo-protocol'); // the current chain
 const temp = ref('')
 blockchain.$subscribe((m, s) => {
   if(current.value ===s.chainName && temp.value != s.endpoint.address) {

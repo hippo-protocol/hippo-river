@@ -31,7 +31,7 @@ export const useBlockchain = defineStore('blockchain', {
     return {
       status: {} as Record<string, string>,
       rest: '',
-      chainName: '',
+      chainName: 'hippo-protocol',
       endpoint: {} as {
         type?: EndpointType;
         address: string;
@@ -191,15 +191,7 @@ export const useBlockchain = defineStore('blockchain', {
         await this.dashboard.initial();
       }
 
-      // Find the case-sensitive name for the chainName, else simply use the parameter-value.
-      const caseSensitiveName = 
-        Object.keys(this.dashboard.chains).find((x) => x.toLowerCase() === name.toLowerCase()) 
-        || name;
-
-      // Update chainName if needed
-      if (caseSensitiveName !== this.chainName) {
-        this.chainName = caseSensitiveName;
-      }
+      this.chainName = 'hippo-protocol';
     },
     supportModule(mod: string) {
       return !this.current?.features || this.current.features.includes(mod);

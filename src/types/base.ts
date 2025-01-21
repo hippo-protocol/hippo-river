@@ -101,3 +101,32 @@ export interface PaginatedTendermintValidator {
     validators: TendermintValidator[],
     block_height: string
 }
+
+export interface BlocksByHeight{
+    last_height:string;
+    block_metas:{
+        block_id: BlockId,
+        block_size: string,
+        num_txs: string,
+        header: {
+            version: {
+                block: string,
+                app: string
+            },
+            chain_id: string,
+            height: string,
+            time: string,
+            last_block_id: BlockId,
+            last_commit_hash: string,
+            data_hash: string,
+            validators_hash: string,
+            next_validators_hash: string,
+            consensus_hash: string,
+            app_hash: string,
+            last_results_hash: string,
+            evidence_hash: string,
+            proposer_address: string,
+        }
+    }[]
+   
+}

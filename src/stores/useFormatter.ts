@@ -314,6 +314,14 @@ export const useFormatter = defineStore('formatter', {
       );
       return validator?.description?.moniker;
     },
+    validatorFromHex(address:string){
+      if (!address) return address;
+
+      const validator = this.staking.validators.find(
+        (x) => consensusPubkeyToHexAddress(x.consensus_pubkey) === address.toUpperCase()
+      );
+      return validator?.description?.moniker;
+    },
     // find validator by operator address
     validatorFromBech32(address: string) {
       if (!address) return address;
