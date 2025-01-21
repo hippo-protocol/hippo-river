@@ -2,7 +2,7 @@
 import { computed, ref } from '@vue/reactivity';
 import { useBaseStore, useFormatter } from '@/stores';
 import TxsInBlocksChart from '@/components/charts/TxsInBlocksChart.vue';
-import { watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import PaginationBar from '@/components/PaginationBar.vue';
 
 const props = defineProps(['chain']);
@@ -36,6 +36,15 @@ watch(
     }
   }
 );
+
+onMounted(() => {
+  if(list.value.length !== 0)
+  base.fetchBlocks(
+        Number(base.latest.block.header.height) - pageSize,
+        base.latest.block.header.height
+      );
+});
+
 </script>
 <template>
   <div>
