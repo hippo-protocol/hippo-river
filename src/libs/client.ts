@@ -376,4 +376,7 @@ export class CosmosRestClient extends BaseRestClient<RequestRegistry> {
     return this.request(this.registry.block_by_height, { minHeight, maxHeight });
   }
 
+  async getTxsByPage(page: number) {
+    return this.request(this.registry.tx_by_page, { page });
+  }
 }

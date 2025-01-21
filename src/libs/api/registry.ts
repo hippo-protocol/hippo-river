@@ -11,6 +11,7 @@ import type {
   PaginatedIBCChannels,
   PaginatedIBCConnections,
   PaginatedTendermintValidator,
+  RecentTxs,
 } from '@/types';
 import type {
   BankParams,
@@ -168,6 +169,7 @@ export interface RequestRegistry extends AbstractRegistry {
 
   // hippo RPC
   block_by_height: Request<{ result: BlocksByHeight }>;
+  tx_by_page: Request<{ result: { txs: RecentTxs[] ; total_count: string;} }>;
 }
 
 export function adapter<T>(source: any): Promise<T> {
