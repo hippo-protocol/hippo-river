@@ -131,7 +131,7 @@ export interface BlocksByHeight{
    
 }
 
-export interface RecentTxs{
+export interface Transaction{
     height: string;
     hash: string;
     index:number;

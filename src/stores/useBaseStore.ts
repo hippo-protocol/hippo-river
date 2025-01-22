@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { useBlockchain } from '@/stores';
 import { decodeTxRaw, type DecodedTxRaw } from '@cosmjs/proto-signing';
 import dayjs from 'dayjs';
-import type { Block, BlocksByHeight, RecentTxs } from '@/types';
+import type { Block, BlocksByHeight, Transaction } from '@/types';
 import { hashTx } from '@/libs';
 import { fromBase64 } from '@cosmjs/encoding';
 import { useRouter } from 'vue-router';
@@ -18,7 +18,7 @@ export const useBaseStore = defineStore('baseStore', {
         | 'dark',
       connected: true,
       latestBlocks: {} as BlocksByHeight,
-      latestTxs: [] as RecentTxs[],
+      latestTxs: [] as Transaction[],
       txCount: "0",
     };
   },
