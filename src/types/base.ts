@@ -130,3 +130,20 @@ export interface BlocksByHeight{
     }[]
    
 }
+
+export interface Transaction{
+    height: string;
+    hash: string;
+    index:number;
+    tx: string;
+    tx_result:{
+        code:number;
+        codespace:string;
+        data:string;
+        events:any[];
+        gas_used:string;
+        gas_wanted:string;
+        info:string;log:string;
+
+    };
+}

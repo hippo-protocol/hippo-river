@@ -2,7 +2,7 @@
 import { computed, ref } from '@vue/reactivity';
 import { useBaseStore, useFormatter } from '@/stores';
 import TxsInBlocksChart from '@/components/charts/TxsInBlocksChart.vue';
-import { watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import PaginationBar from '@/components/PaginationBar.vue';
 
 const props = defineProps(['chain']);
@@ -25,6 +25,10 @@ const onPageChange = (page: number) => {
   );
 };
 
+const ellipsisHash = (tx: string) => {
+  return tx.slice(0, 8) + '...' + tx.slice(tx.length - 8, tx.length);
+};
+
 watch(
   () => base.latest,
   (newLatest) => {
@@ -36,6 +40,14 @@ watch(
     }
   }
 );
+
+onMounted(() => {
+  if (list.value.length !== 0)
+    base.fetchBlocks(
+      Number(base.latest.block.header.height) - pageSize,
+      base.latest.block.header.height
+    );
+});
 </script>
 <template>
   <div>
@@ -61,13 +73,18 @@ watch(
       <div class="grid grid-cols-1 gap-3">
         <RouterLink
           v-for="item in list"
-          class="flex flex-col justify-between rounded p-4 shadow bg-base-100"
+          class="flex flex-col justify-between rounded p-5 shadow bg-base-100"
           :to="`/${chain}/block/${item.header.height}`"
         >
           <div class="flex justify-between">
             <h3 class="text-md font-bold sm:!text-lg">
               {{ item.header.height }}
             </h3>
+            <span
+              class="text-right whitespace-nowrap font-normal text-md sm:!text-lg"
+            >
+              {{ ellipsisHash(item.block_id.hash) }}
+            </span>
             <div class="flex justify-between tooltip" data-tip="Block Proposor">
               <div class="hidden text-md sm:!block truncate">
                 <h3 class="text-md font-bold sm:!text-lg">
