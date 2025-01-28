@@ -26,7 +26,7 @@ const onPageChange = (page: number) => {
 };
 
 const ellipsisHash = (tx: string) => {
-  return tx.slice(0, 8) + '...' + tx.slice(tx.length - 8, tx.length);
+  return tx.slice(0,6) + '...' + tx.slice(tx.length - 6, tx.length);
 };
 
 watch(
@@ -77,28 +77,28 @@ onMounted(() => {
           :to="`/${chain}/block/${item.header.height}`"
         >
           <div class="flex justify-between">
-            <h3 class="text-md font-bold sm:!text-lg">
+            <h3 class="text-md font-bold sm:!text-lg w-[75px]">
               {{ item.header.height }}
             </h3>
             <span
-              class="text-right whitespace-nowrap font-normal text-md sm:!text-lg"
+              class="text-right whitespace-nowrap font-normal w-[150px] text-md sm:!text-lg sm:!w-[200px] truncate flex items-start"
             >
               {{ ellipsisHash(item.block_id.hash) }}
             </span>
             <div class="flex justify-between tooltip" data-tip="Block Proposor">
               <div class="hidden text-md sm:!block truncate">
-                <h3 class="text-md font-bold sm:!text-lg">
+                <h3 class="text-md font-bold sm:!text-lg w-[70px]">
                   {{ format.validatorFromHex(item.header?.proposer_address) }}
                 </h3>
               </div>
             </div>
             <span
-              class="text-right whitespace-nowrap font-normal text-md sm:!text-lg"
+              class="text-right whitespace-nowrap font-normal text-md sm:!text-lg w-[46px]"
             >
               {{ item.num_txs }} txs
             </span>
             <span
-              class="rounded whitespace-nowrap font-normal text-green-600 text-md sm:!text-lg"
+              class="rounded whitespace-nowrap font-normal text-green-600 text-md sm:!text-lg w-[70px]"
             >
               {{ format.toDay(item.header?.time, 'from') }}
             </span>
