@@ -187,7 +187,8 @@ const apr = computed(() => {
 });
 
 const calcActualApr = (apr: number, commission: number) => {
-  return apr * (1 - commission) * 100;
+  const formatter = useFormatter();
+  return formatter.formatDecimalToPercent((apr * (1 - commission)).toString());
 };
 
 const fetchAvatar = (identity: string) => {
@@ -528,7 +529,12 @@ loadAvatars();
                   }}
                 </td>
                 <td class="text-right text-xs">
-                  {{ calcActualApr(store.stakingApr, Number(v.commission?.commission_rates?.rate) || 0).toFixed(2) }}%
+                  {{
+                    calcActualApr(
+                      store.stakingApr,
+                      Number(v.commission?.commission_rates?.rate) || 0
+                    )
+                  }}
                 </td>
                 <!-- 👉 Action -->
                 <td class="text-center">
@@ -583,12 +589,12 @@ loadAvatars();
 </template>
 
 <route>
-  {
-    meta: {
-      i18n: 'staking',
-      order: 3
-    }
-  }
+{
+meta: {
+i18n: 'staking',
+order: 3
+}
+}
 </route>
 
 <style>

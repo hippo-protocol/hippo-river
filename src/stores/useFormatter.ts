@@ -336,14 +336,14 @@ export const useFormatter = defineStore('formatter', {
       return numeral(percent > 0.0001 ? percent : 0).format('0.[00]%');
     },
     formatDecimalToPercent(decimal: string) {
-      return numeral(decimal).format('0.[00]%');
+      return numeral(decimal).format('0,0.[00]%');
     },
     formatCommissionRate(rate?: string) {
       if (!rate) return '-';
       return this.percent(rate);
     },
     percent(decimal?: string | number) {
-      return decimal ? numeral(decimal).format('0.[00]%') : '-';
+      return decimal ? numeral(decimal).format('0,0.[00]%') : '-';
     },
     formatNumber(input?: number, fmt = '0.[00]') {
       if(!input) return ""
