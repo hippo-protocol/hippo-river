@@ -35,6 +35,9 @@ function search() {
 const onPageChange=(page: number)=>{
   base.fetchTxs(page);
 }
+const ellipsisHash = (tx: string) => {
+  return tx.slice(0,6) + '...' + tx.slice(tx.length - 6, tx.length);
+};
 
 
 </script>
@@ -66,6 +69,7 @@ const onPageChange=(page: number)=>{
               {{ $t('account.hash') }}
             </th>
             <th>{{ $t('account.messages') }}</th>
+            <th>Data</th>
             <th>{{ $t('block.fees') }}</th>
           </tr>
         </thead>
@@ -80,9 +84,9 @@ const onPageChange=(page: number)=>{
                 item.height
               }}</RouterLink>
             </td>
-            <td class="truncate text-primary" width="50%">
+            <td class="truncate text-primary" >
               <RouterLink :to="`/${props.chain}/tx/${item.hash}`">{{
-                item.hash
+                ellipsisHash(item.hash)
               }}</RouterLink>
             </td>
             <td>
@@ -90,6 +94,12 @@ const onPageChange=(page: number)=>{
                 format.messages(decodeTxRaw(fromBase64(item.tx)).body.messages)
               }}
             </td>
+            <td class="truncate" style="max-width: 200px">
+              {{
+                  decodeTxRaw(fromBase64(item.tx)).body.memo
+                
+              }}
+              </td>
             <td>
               {{
                 format.formatTokens(
