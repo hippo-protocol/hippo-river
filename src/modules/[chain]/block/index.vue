@@ -98,7 +98,7 @@ onMounted(() => {
               {{ item.num_txs }} txs
             </span>
             <span
-              class="rounded whitespace-nowrap font-normal text-green-600 text-md sm:!text-lg w-[70px]"
+              class="w-auto rounded whitespace-nowrap font-normal text-green-600 text-md sm:!text-lg w-[70px]"
             >
               {{ format.toDay(item.header?.time, 'from') }}
             </span>
