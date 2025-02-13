@@ -25,7 +25,7 @@ const chain = useBlockchain();
         <tr>
           <th style="position: relative; z-index: 2;">Hash</th>
           <th>Msgs</th>
-          <th>Memo</th>
+          <th>Data</th>
         </tr>
       </thead>
       <tbody class="text-sm">
