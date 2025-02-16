@@ -11,7 +11,7 @@ const props = defineProps({
 const formatter = useFormatter();
 function calculateValue(value: any) {
   if (Array.isArray(value)) {
-    return (value[0] && value[0].amount) || '-';
+    return formatter.weiToEther((value[0] && value[0].amount)) || '-';
   }
   if(String(value).search(/^\d+s$/g) > -1) {
     return formatSeconds(value)
@@ -24,7 +24,7 @@ function calculateValue(value: any) {
   if (newValue < 1 && newValue > 0) {
     return formatter.formatDecimalToPercent(value);
   }
-  return newValue;
+  return newValue.toLocaleString();
 }
 
 function formatTitle(v: string) {

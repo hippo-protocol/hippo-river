@@ -415,5 +415,11 @@ export const useFormatter = defineStore('formatter', {
       }
       return '';
     },
+    weiToEther(weiValue: string){
+      if(weiValue) {
+        return numeral(Number(weiValue) / Math.pow(10, 18)).format('0,0.[00]');
+      }
+      return ""
+    }
   },
 });
