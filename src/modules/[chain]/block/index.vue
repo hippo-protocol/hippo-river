@@ -36,23 +36,24 @@ const validatorMonikerToLogo=(moniker?: string)=>{
 
 watch(
   () => base.latest,
-  (newLatest) => {
-    if (newLatest && list.value.length === 0) {
+  (latest) => {
+    if (latest && list.value.length === 0) {
       base.fetchBlocks(
-        Number(newLatest.block.header.height) - pageSize,
-        newLatest.block.header.height
+        Number(latest.block.header.height) - pageSize,
+        latest.block.header.height
       );
     }
   }
 );
 
 onMounted(() => {
-  if (list.value.length !== 0)
-    base.fetchBlocks(
-      Number(base.latest.block.header.height) - pageSize,
-      base.latest.block.header.height
-    );
+  if (!base.latest.block) return;
+  base.fetchBlocks(
+    Number(base.latest.block.header.height) - pageSize,
+    base.latest.block.header.height
+  );
 });
+
 </script>
 <template>
   <div>
