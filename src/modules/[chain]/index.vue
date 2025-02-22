@@ -233,9 +233,8 @@ const amount = computed({
                 </div>
                 <label class="modal-backdrop" for="calculator">{{ $t('index.close') }}</label>
               </div>
-              <a class="my-5 !text-white btn grow" :class="{'!btn-success': store.trustColor === 'green', '!btn-warning': store.trustColor === 'yellow'}" :href="'https://www.google.com'"
+              <a class="my-5 !text-white btn grow" :class="{'!btn-success': store.trustColor === 'green', '!btn-warning': store.trustColor === 'yellow'}" :href="'https://apps.apple.com/app/data-hippo/id6738997275'"
                 target="_blank">
-                <!-- FIXME url for hippo wallet -->
                 GET HP
               </a>
             </div>
