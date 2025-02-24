@@ -233,9 +233,9 @@ const amount = computed({
                 </div>
                 <label class="modal-backdrop" for="calculator">{{ $t('index.close') }}</label>
               </div>
-              <a class="my-5 !text-white btn grow" :class="{'!btn-success': store.trustColor === 'green', '!btn-warning': store.trustColor === 'yellow'}" :href="ticker.trade_url"
+              <a class="my-5 !text-white btn grow" :class="{'!btn-success': store.trustColor === 'green', '!btn-warning': store.trustColor === 'yellow'}" :href="'https://apps.apple.com/app/data-hippo/id6738997275'"
                 target="_blank">
-                {{ $t('index.buy') }} {{ coinInfo.symbol || '' }}
+                GET HP
               </a>
             </div>
           </div>
@@ -265,7 +265,7 @@ const amount = computed({
 
     <AdBanner id="chain-home-banner-ad" unit="banner" width="970px" height="90px" />
 
-    <div v-if="blockchain.supportModule('governance')" class="bg-base-100 rounded mt-4 shadow">
+    <div v-if="blockchain.supportModule('governance') && store?.proposals?.proposals.length > 0" class="bg-base-100 rounded mt-4 shadow">
       <div class="px-4 pt-4 pb-2 text-lg font-semibold text-main">
         {{ $t('index.active_proposals') }}
       </div>
@@ -401,14 +401,6 @@ const amount = computed({
       </Teleport>
     </div>
 
-    <div class="bg-base-100 rounded mt-4">
-      <div class="px-4 pt-4 pb-2 text-lg font-semibold text-main">
-        {{ $t('index.app_versions') }}
-      </div>
-      <!-- Application Version -->
-      <ArrayObjectElement :value="paramStore.appVersion?.items" :thead="false" />
-      <div class="h-4"></div>
-    </div>
 
     <div v-if="!store.coingeckoId" class="bg-base-100 rounded mt-4">
       <div class="px-4 pt-4 pb-2 text-lg font-semibold text-main">

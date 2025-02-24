@@ -29,25 +29,31 @@ const ellipsisHash = (tx: string) => {
   return tx.slice(0,6) + '...' + tx.slice(tx.length - 6, tx.length);
 };
 
+const validatorMonikerToLogo=(moniker?: string)=>{
+  // moniker: format.validatorFromHex(item.header?.proposer_address)
+  return '/favicon.ico'
+}
+
 watch(
   () => base.latest,
-  (newLatest) => {
-    if (newLatest && list.value.length === 0) {
+  (latest) => {
+    if (latest && list.value.length === 0) {
       base.fetchBlocks(
-        Number(newLatest.block.header.height) - pageSize,
-        newLatest.block.header.height
+        Number(latest.block.header.height) - pageSize,
+        latest.block.header.height
       );
     }
   }
 );
 
 onMounted(() => {
-  if (list.value.length !== 0)
-    base.fetchBlocks(
-      Number(base.latest.block.header.height) - pageSize,
-      base.latest.block.header.height
-    );
+  if (!base.latest.block) return;
+  base.fetchBlocks(
+    Number(base.latest.block.header.height) - pageSize,
+    base.latest.block.header.height
+  );
 });
+
 </script>
 <template>
   <div>
@@ -86,7 +92,8 @@ onMounted(() => {
               {{ ellipsisHash(item.block_id.hash) }}
             </span>
             <div class="flex justify-between tooltip" data-tip="Block Proposor">
-              <div class="hidden text-md sm:!block truncate">
+              <div class="hidden text-md sm:!flex truncate sm:gap-2 ">
+                <img :src="validatorMonikerToLogo(format.validatorFromHex(item.header?.proposer_address))" width="28" height="28"/>
                 <h3 class="text-md font-bold sm:!text-lg w-[70px]">
                   {{ format.validatorFromHex(item.header?.proposer_address) }}
                 </h3>
@@ -98,7 +105,7 @@ onMounted(() => {
               {{ item.num_txs }} txs
             </span>
             <span
-              class="rounded whitespace-nowrap font-normal text-green-600 text-md sm:!text-lg w-[70px]"
+              class="w-auto rounded whitespace-nowrap font-normal text-green-600 text-md sm:!text-lg w-[70px]"
             >
               {{ format.toDay(item.header?.time, 'from') }}
             </span>

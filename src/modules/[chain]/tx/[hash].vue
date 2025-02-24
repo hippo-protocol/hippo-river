@@ -102,7 +102,7 @@ const messages = computed(() => {
                             </td>
                         </tr>
                         <tr>
-                            <td>{{ $t('tx.memo') }}</td>
+                            <td>Data</td>
                             <td>{{ tx.tx.body.memo }}</td>
                         </tr>
                     </tbody>
