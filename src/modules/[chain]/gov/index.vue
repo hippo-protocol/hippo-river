@@ -14,13 +14,14 @@ onMounted(() => {
     if (x?.proposals?.length === 0) {
       return;
     }
+    store.fetchProposals('1');
     store.fetchProposals('2');
     store.fetchProposals('3');
     store.fetchProposals('4');
   });
 });
 
-const changeTab = (val: '0' | '2' | '3' | '4') => {
+const changeTab = (val: '0' |'1'| '2' | '3' | '4') => {
   tab.value = val;
 };
 
@@ -38,6 +39,12 @@ function page(p: number) {
         :class="{ 'tab-active': tab === '0' }"
         @click="changeTab('0')"
         >ALL</a
+      >
+      <a
+        class="tab text-gray-400 uppercase"
+        :class="{ 'tab-active': tab === '1' }"
+        @click="changeTab('1')"
+        >DEPOSIT</a
       >
       <a
         class="tab text-gray-400 uppercase"
