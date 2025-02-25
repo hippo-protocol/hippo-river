@@ -9,7 +9,7 @@ import { select } from '@/components/dynamic/index';
 import type { PaginatedProposals } from '@/types';
 import ProposalProcess from './ProposalProcess.vue';
 import type { PropType } from 'vue';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 const dialog = useTxDialog();
 defineProps({
   proposals: { type: Object as PropType<PaginatedProposals> },
@@ -26,15 +26,10 @@ function showType(v: string) {
 }
 
 const statusMap: Record<string, string> = {
+  PROPOSAL_STATUS_DEPOSIT_PERIOD: 'DEPOSIT',
   PROPOSAL_STATUS_VOTING_PERIOD: 'VOTING',
   PROPOSAL_STATUS_PASSED: 'PASSED',
   PROPOSAL_STATUS_REJECTED: 'REJECTED',
-};
-const voterStatusMap: Record<string, string> = {
-  VOTE_OPTION_NO_WITH_VETO: '',
-  VOTE_OPTION_YES: 'success',
-  VOTE_OPTION_NO: 'error',
-  VOTE_OPTION_ABSTAIN: 'warning',
 };
 
 const proposalInfo = ref();

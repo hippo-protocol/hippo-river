@@ -338,12 +338,18 @@ function metaItem(metadata: string | undefined): {
           <label
             for="vote"
             class="btn btn-primary float-right btn-sm mx-1"
+            :class="{
+              'btn-disabled': proposal.status !== 'PROPOSAL_STATUS_VOTING_PERIOD',
+            }"
             @click="dialog.open('vote', { proposal_id })"
             >{{ $t('gov.btn_vote') }}</label
           >
           <label
             for="deposit"
             class="btn btn-primary float-right btn-sm mx-1"
+            :class="{
+              'btn-disabled': proposal.status !== 'PROPOSAL_STATUS_DEPOSIT_PERIOD',
+            }"
             @click="dialog.open('deposit', { proposal_id })"
             >{{ $t('gov.btn_deposit') }}</label
           >
