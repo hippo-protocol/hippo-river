@@ -35,7 +35,7 @@ const hdPath = computed(() => {
       <div class="mockup-code bg-base-200 my-2">
         <pre
           data-prefix="1"
-        ><code class="text-gray-800 dark:invert">&lt;script type="module" src="https://di76nr3xvp8z7.cloudfront.net/widget/ping-widget.js"&gt;</code></pre>
+        ><code class="text-gray-800 dark:invert">&lt;script type="module" src="https://river.hippoprotocol.ai/widget/ping-widget.js"&gt;</code></pre>
       </div>
     </div>
     <div class="bg-base-100 my-5 px-4 pt-3 pb-4 rounded shadow">
