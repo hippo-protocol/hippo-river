@@ -240,7 +240,7 @@ const loadAvatars = () => {
 };
 
 const logo = (identity?: string) => {
-  if (!identity || !avatars.value[identity]) return '';
+  if (!identity || !avatars.value[identity]) return '/favicon.ico';
   const url = avatars.value[identity] || '';
   return url.startsWith('http')
     ? url

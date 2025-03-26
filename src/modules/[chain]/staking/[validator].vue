@@ -85,7 +85,7 @@ const selfRate = computed(() => {
 });
 
 const logo = (identity?: string) => {
-  if (!identity) return '';
+  if (!identity || !avatars.value[identity]) return '/hippo-protocol.png';
   const url = avatars.value[identity] || '';
   return url.startsWith('http')
     ? url
@@ -266,7 +266,6 @@ function mapDelegators(messages: any[]) {
               <div class="w-24 rounded-lg absolute opacity-10"></div>
               <div class="w-24 rounded-lg">
                 <img
-                  v-if="identity && avatars[identity] !== 'undefined'"
                   v-lazy="logo(identity)"
                   class="object-contain"
                   @error="
@@ -274,11 +273,6 @@ function mapDelegators(messages: any[]) {
                       loadAvatar(identity);
                     }
                   "
-                />
-                <Icon
-                  v-else
-                  class="text-8xl"
-                  :icon="`mdi-help-circle-outline`"
                 />
               </div>
             </div>
