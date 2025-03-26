@@ -92,9 +92,9 @@ onMounted(() => {
               {{ ellipsisHash(item.block_id.hash) }}
             </span>
             <div class="flex justify-between tooltip" data-tip="Block Proposor">
-              <div class="hidden text-md sm:!flex truncate text-ellipsis sm:gap-2 ">
+              <div class="hidden text-md items-center sm:!flex truncate text-ellipsis sm:gap-2 ">
                 <img :src="validatorMonikerToLogo(format.validatorFromHex(item.header?.proposer_address))" width="28" height="28"/>
-                <h3 class="text-md font-bold text-left overflow-hidden text-ellipsis sm:!text-lg w-[90px] md:w-[160px]">
+                <h3 class="text-md font-bold text-left overflow-hidden text-ellipsis sm:!text-xs w-[100px] md:w-[160px] md:!text-lg">
                   {{ format.validatorFromHex(item.header?.proposer_address) }}
                 </h3>
               </div>
