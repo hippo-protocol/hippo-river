@@ -98,16 +98,11 @@ const status = computed(() => {
 });
 
 const deposit = ref({} as PaginatedProposalDeposit);
-store.fetchProposalDeposits(props.proposal_id).then((x) => (deposit.value = x));
 
 const votes = ref({} as GovVote[]);
 const pageRequest = ref(new PageRequest());
 const pageResponse = ref({} as Pagination);
 
-store.fetchProposalVotes(props.proposal_id).then((x) => {
-  votes.value = x.votes;
-  pageResponse.value = x.pagination;
-});
 
 function shortTime(v: string) {
   if (v) {
@@ -238,10 +233,7 @@ function showValidatorName(voter: string) {
 
 function pageload(p: number) {
   pageRequest.value.setPage(p);
-  store.fetchProposalVotes(props.proposal_id, pageRequest.value).then((x) => {
-    votes.value = x.votes;
-    pageResponse.value = x.pagination;
-  });
+  refreshVote(pageRequest.value);
 }
 
 function metaItem(metadata: string | undefined): {
@@ -255,14 +247,27 @@ function metaItem(metadata: string | undefined): {
   }
   return { title: metadata, summary: '' };
 }
+
+const refreshDeposit = () => {
+  store.fetchProposalDeposits(props.proposal_id).then((x) => (deposit.value = x));
+}
+const refreshVote = (pagination?: PageRequest) => {
+  store.fetchProposalVotes(props.proposal_id, pagination).then((x) => {
+    votes.value = x.votes;
+    pageResponse.value = x.pagination;
+  });
+}
+
+refreshDeposit();
+refreshVote();
+
+
 </script>
 
 <template>
   <div>
     <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
-      <h2
-        class="card-title flex flex-col md:!justify-between md:!flex-row mb-2"
-      >
+      <h2 class="card-title flex flex-col md:!justify-between md:!flex-row mb-2">
         <p class="truncate w-full">
           {{ proposal_id }}.
           {{
@@ -271,37 +276,26 @@ function metaItem(metadata: string | undefined): {
             metaItem(proposal?.metadata)?.title
           }}
         </p>
-        <div
-          class="badge badge-ghost"
-          :class="
-            color === 'success'
-              ? 'text-yes'
-              : color === 'error'
-              ? 'text-no'
-              : 'text-info'
-          "
-        >
+        <div class="badge badge-ghost" :class="color === 'success'
+          ? 'text-yes'
+          : color === 'error'
+            ? 'text-no'
+            : 'text-info'
+          ">
           {{ status }}
         </div>
       </h2>
       <div class="">
         <ObjectElement :value="proposal.content" />
       </div>
-      <div
-        v-if="
-          (proposal.summary && !proposal.content?.description) ||
-          metaItem(proposal?.metadata)?.summary
-        "
-      >
-        <MdEditor
-          :model-value="
-            format.multiLine(
-              proposal.summary || metaItem(proposal?.metadata)?.summary
-            )
-          "
-          previewOnly
-          class="md-editor-recover"
-        ></MdEditor>
+      <div v-if="
+        (proposal.summary && !proposal.content?.description) ||
+        metaItem(proposal?.metadata)?.summary
+      ">
+        <MdEditor :model-value="format.multiLine(
+          proposal.summary || metaItem(proposal?.metadata)?.summary
+        )
+          " previewOnly class="md-editor-recover"></MdEditor>
       </div>
     </div>
     <!-- grid lg:!!grid-cols-3 auto-rows-max-->
@@ -313,20 +307,11 @@ function metaItem(metadata: string | undefined): {
         <div class="mb-1" v-for="(item, index) of processList" :key="index">
           <label class="block text-sm mb-1">{{ item.name }}</label>
           <div class="h-5 w-full relative">
-            <div
-              class="absolute inset-x-0 inset-y-0 w-full opacity-10 rounded-sm"
-              :class="`${item.class}`"
-            ></div>
-            <div
-              class="absolute inset-x-0 inset-y-0 rounded-sm"
-              :class="`${item.class}`"
-              :style="`width: ${
-                item.value === '-' || item.value === 'NaN%' ? '0%' : item.value
-              }`"
-            ></div>
+            <div class="absolute inset-x-0 inset-y-0 w-full opacity-10 rounded-sm" :class="`${item.class}`"></div>
+            <div class="absolute inset-x-0 inset-y-0 rounded-sm" :class="`${item.class}`" :style="`width: ${item.value === '-' || item.value === 'NaN%' ? '0%' : item.value
+              }`"></div>
             <p
-              class="absolute inset-x-0 inset-y-0 text-center text-sm text-[#666] dark:text-[#eee] flex items-center justify-center"
-            >
+              class="absolute inset-x-0 inset-y-0 text-center text-sm text-[#666] dark:text-[#eee] flex items-center justify-center">
               {{ item.value }}
               <span v-if="item.value !== '-' && item.value !== 'NaN%'" class="ml-1">
                 {{ `(${item.raw}HP)` }}
@@ -335,24 +320,12 @@ function metaItem(metadata: string | undefined): {
           </div>
         </div>
         <div class="mt-6 grid grid-cols-2">
-          <label
-            for="vote"
-            class="btn btn-primary float-right btn-sm mx-1"
-            :class="{
-              'btn-disabled': proposal.status !== 'PROPOSAL_STATUS_VOTING_PERIOD',
-            }"
-            @click="dialog.open('vote', { proposal_id })"
-            >{{ $t('gov.btn_vote') }}</label
-          >
-          <label
-            for="deposit"
-            class="btn btn-primary float-right btn-sm mx-1"
-            :class="{
-              'btn-disabled': proposal.status !== 'PROPOSAL_STATUS_DEPOSIT_PERIOD',
-            }"
-            @click="dialog.open('deposit', { proposal_id })"
-            >{{ $t('gov.btn_deposit') }}</label
-          >
+          <label for="vote" class="btn btn-primary float-right btn-sm mx-1" :class="{
+            'btn-disabled': proposal.status !== 'PROPOSAL_STATUS_VOTING_PERIOD',
+          }" @click="dialog.open('vote', { proposal_id }, refreshVote)">{{ $t('gov.btn_vote') }}</label>
+          <label for="deposit" class="btn btn-primary float-right btn-sm mx-1" :class="{
+            'btn-disabled': proposal.status !== 'PROPOSAL_STATUS_DEPOSIT_PERIOD',
+          }" @click="dialog.open('deposit', { proposal_id }, refreshDeposit)">{{ $t('gov.btn_deposit') }}</label>
         </div>
       </div>
 
@@ -422,19 +395,15 @@ function metaItem(metadata: string | undefined): {
             </div>
           </div>
 
-          <div
-            class="mt-4"
-            v-if="
-              proposal?.content?.['@type']?.endsWith('SoftwareUpgradeProposal')
-            "
-          >
+          <div class="mt-4" v-if="
+            proposal?.content?.['@type']?.endsWith('SoftwareUpgradeProposal')
+          ">
             <div class="flex items-center">
               <div class="w-2 h-2 rounded-full bg-warning mr-3"></div>
               <div class="text-base flex-1 text-main">
                 {{ $t('gov.upgrade_plan') }}:
                 <span v-if="Number(proposal.content?.plan?.height || '0') > 0">
-                  (EST)</span
-                >
+                  (EST)</span>
                 <span v-else>{{
                   format.toDay(proposal.content?.plan?.time)
                 }}</span>
@@ -458,14 +427,10 @@ function metaItem(metadata: string | undefined): {
           <tbody>
             <tr v-for="(item, index) of votes" :key="index">
               <td class="py-2 text-sm">{{ showValidatorName(item.voter) }}</td>
-              <td
-                v-if="item.option"
-                class="py-2 text-sm"
-                :class="{
-                  'text-yes': item.option === 'VOTE_OPTION_YES',
-                  'text-gray-400': item.option === 'VOTE_OPTION_ABSTAIN',
-                }"
-              >
+              <td v-if="item.option" class="py-2 text-sm" :class="{
+                'text-yes': item.option === 'VOTE_OPTION_YES',
+                'text-gray-400': item.option === 'VOTE_OPTION_ABSTAIN',
+              }">
                 {{ String(item.option).replace('VOTE_OPTION_', '') }}
               </td>
               <td v-if="item.options" class="py-2 text-sm">
@@ -484,11 +449,7 @@ function metaItem(metadata: string | undefined): {
             </tr>
           </tbody>
         </table>
-        <PaginationBar
-          :limit="pageRequest.limit"
-          :total="pageResponse.total"
-          :callback="pageload"
-        />
+        <PaginationBar :limit="pageRequest.limit" :total="pageResponse.total" :callback="pageload" />
       </div>
     </div>
   </div>
