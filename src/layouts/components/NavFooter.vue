@@ -16,6 +16,14 @@
         rel="noopener noreferrer"
         >Ping.pub</a
       >
+      &nbsp;and&nbsp;
+      <a
+          class="link link-primary no-underline"
+          href="https://hippoprotocol.ai/"
+          target="_blank"
+          rel="noopener noreferrer">
+        Hippo Protocol
+      </a>
     </div>
     <div
       class="hidden md:!block"
@@ -35,3 +43,5 @@
     </div>
   </footer>
 </template>
+<script setup lang="ts">
+</script>

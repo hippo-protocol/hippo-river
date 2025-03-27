@@ -26,10 +26,18 @@ const changeTab = (val: '0' | '1' | '2' | '3' | '4') => {
   tab.value = val;
 };
 
-function page(p: number) {
+function onPageChange(p: number) {
   pageRequest.value.setPage(p);
   store.fetchProposals(tab.value, pageRequest.value);
 }
+
+const proposeCallback = () => {
+  // when User Propose new Proposal, then fetch proposals status of ALL, DEPOSIT, VOTING
+  store.fetchProposals('0');
+  store.fetchProposals('1');
+  store.fetchProposals('2');
+}
+
 
 </script>
 <template>
@@ -47,10 +55,11 @@ function page(p: number) {
           $t('gov.rejected') }}</a>
       </div>
       <label for='propose' class="btn btn-secondary btn-sm text-white uppercase"
-        @click="dialog.open('propose', {})">Propose</label>
+        @click="dialog.open('propose', {}, proposeCallback)">Propose</label>
     </div>
     <ProposalListItem :proposals="store?.proposals[tab]" />
-    <PaginationBar :total="store?.proposals[tab]?.pagination?.total" :limit="pageRequest.limit" :callback="page" />
+    <PaginationBar :total="store?.proposals[tab]?.pagination?.total" :limit="pageRequest.limit"
+      :callback="onPageChange" />
   </div>
 </template>
 <route>
