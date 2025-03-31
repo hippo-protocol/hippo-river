@@ -130,16 +130,10 @@ const amount = computed({
     <div v-if="coinInfo && coinInfo.name" class="bg-base-100 rounded shadow">
       <div class="grid grid-cols-2 md:grid-cols-3 p-4">
         <div class="col-span-2 md:col-span-1">
-          <div class="text-xl font-semibold text-main">
+          <div class="text-xl font-semibold text-main ">
             {{ coinInfo.name }} (<span class="uppercase">{{
               coinInfo.symbol
             }}</span>)
-          </div>
-          <div class="text-xs mt-2">
-            {{ $t('index.rank') }}:
-            <div class="badge text-xs badge-error bg-[#fcebea] dark:bg-[#41384d] text-red-400">
-              #{{ coinInfo.market_cap_rank }}
-            </div>
           </div>
 
           <div class="my-4 flex flex-wrap items-center">
@@ -193,7 +187,7 @@ const amount = computed({
                         </div>
 
                         <div class="text-base text-main">
-                           ${{ item?.converted_last?.usd }}
+                          ${{ item?.converted_last?.usd }}
                         </div>
                       </div>
                     </li>
@@ -204,7 +198,23 @@ const amount = computed({
 
             <div class="flex">
               <label class="btn btn-primary !px-1 my-5 mr-2" for="calculator">
-                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect x="4" y="2" width="16" height="20" rx="2"></rect> <line x1="8" x2="16" y1="6" y2="6"></line> <line x1="16" x2="16" y1="14" y2="18"></line> <path d="M16 10h.01"></path> <path d="M12 10h.01"></path> <path d="M8 10h.01"></path> <path d="M12 14h.01"></path> <path d="M8 14h.01"></path> <path d="M12 18h.01"></path> <path d="M8 18h.01"></path> </g></svg>
+                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+                    <line x1="8" x2="16" y1="6" y2="6"></line>
+                    <line x1="16" x2="16" y1="14" y2="18"></line>
+                    <path d="M16 10h.01"></path>
+                    <path d="M12 10h.01"></path>
+                    <path d="M8 10h.01"></path>
+                    <path d="M12 14h.01"></path>
+                    <path d="M8 14h.01"></path>
+                    <path d="M12 18h.01"></path>
+                    <path d="M8 18h.01"></path>
+                  </g>
+                </svg>
               </label>
               <!-- Put this part before </body> tag -->
               <input type="checkbox" id="calculator" class="modal-toggle" />
@@ -217,7 +227,8 @@ const amount = computed({
                         <label class="join-item btn">
                           <span class="uppercase">{{ coinInfo.symbol }}</span>
                         </label>
-                        <input type="number" v-model="qty" min="0" placeholder="Input a number" class="input grow input-bordered join-item" />
+                        <input type="number" v-model="qty" min="0" placeholder="Input a number"
+                          class="input grow input-bordered join-item" />
                       </div>
                     </div>
                     <div class="divider">=</div>
@@ -226,15 +237,17 @@ const amount = computed({
                         <label class="join-item btn">
                           <span>USD</span>
                         </label>
-                        <input type="number" v-model="amount" min="0" placeholder="Input amount" class="join-item grow input input-bordered" />
+                        <input type="number" v-model="amount" min="0" placeholder="Input amount"
+                          class="join-item grow input input-bordered" />
                       </div>
                     </div>
                   </div>
                 </div>
                 <label class="modal-backdrop" for="calculator">{{ $t('index.close') }}</label>
               </div>
-              <a class="my-5 !text-white btn grow" :class="{'!btn-success': store.trustColor === 'green', '!btn-warning': store.trustColor === 'yellow'}" :href="'https://apps.apple.com/app/data-hippo/id6738997275'"
-                target="_blank">
+              <a class="my-5 !text-white btn grow"
+                :class="{ '!btn-success': store.trustColor === 'green', '!btn-warning': store.trustColor === 'yellow' }"
+                :href="'https://apps.apple.com/app/data-hippo/id6738997275'" target="_blank">
                 GET HP
               </a>
             </div>
@@ -242,7 +255,7 @@ const amount = computed({
         </div>
 
         <div class="col-span-2">
-           <PriceMarketChart />
+          <PriceMarketChart />
         </div>
       </div>
       <div class="h-[1px] w-full bg-gray-100 dark:bg-[#384059]"></div>
@@ -265,7 +278,8 @@ const amount = computed({
 
     <AdBanner id="chain-home-banner-ad" unit="banner" width="970px" height="90px" />
 
-    <div v-if="blockchain.supportModule('governance') && store?.proposals?.proposals.length > 0" class="bg-base-100 rounded mt-4 shadow">
+    <div v-if="blockchain.supportModule('governance') && store?.proposals?.proposals.length > 0"
+      class="bg-base-100 rounded mt-4 shadow">
       <div class="px-4 pt-4 pb-2 text-lg font-semibold text-main">
         {{ $t('index.active_proposals') }}
       </div>
@@ -279,7 +293,7 @@ const amount = computed({
 
     <div class="bg-base-100 rounded mt-4 shadow">
       <div class="flex justify-between px-4 pt-4 pb-2 text-lg font-semibold text-main">
-        <span class="truncate" >{{ walletStore.currentAddress || 'Not Connected' }}</span>
+        <span class="truncate">{{ walletStore.currentAddress || 'Not Connected' }}</span>
         <RouterLink v-if="walletStore.currentAddress"
           class="float-right text-sm cursor-pointert link link-primary no-underline font-medium"
           :to="`/${chain}/account/${walletStore.currentAddress}`">{{ $t('index.more') }}</RouterLink>
@@ -336,12 +350,13 @@ const amount = computed({
           <tbody>
             <tr v-for="(item, index) in walletStore.delegations" :key="index">
               <td>
-                <RouterLink class="link link-primary no-underline" :to="`/${chain}/staking/${item?.delegation?.validator_address}`">
-                {{
-                  format.validatorFromBech32(
-                    item?.delegation?.validator_address
-                  )
-                }}
+                <RouterLink class="link link-primary no-underline"
+                  :to="`/${chain}/staking/${item?.delegation?.validator_address}`">
+                  {{
+                    format.validatorFromBech32(
+                      item?.delegation?.validator_address
+                    )
+                  }}
                 </RouterLink>
               </td>
               <td>{{ format.formatToken(item?.balance) }}</td>
@@ -361,20 +376,15 @@ const amount = computed({
                     @click="dialog.open('delegate', { validator_address: item.delegation.validator_address }, updateState)">
                     {{ $t('account.btn_delegate') }}
                   </label>
-                  <label
-                    for="unbond"
-                    class="btn !btn-xs !btn-primary btn-ghost rounded-sm"
-                    @click="
-                      dialog.open(
-                        'unbond',
-                        {
-                          validator_address: item.delegation.validator_address,
-                        },
-                        updateState
-                      )
-                    "
-                    >{{ $t('account.btn_unbond') }}</label
-                  >
+                  <label for="unbond" class="btn !btn-xs !btn-primary btn-ghost rounded-sm" @click="
+                    dialog.open(
+                      'unbond',
+                      {
+                        validator_address: item.delegation.validator_address,
+                      },
+                      updateState
+                    )
+                    ">{{ $t('account.btn_unbond') }}</label>
                 </div>
               </td>
             </tr>
@@ -384,16 +394,14 @@ const amount = computed({
 
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 px-4 pb-6 mt-4">
         <label for="PingTokenConvert" class="btn btn-primary text-white">{{ $t('index.btn_swap') }}</label>
-        <label for="send" class="btn !bg-yes !border-yes text-white" @click="dialog.open('send', {}, updateState)">{{ $t('account.btn_send') }}</label>
+        <label for="send" class="btn !bg-yes !border-yes text-white" @click="dialog.open('send', {}, updateState)">{{
+          $t('account.btn_send') }}</label>
         <label for="delegate" class="btn !bg-info !border-info text-white"
           @click="dialog.open('delegate', {}, updateState)">{{ $t('account.btn_delegate') }}</label>
-          <label
-            for="withdraw"
-            class="btn !bg-lime-500 !border-info text-white"
-            @click="dialog.open('withdraw', {}, updateState)"
-            >{{ $t('index.btn_withdraw_reward') }}</label
-          >
-        <RouterLink to="/wallet/receive" class="btn !bg-info !border-info text-white hidden">{{ $t('index.receive') }}</RouterLink>
+        <label for="withdraw" class="btn !bg-lime-500 !border-info text-white"
+          @click="dialog.open('withdraw', {}, updateState)">{{ $t('index.btn_withdraw_reward') }}</label>
+        <RouterLink to="/wallet/receive" class="btn !bg-info !border-info text-white hidden">{{ $t('index.receive') }}
+        </RouterLink>
       </div>
       <Teleport to="body">
         <ping-token-convert :chain-name="blockchain?.current?.prettyName" :endpoint="blockchain?.endpoint?.address"
@@ -406,7 +414,7 @@ const amount = computed({
       <div class="px-4 pt-4 pb-2 text-lg font-semibold text-main">
         {{ $t('index.node_info') }}
       </div>
-      <ArrayObjectElement :value="paramStore.nodeVersion?.items" :thead="false" />      
+      <ArrayObjectElement :value="paramStore.nodeVersion?.items" :thead="false" />
       <div class="h-4"></div>
     </div>
   </div>
