@@ -141,7 +141,7 @@ export const useIndexModule = defineStore('module-index', {
       return gov.proposals['2'];
     },
 
-    stakingApr(){
+    stakingApr() {
       const bank = useBankStore();
       const staking = useStakingStore();
       const mintStore = useMintStore();
@@ -153,7 +153,7 @@ export const useIndexModule = defineStore('module-index', {
         (Number(bank.supply.amount) / Number(staking.pool.bonded_tokens)) *
         (1 - Number(distributionStore.params.community_tax));
 
-        return stakingApr;
+      return stakingApr;
     },
 
     stats() {
@@ -236,8 +236,9 @@ export const useIndexModule = defineStore('module-index', {
   },
   actions: {
     async loadDashboard() {
-      this.$reset();
-      this.initCoingecko();
+      if (this.marketData.prices.length === 0) {
+        this.initCoingecko();
+      }
       useMintStore().fetchInflation();
       useDistributionStore()
         .fetchCommunityPool()
