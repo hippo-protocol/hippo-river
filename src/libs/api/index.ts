@@ -206,12 +206,12 @@ export const DEFAULT: RequestRegistry = {
 
   // hippo RPC
   block_by_height: {
-    url: 'https://rpc.testnet.hippo-protocol.com/blockchain?minHeight={minHeight}&maxHeight={maxHeight}',
+    url: 'https://rpc.hippo-protocol.com/blockchain?minHeight={minHeight}&maxHeight={maxHeight}',
     adapter,
   },
 
   tx_by_page:{
-    url:'https://rpc.testnet.hippo-protocol.com/tx_search?query="tx.height>=1"&order_by="desc"&per_page=20&page={page}',
+    url:'https://rpc.hippo-protocol.com/tx_search?query="tx.height>=1"&order_by="desc"&per_page=20&page={page}',
     adapter
   }
 };
