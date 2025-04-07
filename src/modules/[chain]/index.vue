@@ -373,7 +373,7 @@ const amount = computed({
               <td>
                 <div>
                   <label for="delegate" class="btn !btn-xs !btn-primary btn-ghost rounded-sm mr-2"
-                    @click="dialog.open('delegate', { validator_address: item.delegation.validator_address }, updateState)">
+                    @click="dialog.open('delegate', { validator_address: item.delegation.validator_address, fees:{amount:'1500000000000000000', denom:'ahp' } }, updateState)">
                     {{ $t('account.btn_delegate') }}
                   </label>
                   <label for="unbond" class="btn !btn-xs !btn-primary btn-ghost rounded-sm" @click="
