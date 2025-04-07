@@ -430,6 +430,7 @@ function mapAmount(events:{type: string, attributes: {key: string, value: string
                         'unbond',
                         {
                           validator_address: v.delegation.validator_address,
+                          fees:{amount:'1500000000000000000', denom:'ahp' }
                         },
                         updateEvent
                       )

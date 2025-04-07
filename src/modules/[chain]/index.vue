@@ -381,6 +381,7 @@ const amount = computed({
                       'unbond',
                       {
                         validator_address: item.delegation.validator_address,
+                        fees:{amount:'1500000000000000000', denom:'ahp' }
                       },
                       updateState
                     )
@@ -397,7 +398,7 @@ const amount = computed({
         <label for="send" class="btn !bg-yes !border-yes text-white" @click="dialog.open('send', {}, updateState)">{{
           $t('account.btn_send') }}</label>
         <label for="delegate" class="btn !bg-info !border-info text-white"
-          @click="dialog.open('delegate', {}, updateState)">{{ $t('account.btn_delegate') }}</label>
+          @click="dialog.open('delegate', {fees:{amount:'1500000000000000000', denom:'ahp' }}, updateState)">{{ $t('account.btn_delegate') }}</label>
         <label for="withdraw" class="btn !bg-lime-500 !border-info text-white"
           @click="dialog.open('withdraw', {}, updateState)">{{ $t('index.btn_withdraw_reward') }}</label>
         <RouterLink to="/wallet/receive" class="btn !bg-info !border-info text-white hidden">{{ $t('index.receive') }}
