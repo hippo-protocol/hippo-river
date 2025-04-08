@@ -30,7 +30,8 @@ export const useWalletStore = defineStore('walletStore', {
       if(this.wallet.cosmosAddress) return this.wallet
       const chainStore = useBlockchain();
       const key = chainStore.defaultHDPath;
-      const connected = JSON.parse(localStorage.getItem(key) || '{}');
+      const ledgerKey=chainStore.ledgerHDPath
+      const connected = JSON.parse(localStorage.getItem(key) || localStorage.getItem(ledgerKey)|| '{}');
       return connected
     },
     balanceOfStakingToken(): Coin {
@@ -121,11 +122,16 @@ export const useWalletStore = defineStore('walletStore', {
     disconnect() {
       const chainStore = useBlockchain();
       const key = chainStore.defaultHDPath;
+      const ledgerKey=chainStore.ledgerHDPath;
       localStorage.removeItem(key);
+      localStorage.removeItem(ledgerKey);
       this.$reset()
     },
     setConnectedWallet(value: WalletConnected) {
-      if(value) this.wallet = value 
+      if(value) {
+        this.wallet = value;
+        this.loadMyAsset()
+      }
     },
     suggestChain() {
       if (window.location.pathname === '/SIDE-Testnet') {

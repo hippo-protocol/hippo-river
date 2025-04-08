@@ -265,6 +265,11 @@ base.$subscribe((_, s) => {
 });
 
 loadAvatars();
+
+const refresh=()=>{
+  // refresh after delegate
+  staking.fetchAcitveValdiators();
+}
 </script>
 <template>
   <div>
@@ -551,7 +556,8 @@ loadAvatars();
                     @click="
                       dialog.open('delegate', {
                         validator_address: v.operator_address,
-                      })
+                        fees:{amount:'1500000000000000000', denom:'ahp' }
+                      }, refresh)
                     "
                     >{{ $t('account.btn_delegate') }}</label
                   >

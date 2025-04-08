@@ -347,7 +347,7 @@ function mapAmount(events:{type: string, attributes: {key: string, value: string
           <label
             for="delegate"
             class="btn btn-primary btn-sm mr-2"
-            @click="dialog.open('delegate', {}, updateEvent)"
+            @click="dialog.open('delegate', {fees:{amount:'1500000000000000000', denom:'ahp' }}, updateEvent)"
             >{{ $t('account.btn_delegate') }}</label
           >
           <label
@@ -402,6 +402,7 @@ function mapAmount(events:{type: string, attributes: {key: string, value: string
                         'delegate',
                         {
                           validator_address: v.delegation.validator_address,
+                          fees:{amount:'1500000000000000000', denom:'ahp' }
                         },
                         updateEvent
                       )
@@ -416,6 +417,7 @@ function mapAmount(events:{type: string, attributes: {key: string, value: string
                         'redelegate',
                         {
                           validator_address: v.delegation.validator_address,
+                          fees:{amount:'1500000000000000000', denom:'ahp' }
                         },
                         updateEvent
                       )
@@ -430,6 +432,7 @@ function mapAmount(events:{type: string, attributes: {key: string, value: string
                         'unbond',
                         {
                           validator_address: v.delegation.validator_address,
+                          fees:{amount:'1500000000000000000', denom:'ahp' }
                         },
                         updateEvent
                       )

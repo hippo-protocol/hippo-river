@@ -287,6 +287,7 @@ function mapDelegators(messages: any[]) {
                 @click="
                   dialog.open('delegate', {
                     validator_address: v.operator_address,
+                    fees:{amount:'1500000000000000000', denom:'ahp' }
                   })
                 "
                 >{{ $t('account.btn_delegate') }}</label
