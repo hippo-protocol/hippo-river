@@ -57,7 +57,7 @@ export const useBlockchain = defineStore('blockchain', {
       return `m/44'/${cointype}/0'/0/0`;
     },
     ledgerHDPath():string{
-      return `m/44'/118/0'/0/0`;
+      return `m/44'/118'/0'/0/0`;
     },
     dashboard() {
       return useDashboard();
