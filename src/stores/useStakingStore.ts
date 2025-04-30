@@ -53,8 +53,6 @@ export const useStakingStore = defineStore('stakingStore', {
         'AsanH',
         'DataBeauty',
         'EverHealth',
-        'Hippo 1',
-        'Hippo 2',
         'MediHP',
         'SafeHealth',
         'SaintM',
