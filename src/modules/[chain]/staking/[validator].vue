@@ -85,7 +85,10 @@ const selfRate = computed(() => {
 });
 
 const logo = (identity?: string) => {
-  if (!identity || !avatars.value[identity]) return '/hippo-protocol.png';
+  if (!identity || !avatars.value[identity]) {
+    if (staking.defaultValidators.includes(v.value.description?.moniker)) return `/validators/${v.value.description?.moniker}.png`;
+    return '/hippo-protocol.png';
+  }
   const url = avatars.value[identity] || '';
   return url.startsWith('http')
     ? url
@@ -195,8 +198,8 @@ function pageload(p: number) {
   page.limit = 10;
 
   blockchain.rpc.getStakingValidatorsDelegations(validator, page).then(res => {
-      delegations.value = res
-  }) 
+    delegations.value = res
+  })
 }
 
 const events = ref({} as PaginatedTxs)
@@ -218,18 +221,18 @@ function loadPowerEvents(p: number, type: EventType) {
 }
 
 function pagePowerEvents(page: number) {
-    loadPowerEvents(page, selectedEventType.value)
+  loadPowerEvents(page, selectedEventType.value)
 }
 
 pagePowerEvents(1)
 
-function mapEvents(events: {type: string, attributes: {key: string, value: string}[]}[]) {
+function mapEvents(events: { type: string, attributes: { key: string, value: string }[] }[]) {
   const attributes = events
     .filter(x => x.type === selectedEventType.value)
     .filter(x => x.attributes.findIndex(attr => attr.value === validator || attr.value === toBase64(stringToUint8Array(validator))) > -1)
     .map(x => {
       // check if attributes need to decode
-      const output = {} as {[key: string]: string }
+      const output = {} as { [key: string]: string }
 
       if (x.attributes.findIndex(a => a.key === `amount`) > -1) {
         x.attributes.forEach(attr => {
@@ -251,7 +254,7 @@ function mapEvents(events: {type: string, attributes: {key: string, value: strin
 }
 
 function mapDelegators(messages: any[]) {
-  if(!messages) return []
+  if (!messages) return []
   return Array.from(new Set(messages.map(x => x.delegator_address || x.grantee)))
 }
 
@@ -265,15 +268,11 @@ function mapDelegators(messages: any[]) {
             <div class="avatar mr-4 relative w-24 rounded-lg overflow-hidden">
               <div class="w-24 rounded-lg absolute opacity-10"></div>
               <div class="w-24 rounded-lg">
-                <img
-                  v-lazy="logo(identity)"
-                  class="object-contain"
-                  @error="
-                    (e) => {
-                      loadAvatar(identity);
-                    }
-                  "
-                />
+                <img v-lazy="logo(identity)" class="object-contain" @error="
+                  (e) => {
+                    loadAvatar(identity);
+                  }
+                " />
               </div>
             </div>
             <div class="mx-2">
@@ -281,17 +280,12 @@ function mapDelegators(messages: any[]) {
               <div class="text-sm mb-4">
                 {{ v.description?.identity || '-' }}
               </div>
-              <label
-                for="delegate"
-                class="btn btn-primary btn-sm w-full"
-                @click="
-                  dialog.open('delegate', {
-                    validator_address: v.operator_address,
-                    fees:{amount:'1500000000000000000', denom:'ahp' }
-                  })
-                "
-                >{{ $t('account.btn_delegate') }}</label
-              >
+              <label for="delegate" class="btn btn-primary btn-sm w-full" @click="
+                dialog.open('delegate', {
+                  validator_address: v.operator_address,
+                  fees: { amount: '1500000000000000000', denom: 'ahp' }
+                })
+                ">{{ $t('account.btn_delegate') }}</label>
             </div>
           </div>
           <div class="m-4 text-sm">
@@ -300,25 +294,18 @@ function mapDelegators(messages: any[]) {
               <div class="flex items-center mb-2">
                 <Icon icon="mdi-web" class="text-xl mr-1" />
                 <span class="font-bold mr-2">{{ $t('staking.website') }}: </span>
-                <a
-                  :href="v?.description?.website || '#'"
-                  :class="
-                    v?.description?.website
-                      ? 'cursor-pointer'
-                      : 'cursor-default'
-                  "
-                >
+                <a :href="v?.description?.website || '#'" :class="v?.description?.website
+                  ? 'cursor-pointer'
+                  : 'cursor-default'
+                  ">
                   {{ v.description?.website || '-' }}
                 </a>
               </div>
               <div class="flex items-center">
                 <Icon icon="mdi-email-outline" class="text-xl mr-1" />
                 <span class="font-bold mr-2">{{ $t('staking.contact') }}: </span>
-                <a
-                  v-if="v.description?.security_contact"
-                  :href="'mailto:' + v.description.security_contact || '#' "
-                  class="cursor-pointer"
-                >
+                <a v-if="v.description?.security_contact" :href="'mailto:' + v.description.security_contact || '#'"
+                  class="cursor-pointer">
                   {{ v.description?.security_contact || '-' }}
                 </a>
               </div>
@@ -327,8 +314,7 @@ function mapDelegators(messages: any[]) {
             <div class="card-list">
               <div class="flex items-center mb-2">
                 <Icon icon="mdi-shield-account-outline" class="text-xl mr-1" />
-                <span class="font-bold mr-2">{{ $t('staking.status') }}: </span
-                ><span>
+                <span class="font-bold mr-2">{{ $t('staking.status') }}: </span><span>
                   {{ String(v.status).replace('BOND_STATUS_', '') }}
                 </span>
               </div>
@@ -343,13 +329,14 @@ function mapDelegators(messages: any[]) {
               <div class="flex items-center mb-2">
                 <Icon icon="mdi-lock" class="text-xl mr-1" />
                 <span class="font-bold mr-2">{{ $t('staking.validator_bond_share') }}: </span>
-                <span> {{ format.formatToken( {amount: v.validator_bond_shares, denom: staking.params.bond_denom }, false) }} </span>
+                <span> {{ format.formatToken({ amount: v.validator_bond_shares, denom: staking.params.bond_denom },
+                  false) }} </span>
               </div>
               <div class="flex items-center">
                 <Icon icon="mdi-waves-arrow-right" class="text-xl mr-1" />
                 <span class="font-bold mr-2">{{ $t('staking.liquid_staking_shares') }}: </span>
                 <span>
-                  {{ format.formatToken( {amount: v.liquid_shares, denom: staking.params.bond_denom }, false) }}
+                  {{ format.formatToken({ amount: v.liquid_shares, denom: staking.params.bond_denom }, false) }}
                 </span>
               </div>
             </div>
@@ -358,10 +345,7 @@ function mapDelegators(messages: any[]) {
         <div class="flex-1">
           <div class="flex flex-col mt-10">
             <div class="flex mb-2">
-              <div
-                class="flex items-center justify-center rounded w-10 h-10"
-                style="border: 1px solid #666"
-              >
+              <div class="flex items-center justify-center rounded w-10 h-10" style="border: 1px solid #666">
                 <Icon icon="mdi-coin" class="text-3xl" />
               </div>
               <div class="ml-3 flex flex-col justify-center">
@@ -377,10 +361,7 @@ function mapDelegators(messages: any[]) {
               </div>
             </div>
             <div class="flex mb-2">
-              <div
-                class="flex items-center justify-center rounded w-10 h-10"
-                style="border: 1px solid #666"
-              >
+              <div class="flex items-center justify-center rounded w-10 h-10" style="border: 1px solid #666">
                 <Icon icon="mdi-percent" class="text-3xl" />
               </div>
               <div class="ml-3 flex flex-col justify-center">
@@ -392,10 +373,7 @@ function mapDelegators(messages: any[]) {
             </div>
 
             <div class="flex mb-2">
-              <div
-                class="flex items-center justify-center rounded w-10 h-10"
-                style="border: 1px solid #666"
-              >
+              <div class="flex items-center justify-center rounded w-10 h-10" style="border: 1px solid #666">
                 <Icon icon="mdi-account-tie" class="text-3xl" />
               </div>
 
@@ -407,10 +385,7 @@ function mapDelegators(messages: any[]) {
               </div>
             </div>
             <div class="flex mb-2">
-              <div
-                class="flex items-center justify-center rounded w-10 h-10"
-                style="border: 1px solid #666"
-              >
+              <div class="flex items-center justify-center rounded w-10 h-10" style="border: 1px solid #666">
                 <Icon icon="mdi-finance" class="text-3xl" />
               </div>
               <div class="ml-3 flex flex-col justify-center">
@@ -420,10 +395,7 @@ function mapDelegators(messages: any[]) {
             </div>
 
             <div class="flex mb-2">
-              <div
-                class="flex items-center justify-center rounded w-10 h-10"
-                style="border: 1px solid #666"
-              >
+              <div class="flex items-center justify-center rounded w-10 h-10" style="border: 1px solid #666">
                 <Icon icon="mdi:arrow-down-bold-circle-outline" class="text-3xl" />
               </div>
               <div class="ml-3 flex flex-col justify-center">
@@ -433,14 +405,12 @@ function mapDelegators(messages: any[]) {
             </div>
 
             <div class="flex mb-2">
-              <div
-                class="flex items-center justify-center rounded w-10 h-10"
-                style="border: 1px solid #666"
-              >
+              <div class="flex items-center justify-center rounded w-10 h-10" style="border: 1px solid #666">
                 <Icon icon="mdi-clock" class="text-3xl" />
               </div>
               <div class="ml-3 flex flex-col justify-center">
-                <h4 v-if="v.unbonding_time && !v.unbonding_time.startsWith('1970')">{{ format.toDay(v.unbonding_time, 'from') }}</h4>
+                <h4 v-if="v.unbonding_time && !v.unbonding_time.startsWith('1970')">{{ format.toDay(v.unbonding_time,
+                  'from') }}</h4>
                 <h4 v-else>-</h4>
                 <span class="text-sm">{{ $t('staking.unbonding_time') }}</span>
               </div>
@@ -459,42 +429,24 @@ function mapDelegators(messages: any[]) {
         <div class="text-lg font-semibold text-main px-4 pt-4">
           {{ $t('staking.commissions_&_rewards') }}
         </div>
-        <div
-          class="px-4 mt-1 flex flex-col justify-between pb-4 max-h-72"
-          style="height: calc(100% - 50px)"
-        >
+        <div class="px-4 mt-1 flex flex-col justify-between pb-4 max-h-72" style="height: calc(100% - 50px)">
           <div class="overflow-auto flex-1">
             <div class="text-sm mb-2">{{ $t('staking.commissions') }}</div>
-            <div
-              v-for="(i, k) in commission"
-              :key="`reward-${k}`"
-              color="info"
-              label
-              variant="outlined"
-              class="mr-1 mb-1 badge text-xs"
-            >
+            <div v-for="(i, k) in commission" :key="`reward-${k}`" color="info" label variant="outlined"
+              class="mr-1 mb-1 badge text-xs">
               {{ format.formatToken2(i) }}
             </div>
             <div class="text-sm mb-2 mt-2">{{ $t('staking.outstanding') }} {{ $t('account.rewards') }}</div>
-            <div
-              v-for="(i, k) in rewards"
-              :key="`reward-${k}`"
-              class="mr-1 mb-1 badge text-xs"
-            >
+            <div v-for="(i, k) in rewards" :key="`reward-${k}`" class="mr-1 mb-1 badge text-xs">
               {{ format.formatToken2(i) }}
             </div>
           </div>
           <div class="">
-            <label
-              for="withdraw_commission"
-              class="btn btn-primary w-full"
-              @click="
-                dialog.open('withdraw_commission', {
-                  validator_address: v.operator_address,
-                })
-              "
-              >{{ $t('account.btn_withdraw') }}</label
-            >
+            <label for="withdraw_commission" class="btn btn-primary w-full" @click="
+              dialog.open('withdraw_commission', {
+                validator_address: v.operator_address,
+              })
+              ">{{ $t('account.btn_withdraw') }}</label>
           </div>
         </div>
       </div>
@@ -504,64 +456,42 @@ function mapDelegators(messages: any[]) {
         </div>
         <div class="px-4 pb-4">
           <div class="mb-3">
-            <div class="text-sm flex">{{ $t('staking.account_addr') }} 
-              <Icon
-                  icon="mdi:content-copy"
-                  class="ml-2 cursor-pointer"
-                  v-show="addresses.account"
-                  @click="copyWebsite(addresses.account || '')"
-                />
-              </div>
-            <RouterLink
-              class="text-xs text-primary"
-              :to="`/${chain}/account/${addresses.account}`"
-            >
+            <div class="text-sm flex">{{ $t('staking.account_addr') }}
+              <Icon icon="mdi:content-copy" class="ml-2 cursor-pointer" v-show="addresses.account"
+                @click="copyWebsite(addresses.account || '')" />
+            </div>
+            <RouterLink class="text-xs text-primary" :to="`/${chain}/account/${addresses.account}`">
               {{ addresses.account }}
             </RouterLink>
           </div>
           <div class="mb-3">
             <div class="text-sm flex">{{ $t('staking.operator_addr') }}
-              <Icon
-                  icon="mdi:content-copy"
-                  class="ml-2 cursor-pointer"
-                  v-show="v.operator_address"
-                  @click="copyWebsite(v.operator_address || '')"
-                /></div>
+              <Icon icon="mdi:content-copy" class="ml-2 cursor-pointer" v-show="v.operator_address"
+                @click="copyWebsite(v.operator_address || '')" />
+            </div>
             <div class="text-xs">
               {{ v.operator_address }}
             </div>
           </div>
           <div class="mb-3">
             <div class="text-sm flex">{{ $t('staking.hex_addr') }}
-              <Icon
-                  icon="mdi:content-copy"
-                  class="ml-2 cursor-pointer"
-                  v-show="addresses.hex"
-                  @click="copyWebsite(addresses.hex || '')"
-                />
-              </div>
+              <Icon icon="mdi:content-copy" class="ml-2 cursor-pointer" v-show="addresses.hex"
+                @click="copyWebsite(addresses.hex || '')" />
+            </div>
             <div class="text-xs">{{ addresses.hex }}</div>
           </div>
           <div class="mb-3">
             <div class="text-sm flex">{{ $t('staking.signer_addr') }}
-              <Icon
-                  icon="mdi:content-copy"
-                  class="ml-2 cursor-pointer"
-                  v-show="addresses.valCons"
-                  @click="copyWebsite(addresses.valCons || '')"
-                />
-              </div>
+              <Icon icon="mdi:content-copy" class="ml-2 cursor-pointer" v-show="addresses.valCons"
+                @click="copyWebsite(addresses.valCons || '')" />
+            </div>
             <div class="text-xs">{{ addresses.valCons }}</div>
           </div>
           <div>
             <div class="text-sm flex">{{ $t('staking.consensus_pub_key') }}
-              <Icon
-                  icon="mdi:content-copy"
-                  class="ml-2 cursor-pointer"
-                  v-show="v.consensus_pubkey"
-                  @click="copyWebsite(JSON.stringify(v.consensus_pubkey) || '')"
-                />
-              </div>
+              <Icon icon="mdi:content-copy" class="ml-2 cursor-pointer" v-show="v.consensus_pubkey"
+                @click="copyWebsite(JSON.stringify(v.consensus_pubkey) || '')" />
+            </div>
             <div class="text-xs">{{ v.consensus_pubkey }}</div>
           </div>
         </div>
@@ -570,7 +500,8 @@ function mapDelegators(messages: any[]) {
 
     <div v-if="delegations.delegation_responses" class="mt-5 bg-base-100 shadow rounded p-4 ">
       <div class="text-lg mb-4 font-semibold">{{ $t('account.delegations') }}
-        <span class="float-right"> {{ delegations.delegation_responses?.length || 0 }} / {{ delegations.pagination?.total || 0 }} </span>
+        <span class="float-right"> {{ delegations.delegation_responses?.length || 0 }} / {{
+          delegations.pagination?.total || 0 }} </span>
       </div>
       <div class="rounded overflow-auto">
         <table class="table validatore-table w-full">
@@ -581,18 +512,18 @@ function mapDelegators(messages: any[]) {
             <th class="text-left pl-4">{{ $t('account.delegation') }}</th>
           </thead>
           <tbody>
-            <tr v-for="{balance, delegation} in delegations.delegation_responses">
+            <tr v-for="{ balance, delegation } in delegations.delegation_responses">
               <td class="text-sm text-primary">
                 {{ delegation.delegator_address }}
               </td>
               <td class="truncate text-primary">
-                {{ format.formatToken(balance)}}
+                {{ format.formatToken(balance) }}
               </td>
-              
+
             </tr>
           </tbody>
         </table>
-        <PaginationBar :total="delegations.pagination?.total" :limit="page.limit" :callback="pageload"/>
+        <PaginationBar :total="delegations.pagination?.total" :limit="page.limit" :callback="pageload" />
       </div>
     </div>
 
@@ -625,11 +556,7 @@ function mapDelegators(messages: any[]) {
                   <span class="mr-2">{{
                     format.messages(item.tx.body.messages)
                   }}</span>
-                  <Icon
-                    v-if="item.code === 0"
-                    icon="mdi-check"
-                    class="text-yes"
-                  />
+                  <Icon v-if="item.code === 0" icon="mdi-check" class="text-yes" />
                   <Icon v-else icon="mdi-multiply" class="text-no" />
                 </div>
               </td>
@@ -643,21 +570,13 @@ function mapDelegators(messages: any[]) {
     <div class="mt-5 bg-base-100 shadow rounded p-4">
       <div class="text-lg mb-4 font-semibold">
         <div class="tabs tabs-boxed bg-transparent">
-                
-                <span class="mr-10">Voting Power Events: </span>
-                <a
-                    class="tab text-gray-400"
-                    :class="{ 'tab-active': selectedEventType === EventType.Delegate }"
-                    @click="loadPowerEvents(1, EventType.Delegate)"
-                    >{{ $t('account.btn_delegate') }}</a
-                >
-                <a
-                    class="tab text-gray-400"
-                    :class="{ 'tab-active': selectedEventType === EventType.Unbond }"
-                    @click="loadPowerEvents(1, EventType.Unbond)"
-                    >{{ $t('account.btn_unbond') }}</a
-                >
-            </div>
+
+          <span class="mr-10">Voting Power Events: </span>
+          <a class="tab text-gray-400" :class="{ 'tab-active': selectedEventType === EventType.Delegate }"
+            @click="loadPowerEvents(1, EventType.Delegate)">{{ $t('account.btn_delegate') }}</a>
+          <a class="tab text-gray-400" :class="{ 'tab-active': selectedEventType === EventType.Unbond }"
+            @click="loadPowerEvents(1, EventType.Unbond)">{{ $t('account.btn_unbond') }}</a>
+        </div>
       </div>
       <div class="rounded overflow-auto">
         <table class="table validatore-table w-full">
@@ -671,24 +590,20 @@ function mapDelegators(messages: any[]) {
               <td class="pr-2 truncate text-primary" style="max-width: 250px">
                 <RouterLink v-for="d in mapDelegators(item.tx?.body?.messages)" :to="`/${props.chain}/account/${d}`">
                   {{ d }}
-                </RouterLink> 
+                </RouterLink>
               </td>
               <td>
                 <div class="flex items-center" :class="{
-                  'text-yes' : selectedEventType === EventType.Delegate,
-                  'text-no' : selectedEventType ===  EventType.Unbond,
+                  'text-yes': selectedEventType === EventType.Delegate,
+                  'text-no': selectedEventType === EventType.Unbond,
                 }">
                   <RouterLink :to="`/${props.chain}/tx/${item.txhash}`">
                     <span class="mr-2">
-                      {{ (selectedEventType === EventType.Delegate ? '+' : '-')}} {{
-                      mapEvents(item.events)
-                    }}</span>
+                      {{ (selectedEventType === EventType.Delegate ? '+' : '-') }} {{
+                        mapEvents(item.events)
+                      }}</span>
                   </RouterLink>
-                  <Icon
-                    v-if="item.code === 0"
-                    icon="mdi-check"
-                    class="text-yes"
-                  />
+                  <Icon v-if="item.code === 0" icon="mdi-check" class="text-yes" />
                   <Icon v-else icon="mdi-multiply" class="text-no" />
                 </div>
               </td>
@@ -701,7 +616,7 @@ function mapDelegators(messages: any[]) {
             </tr>
           </tbody>
         </table>
-        <PaginationBar :total="events.pagination?.total" :limit="page.limit" :callback="pagePowerEvents"/>
+        <PaginationBar :total="events.pagination?.total" :limit="page.limit" :callback="pagePowerEvents" />
       </div>
     </div>
     <!-- end -->
