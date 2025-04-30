@@ -12,7 +12,6 @@ import { onMounted, ref } from 'vue';
 import { Icon } from '@iconify/vue';
 import type { Key, SlashingParam, Validator } from '@/types';
 import { formatSeconds } from '@/libs/utils';
-import { diff } from 'semver';
 import { useIndexModule } from '../indexStore';
 
 const staking = useStakingStore();
@@ -23,8 +22,7 @@ const chainStore = useBlockchain();
 const mintStore = useMintStore();
 const store = useIndexModule();
 
-const cache = JSON.parse(localStorage.getItem('avatars') || '{}');
-const avatars = ref(cache || {});
+const avatars = ref({} as any);
 const latest = ref({} as Record<string, number>);
 const yesterday = ref({} as Record<string, number>);
 const tab = ref('active');
@@ -156,7 +154,7 @@ const list = computed(() => {
     return staking.validators.map((x, i) => ({
       v: x,
       rank: calculateRank(i),
-      logo: logo(x.description.identity),
+      logo: logo(x),
     }));
   } else if (tab.value === 'featured') {
     const endpoint = chainStore.current?.endpoints?.rest?.map(
@@ -169,7 +167,7 @@ const list = computed(() => {
         .map((x, i) => ({
           v: x,
           rank: 'primary',
-          logo: logo(x.description.identity),
+          logo: logo(x),
         }));
     }
     return [];
@@ -177,7 +175,7 @@ const list = computed(() => {
   return unbondList.value.map((x, i) => ({
     v: x,
     rank: 'primary',
-    logo: logo(x.description.identity),
+    logo: logo(x),
   }));
 });
 
@@ -214,13 +212,6 @@ const fetchAvatar = (identity: string) => {
   });
 };
 
-const loadAvatar = (identity: string) => {
-  // fetches avatar from keybase and stores it in localStorage
-  fetchAvatar(identity).then(() => {
-    localStorage.setItem('avatars', JSON.stringify(avatars.value));
-  });
-};
-
 const loadAvatars = () => {
   // fetches all avatars from keybase and stores it in localStorage
   const promises = staking.validators.map((validator) => {
@@ -239,8 +230,15 @@ const loadAvatars = () => {
   );
 };
 
-const logo = (identity?: string) => {
-  if (!identity || !avatars.value[identity]) return '/favicon.ico';
+
+const logo = (validator: Validator) => {
+  const identity = validator?.description?.identity;
+  if (!identity || !avatars.value[identity]) {
+    if (staking.defaultValidators.includes(validator.description?.moniker)) {
+      return `/validators/${validator.description?.moniker}.png`;
+    }
+    return '/favicon.ico';
+  }
   const url = avatars.value[identity] || '';
   return url.startsWith('http')
     ? url
@@ -266,7 +264,7 @@ base.$subscribe((_, s) => {
 
 loadAvatars();
 
-const refresh=()=>{
+const refresh = () => {
   // refresh after delegate
   staking.fetchAcitveValdiators();
 }
@@ -276,13 +274,9 @@ const refresh=()=>{
     <div class="bg-base-100 rounded-lg grid sm:grid-cols-1 md:grid-cols-5 p-4">
       <div class="flex">
         <span>
-          <div
-            class="relative w-9 h-9 rounded overflow-hidden flex items-center justify-center mr-2"
-          >
+          <div class="relative w-9 h-9 rounded overflow-hidden flex items-center justify-center mr-2">
             <Icon class="text-success" icon="mdi:trending-up" size="32" />
-            <div
-              class="absolute top-0 left-0 bottom-0 right-0 opacity-20 bg-success"
-            ></div>
+            <div class="absolute top-0 left-0 bottom-0 right-0 opacity-20 bg-success"></div>
           </div>
         </span>
         <span>
@@ -292,13 +286,9 @@ const refresh=()=>{
       </div>
       <div class="flex">
         <span>
-          <div
-            class="relative w-9 h-9 rounded overflow-hidden flex items-center justify-center mr-2"
-          >
+          <div class="relative w-9 h-9 rounded overflow-hidden flex items-center justify-center mr-2">
             <Icon class="text-primary" icon="mdi:lock-open-outline" size="32" />
-            <div
-              class="absolute top-0 left-0 bottom-0 right-0 opacity-20 bg-primary"
-            ></div>
+            <div class="absolute top-0 left-0 bottom-0 right-0 opacity-20 bg-primary"></div>
           </div>
         </span>
         <span>
@@ -310,17 +300,9 @@ const refresh=()=>{
       </div>
       <div class="flex">
         <span>
-          <div
-            class="relative w-9 h-9 rounded overflow-hidden flex items-center justify-center mr-2"
-          >
-            <Icon
-              class="text-error"
-              icon="mdi:alert-octagon-outline"
-              size="32"
-            />
-            <div
-              class="absolute top-0 left-0 bottom-0 right-0 opacity-20 bg-error"
-            ></div>
+          <div class="relative w-9 h-9 rounded overflow-hidden flex items-center justify-center mr-2">
+            <Icon class="text-error" icon="mdi:alert-octagon-outline" size="32" />
+            <div class="absolute top-0 left-0 bottom-0 right-0 opacity-20 bg-error"></div>
           </div>
         </span>
         <span>
@@ -332,13 +314,9 @@ const refresh=()=>{
       </div>
       <div class="flex">
         <span>
-          <div
-            class="relative w-9 h-9 rounded overflow-hidden flex items-center justify-center mr-2"
-          >
+          <div class="relative w-9 h-9 rounded overflow-hidden flex items-center justify-center mr-2">
             <Icon class="text-error" icon="mdi:pause" size="32" />
-            <div
-              class="absolute top-0 left-0 bottom-0 right-0 opacity-20 bg-error"
-            ></div>
+            <div class="absolute top-0 left-0 bottom-0 right-0 opacity-20 bg-error"></div>
           </div>
         </span>
         <span>
@@ -350,13 +328,9 @@ const refresh=()=>{
       </div>
       <div class="flex">
         <span>
-          <div
-            class="relative w-9 h-9 rounded overflow-hidden flex items-center justify-center mr-2"
-          >
+          <div class="relative w-9 h-9 rounded overflow-hidden flex items-center justify-center mr-2">
             <Icon class="text-success" icon="mdi:trending-up" size="32" />
-            <div
-              class="absolute top-0 left-0 bottom-0 right-0 opacity-20 bg-success"
-            ></div>
+            <div class="absolute top-0 left-0 bottom-0 right-0 opacity-20 bg-success"></div>
           </div>
         </span>
         <span>
@@ -371,24 +345,12 @@ const refresh=()=>{
     <div>
       <div class="flex items-center justify-between py-1">
         <div class="tabs tabs-boxed bg-transparent">
-          <a
-            class="tab text-gray-400"
-            :class="{ 'tab-active': tab === 'featured' }"
-            @click="tab = 'featured'"
-            >{{ $t('staking.popular') }}</a
-          >
-          <a
-            class="tab text-gray-400"
-            :class="{ 'tab-active': tab === 'active' }"
-            @click="tab = 'active'"
-            >{{ $t('staking.active') }}</a
-          >
-          <a
-            class="tab text-gray-400"
-            :class="{ 'tab-active': tab === 'inactive' }"
-            @click="tab = 'inactive'"
-            >{{ $t('staking.inactive') }}</a
-          >
+          <a class="tab text-gray-400" :class="{ 'tab-active': tab === 'featured' }" @click="tab = 'featured'">{{
+            $t('staking.popular') }}</a>
+          <a class="tab text-gray-400" :class="{ 'tab-active': tab === 'active' }" @click="tab = 'active'">{{
+            $t('staking.active') }}</a>
+          <a class="tab text-gray-400" :class="{ 'tab-active': tab === 'inactive' }" @click="tab = 'inactive'">{{
+            $t('staking.inactive') }}</a>
         </div>
 
         <div class="text-lg font-semibold">
@@ -401,11 +363,7 @@ const refresh=()=>{
           <table class="table staking-table w-full">
             <thead class="bg-base-200">
               <tr>
-                <th
-                  scope="col"
-                  class="uppercase"
-                  style="width: 3rem; position: relative"
-                >
+                <th scope="col" class="uppercase" style="width: 3rem; position: relative">
                   {{ $t('staking.rank') }}
                 </th>
                 <th scope="col" class="uppercase">
@@ -427,67 +385,39 @@ const refresh=()=>{
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="({ v, rank, logo }, i) in list"
-                :key="v.operator_address"
-                class="hover:bg-gray-100 dark:hover:bg-[#384059]"
-              >
+              <tr v-for="({ v, rank, logo }, i) in list" :key="v.operator_address"
+                class="hover:bg-gray-100 dark:hover:bg-[#384059]">
                 <!-- 👉 rank -->
                 <td>
-                  <div
-                    class="text-xs truncate relative px-2 py-1 rounded-full w-fit"
-                    :class="`text-${rank}`"
-                  >
-                    <span
-                      class="inset-x-0 inset-y-0 opacity-10 absolute"
-                      :class="`bg-${rank}`"
-                    ></span>
+                  <div class="text-xs truncate relative px-2 py-1 rounded-full w-fit" :class="`text-${rank}`">
+                    <span class="inset-x-0 inset-y-0 opacity-10 absolute" :class="`bg-${rank}`"></span>
                     {{ i + 1 }}
                   </div>
                 </td>
                 <!-- 👉 Validator -->
                 <td>
-                  <div
-                    class="flex items-center overflow-hidden"
-                    style="max-width: 300px"
-                  >
+                  <div class="flex items-center overflow-hidden" style="max-width: 300px">
                     <div class="avatar mr-4 relative w-8 h-8 rounded-full">
-                      <div
-                        class="w-8 h-8 rounded-full bg-gray-400 absolute opacity-10"
-                      ></div>
+                      <div class="w-8 h-8 rounded-full bg-gray-400 absolute opacity-10"></div>
                       <div class="w-8 h-8 rounded-full">
-                        <img
-                          v-if="logo"
-                          :src="logo"
-                          class="object-contain"
-                          @error="
-                            (e) => {
-                              const identity = v.description?.identity;
-                              if (identity) loadAvatar(identity);
-                            }
-                          "
-                        />
-                        <Icon
-                          v-else
-                          class="text-3xl"
-                          :icon="`mdi-help-circle-outline`"
-                        />
+                        <img v-if="logo" :src="logo" class="object-contain" @error="
+                          (e) => {
+                            const identity = v.description?.identity;
+                            if (identity) fetchAvatar(identity);
+                          }
+                        " />
+                        <Icon v-else class="text-3xl" :icon="`mdi-help-circle-outline`" />
                       </div>
                     </div>
 
                     <div class="flex flex-col">
-                      <span
-                        class="text-sm text-primary dark:invert whitespace-nowrap overflow-hidden"
-                      >
-                        <RouterLink
-                          :to="{
-                            name: 'chain-staking-validator',
-                            params: {
-                              validator: v.operator_address,
-                            },
-                          }"
-                          class="font-weight-medium"
-                        >
+                      <span class="text-sm text-primary dark:invert whitespace-nowrap overflow-hidden">
+                        <RouterLink :to="{
+                          name: 'chain-staking-validator',
+                          params: {
+                            validator: v.operator_address,
+                          },
+                        }" class="font-weight-medium">
                           {{ v.description?.moniker }}
                         </RouterLink>
                       </span>
@@ -543,24 +473,15 @@ const refresh=()=>{
                 </td>
                 <!-- 👉 Action -->
                 <td class="text-center">
-                  <div
-                    v-if="v.jailed"
-                    class="badge badge-error gap-2 text-white"
-                  >
+                  <div v-if="v.jailed" class="badge badge-error gap-2 text-white">
                     {{ $t('staking.jailed') }}
                   </div>
-                  <label
-                    v-else
-                    for="delegate"
-                    class="btn btn-xs btn-primary rounded-sm capitalize"
-                    @click="
-                      dialog.open('delegate', {
-                        validator_address: v.operator_address,
-                        fees:{amount:'1500000000000000000', denom:'ahp' }
-                      }, refresh)
-                    "
-                    >{{ $t('account.btn_delegate') }}</label
-                  >
+                  <label v-else for="delegate" class="btn btn-xs btn-primary rounded-sm capitalize" @click="
+                    dialog.open('delegate', {
+                      validator_address: v.operator_address,
+                      fees: { amount: '1500000000000000000', denom: 'ahp' }
+                    }, refresh)
+                    ">{{ $t('account.btn_delegate') }}</label>
                 </td>
               </tr>
             </tbody>
@@ -569,20 +490,12 @@ const refresh=()=>{
 
         <div class="divider"></div>
         <div class="flex flex-row items-center">
-          <div
-            class="text-xs truncate relative py-2 px-4 rounded-md w-fit text-error mr-2"
-          >
-            <span
-              class="inset-x-0 inset-y-0 opacity-10 absolute bg-error"
-            ></span>
+          <div class="text-xs truncate relative py-2 px-4 rounded-md w-fit text-error mr-2">
+            <span class="inset-x-0 inset-y-0 opacity-10 absolute bg-error"></span>
             {{ $t('staking.top') }} 33%
           </div>
-          <div
-            class="text-xs truncate relative py-2 px-4 rounded-md w-fit text-warning"
-          >
-            <span
-              class="inset-x-0 inset-y-0 opacity-10 absolute bg-warning"
-            ></span>
+          <div class="text-xs truncate relative py-2 px-4 rounded-md w-fit text-warning">
+            <span class="inset-x-0 inset-y-0 opacity-10 absolute bg-warning"></span>
             {{ $t('staking.top') }} 67%
           </div>
           <div class="text-xs hidden md:!block pl-2">
