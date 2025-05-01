@@ -237,7 +237,7 @@ const logo = (validator: Validator) => {
     if (staking.defaultValidators.includes(validator.description?.moniker)) {
       return `/validators/${validator.description?.moniker}.png`;
     }
-    return '/favicon.ico';
+    return '/hippo-protocol.png';
   }
   const url = avatars.value[identity] || '';
   return url.startsWith('http')
