@@ -57,7 +57,7 @@ const proposeCallback = () => {
       <label for='propose' class="btn btn-secondary btn-sm text-white uppercase"
         @click="dialog.open('propose', {}, proposeCallback)">Propose</label>
     </div>
-    <ProposalListItem :proposals="store?.proposals[tab]" />
+    <ProposalListItem :proposals="store?.proposals[tab]" :tab="tab" />
     <PaginationBar :total="store?.proposals[tab]?.pagination?.total" :limit="pageRequest.limit"
       :callback="onPageChange" />
   </div>

@@ -9,10 +9,11 @@ import { select } from '@/components/dynamic/index';
 import type { PaginatedProposals } from '@/types';
 import ProposalProcess from './ProposalProcess.vue';
 import type { PropType } from 'vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 const dialog = useTxDialog();
-defineProps({
+const props = defineProps({
   proposals: { type: Object as PropType<PaginatedProposals> },
+  tab: {type:String},
 });
 
 const format = useFormatter();
@@ -33,6 +34,22 @@ const statusMap: Record<string, string> = {
 };
 
 const proposalInfo = ref();
+
+const emptyLabel=computed(()=>{
+  const tab=props.tab
+  if (tab === '0') {
+    return 'Proposals';
+  } else if (tab === '1') {
+    return 'Proposals in Deposit Period';
+  } else if (tab === '2') {
+    return 'Voting Proposals';
+  } else if (tab === '3') {
+    return 'Passed Proposals';
+  } else if (tab === '4') {
+    return 'Rejected Proposals';
+  }
+  return '';
+})
 
 function metaItem(metadata: string|undefined): { title: string; summary: string } {
   return metadata ? JSON.parse(metadata) : {}
@@ -131,6 +148,9 @@ function metaItem(metadata: string|undefined): { title: string; summary: string 
         </tr>
       </tbody>
     </table>
+    <div v-if="!proposals?.proposals || proposals?.proposals.length==0" class="text-center text-white-400 dark:text-white-500 py-4">
+      There are no {{emptyLabel}} yet
+    </div>
 
     <div class="lg:!hidden">
       <div
