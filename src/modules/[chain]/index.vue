@@ -62,23 +62,39 @@ const comLinks = [
   {
     name: 'Website',
     icon: 'mdi-web',
-    href: store.homepage,
+    href: 'https://hippoprotocol.ai',
   },
   {
     name: 'Twitter',
     icon: 'mdi-twitter',
-    href: store.twitter,
+    href: 'https://x.com/Hippo_Protocol',
   },
   {
     name: 'Telegram',
     icon: 'mdi-telegram',
-    href: store.telegram,
+    href: 'https://t.me/hippoprotocol',
   },
   {
     name: 'Github',
     icon: 'mdi-github',
-    href: store.github,
+    href: 'https://github.com/hippo-protocol',
   },
+  
+  {
+    name: 'Medium',
+    icon: 'mdi-medium',
+    href: 'https://medium.com/hippoprotocol',
+  },
+  {
+    name: 'LinkedIn',
+    icon: 'mdi-linkedin',
+    href: 'https://www.linkedin.com/company/hippoprotocol',
+  },
+  {
+    name: 'Discord',
+    icon: 'mdi-discord',
+    href: 'https://discord.com/invite/hippoprotocol',
+  }
 ];
 
 // wallet box
@@ -138,6 +154,7 @@ const amount = computed({
 
           <div class="my-4 flex flex-wrap items-center">
             <a v-for="(item, index) of comLinks" :key="index" :href="item.href"
+              target="_blank"
               class="link link-primary px-2 py-1 rounded-sm no-underline hover:text-primary hover:bg-gray-100 dark:hover:bg-slate-800 flex items-center">
               <Icon :icon="item?.icon" />
               <span class="ml-1 text-sm uppercase">{{ item?.name }}</span>
