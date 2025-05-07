@@ -20,7 +20,7 @@ import {
   useGovStore,
   useMintStore,
   useStakingStore,
-  useWalletStore
+  useWalletStore,
 } from '.';
 import { useBlockModule } from '@/modules/[chain]/block/block';
 import { hexToRgb, rgbToHsl } from '@/libs/utils';
@@ -41,10 +41,10 @@ export const useBlockchain = defineStore('blockchain', {
   },
   getters: {
     current(): ChainConfig | undefined {
-      const chain = this.dashboard.chains[this.chainName]
+      const chain = this.dashboard.chains[this.chainName];
       // update chain config with dynamic updated sdk version
-      const sdkversion = localStorage.getItem(`sdk_version_${this.chainName}`)
-      if(sdkversion && chain?.versions) {
+      const sdkversion = localStorage.getItem(`sdk_version_${this.chainName}`);
+      if (sdkversion && chain?.versions) {
         chain.versions.cosmosSdk = sdkversion;
       }
       return chain;
@@ -56,7 +56,7 @@ export const useBlockchain = defineStore('blockchain', {
       const cointype = this.current?.coinType || '118';
       return `m/44'/${cointype}/0'/0/0`;
     },
-    ledgerHDPath():string{
+    ledgerHDPath(): string {
       return `m/44'/118'/0'/0/0`;
     },
     dashboard() {
@@ -74,7 +74,7 @@ export const useBlockchain = defineStore('blockchain', {
         if (this.current?.themeColor) {
           const { color } = hexToRgb(this.current?.themeColor);
           const { h, s, l } = rgbToHsl(color);
-          const themeColor = h + ' ' + s + '% ' + l +'%';
+          const themeColor = h + ' ' + s + '% ' + l + '%';
           document.body.style.setProperty('--p', `${themeColor}`);
           // document.body.style.setProperty('--p', `${this.current?.themeColor}`);
         } else {
@@ -96,7 +96,12 @@ export const useBlockchain = defineStore('blockchain', {
               ) // filter none-custom module
               .map((x) => ({
                 title: `module.${x.meta.i18n}`,
-                to: { path: x.path==='/:chain'?'/': x.path.replace(':chain', this.chainName) },
+                to: {
+                  path:
+                    x.path === '/:chain'
+                      ? '/'
+                      : x.path.replace(':chain', this.chainName),
+                },
                 icon: { icon: 'mdi-chevron-right', size: '22' },
                 i18n: true,
                 order: Number(x.meta.order || 100),
@@ -139,23 +144,18 @@ export const useBlockchain = defineStore('blockchain', {
       useDistributionStore().initial();
     },
 
-    randomEndpoint(chainName: string) : Endpoint | undefined {
-      const end = localStorage.getItem(`endpoint-${chainName}`);
-      if (end) {
-        return JSON.parse(end);
-      } else {
-        const all = this.current?.endpoints?.rest;
-        if (all) {
-          const rn = Math.random();
-          const endpoint = all[Math.floor(rn * all.length)];
-          return endpoint
-        }
+    randomEndpoint(chainName: string): Endpoint | undefined {
+      const all = this.current?.endpoints?.rest;
+      if (all) {
+        const rn = Math.random();
+        const endpoint = all[Math.floor(rn * all.length)];
+        return endpoint;
       }
     },
 
     async randomSetupEndpoint() {
-      const endpoint = this.randomEndpoint(this.chainName)
-      if(endpoint) await this.setRestEndpoint(endpoint);
+      const endpoint = this.randomEndpoint(this.chainName);
+      if (endpoint) await this.setRestEndpoint(endpoint);
     },
 
     async setRestEndpoint(endpoint: Endpoint) {
@@ -169,7 +169,7 @@ export const useBlockchain = defineStore('blockchain', {
     },
     async setCurrent(name: string) {
       // Ensure chains are loaded due to asynchronous calls.
-      if(this.dashboard.length === 0) {
+      if (this.dashboard.length === 0) {
         await this.dashboard.initial();
       }
 
