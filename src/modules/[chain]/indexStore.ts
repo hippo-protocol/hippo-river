@@ -13,6 +13,8 @@ import type { Coin, Tally } from '@/types';
 import numeral from 'numeral';
 import { defineStore } from 'pinia';
 
+export const LOCKED_HP = 50000000000000000000000000;
+
 export function colorMap(color: string) {
   switch (color) {
     case 'yellow':
@@ -162,6 +164,11 @@ export const useIndexModule = defineStore('module-index', {
       const staking = useStakingStore();
       const mintStore = useMintStore();
       const formatter = useFormatter();
+      const totalSupply = bank.supply.amount;
+      const locked = LOCKED_HP;
+      const circulatingSupply = (
+        Number(totalSupply) - Number(locked)
+      ).toString();
 
       return [
         {
@@ -181,10 +188,20 @@ export const useIndexModule = defineStore('module-index', {
           change: 0,
         },
         {
-          title: 'Supply',
+          title: 'Total Supply',
           color: 'success',
           icon: 'mdi-currency-usd',
           stats: formatter.formatTokenAmount(bank.supply),
+          change: 0,
+        },
+        {
+          title: 'Circulating Supply',
+          color: 'success',
+          icon: 'mdi-currency-usd',
+          stats: formatter.formatTokenAmount({
+            amount: circulatingSupply,
+            denom: bank.supply.denom,
+          }),
           change: 0,
         },
         {
