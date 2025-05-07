@@ -22,7 +22,8 @@ const chainStore = useBlockchain();
 const mintStore = useMintStore();
 const store = useIndexModule();
 
-const avatars = ref({} as any);
+const avatarCache = localStorage.getItem('avatars');
+const avatars = ref(avatarCache ? JSON.parse(avatarCache) as any : {} as any);
 const latest = ref({} as Record<string, number>);
 const yesterday = ref({} as Record<string, number>);
 const tab = ref('active');
@@ -262,7 +263,9 @@ base.$subscribe((_, s) => {
   }
 });
 
-loadAvatars();
+setTimeout(() => {
+  loadAvatars();
+}, 1000)
 
 const refresh = () => {
   // refresh after delegate

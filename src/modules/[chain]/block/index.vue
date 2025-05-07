@@ -14,7 +14,9 @@ const base = useBaseStore();
 
 const format = useFormatter();
 const staking = useStakingStore();
-const avatars = ref({} as any);
+
+const avatarCache = localStorage.getItem('avatars');
+const avatars = ref(avatarCache ? JSON.parse(avatarCache) as any : {} as any);
 
 const list = computed(() => {
   return base.latestBlocks.block_metas || [];
@@ -89,6 +91,9 @@ watch(
         Number(latest.block.header.height) - pageSize,
         latest.block.header.height
       );
+    }
+    if (!localStorage.getItem('avatars')) {
+      loadAvatars();
     }
   }
 );
