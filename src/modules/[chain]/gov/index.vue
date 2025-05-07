@@ -54,7 +54,7 @@ const proposeCallback = () => {
         <a class="tab text-gray-400 uppercase" :class="{ 'tab-active': tab === '4' }" @click="changeTab('4')">{{
           $t('gov.rejected') }}</a>
       </div>
-      <label for='propose' class="btn btn-secondary btn-sm text-white uppercase"
+      <label for='propose' class="btn btn-secondary btn-sm text-black dark:text-white uppercase"
         @click="dialog.open('propose', {}, proposeCallback)">Propose</label>
     </div>
     <ProposalListItem :proposals="store?.proposals[tab]" :tab="tab" />

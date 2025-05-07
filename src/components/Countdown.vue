@@ -13,12 +13,8 @@ const isTransition = computed(() => {
 });
 </script>
 <template>
-  <Countdown
-    v-if="time"
-    :time="time > 0 ? time : 0"
-    v-slot="{ days, hours, minutes, seconds }"
-    class="countdown-container justify-items-center"
-  >
+  <Countdown v-if="time" :time="time > 0 ? time : 0" v-slot="{ days, hours, minutes, seconds }"
+    class="countdown-container justify-items-center">
     <span class="text-primary font-bold" :class="css">{{ days }}</span> days
     <span class="text-primary font-bold" :class="css">{{ hours }}</span> hours
     <span class="text-primary font-bold" :class="css">{{ minutes }}</span>
@@ -34,7 +30,7 @@ const isTransition = computed(() => {
         seconds
       }}</span>
     </span>
-    <span :class="isTransition && 'ml-5'"> seconds</span>
+    <span :class="isTransition && 'ml-5 md:ml-12'"> seconds</span>
   </Countdown>
 </template>
 
