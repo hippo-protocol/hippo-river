@@ -424,9 +424,6 @@ const refresh = () => {
                           {{ v.description?.moniker }}
                         </RouterLink>
                       </span>
-                      <span class="text-xs">{{
-                        v.description?.website || v.description?.identity || '-'
-                      }}</span>
                     </div>
                   </div>
                 </td>
