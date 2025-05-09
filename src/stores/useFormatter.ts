@@ -15,6 +15,7 @@ import type { Coin, DenomTrace } from '@/types';
 import { useDashboard } from './useDashboard';
 import type { Asset } from '@ping-pub/chain-registry-client/dist/types';
 import type { Validator } from '@/types';
+import BigNumber from 'bignumber.js';
 
 dayjs.extend(localeData);
 dayjs.extend(duration);
@@ -307,6 +308,25 @@ export const useFormatter = defineStore('formatter', {
     ): string {
       if (!tokens) return '';
       return tokens.map((x) => this.formatToken(x, withDenom, fmt)).join(', ');
+    },
+    // used to format ahp unit to hp, do not truncate decimal
+    formatHP(
+      tokens?: { denom: string; amount: string }[],
+      withDenom = true
+    ): string {
+      const token = tokens?.at(0);
+      const unit = 'HP';
+      if (!token || !token.amount || !token.denom) {
+        return '-';
+      }
+
+      let amount = new BigNumber(token.amount);
+
+      if (token.denom.toLowerCase() === 'ahp') {
+        amount = amount.dividedBy(new BigNumber(10).pow(18));
+      }
+
+      return withDenom ? `${amount.toFormat()} ${unit}` : amount.toFormat();
     },
     calculateBondedRatio(
       pool: { bonded_tokens: string; not_bonded_tokens: string } | undefined

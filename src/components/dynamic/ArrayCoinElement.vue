@@ -10,7 +10,7 @@ const format = useFormatter();
 </script>
 <template>
   <div>
-    {{ format.formatTokens(value, true, '0,0.[000000000000000000]') }}
+    {{ format.formatHP(value, true) }}
   </div>
 </template>
 <script lang="ts">
