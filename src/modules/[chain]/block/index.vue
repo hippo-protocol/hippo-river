@@ -24,8 +24,9 @@ const list = computed(() => {
 
 const pageSize = 20;
 const onPageChange = (page: number) => {
+  const minHeight = Number(base.latest.block.header.height) - page * pageSize;
   base.fetchBlocks(
-    Number(base.latest.block.header.height) - page * pageSize,
+    minHeight < 0 ? 0: minHeight,
     Number(base.latest.block.header.height) - (page - 1) * pageSize
   );
 };
