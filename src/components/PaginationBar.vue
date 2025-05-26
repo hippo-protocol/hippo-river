@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const props = defineProps({
     total: { type: String },
     limit: { type: Number },
     callback: { type: Function, required: true },
+    currentPage: { type: Number, default: 1 },
 });
 const current = ref(1)
 const showSize = 3
@@ -35,12 +36,19 @@ function gotoPage(pageNum: number) {
     props.callback(pageNum)
 }
 
+watch(() => { return props.currentPage }, (newPage) => {
+    if (!!newPage && newPage !== current.value) {
+        gotoPage(newPage);
+    }
+}, { immediate: true });
+
 </script>
 <template>
     <div class="my-5 text-center">
         <div v-if="total && limit" class="btn-group">
             <button v-for="{ page, color } in pages" :key="page"
-                class="btn bg-gray-100 text-gray-500 hover:text-white border-none dark:bg-gray-800 dark:text-white" :class="{
+                class="btn bg-gray-100 text-gray-500 hover:text-white border-none dark:bg-gray-800 dark:text-white"
+                :class="{
                     '!btn-primary': color === 'btn-primary',
                 }" @click="gotoPage(page)">
                 {{ page }}
