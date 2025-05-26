@@ -4,6 +4,7 @@ import { useBlockchain, useFormatter } from '@/stores';
 import { PageRequest, type AuthAccount, type Pagination } from '@/types';
 import { onMounted } from 'vue';
 import PaginationBar from '@/components/PaginationBar.vue';
+import router from '@/router';
 const props = defineProps(['chain']);
 
 const chainStore = useBlockchain()
@@ -12,9 +13,21 @@ const accounts = ref([] as AuthAccount[])
 const pageRequest = ref(new PageRequest())
 const pageResponse = ref({} as Pagination)
 const tab = ref('0')
+const page = ref(1)
 
 onMounted(() => {
-    pageload(1)
+    let currentPage: number;
+    if (!router.currentRoute.value.query.page) {
+        currentPage = 1
+    }
+    else {
+        currentPage = Number(router.currentRoute.value.query.page)
+        if (isNaN(currentPage) || currentPage < 1) {
+            currentPage = 1
+        }
+    }
+    pageload(currentPage)
+    page.value = currentPage
 });
 
 function pageload(p: number) {
@@ -22,6 +35,8 @@ function pageload(p: number) {
     chainStore.rpc.getAuthAccounts(pageRequest.value).then(x => {
         accounts.value = x.accounts
         pageResponse.value = x.pagination
+        router.replace(router.currentRoute.value.path + `?page=${p}`);
+        page.value = p
     });
 }
 
@@ -69,7 +84,8 @@ const changeTab = (_tab: string) => {
                 <td> 123 HP </td>
             </tr>
         </table>
-        <PaginationBar :limit="pageRequest.limit" :total="pageResponse.total" :callback="pageload" />
+        <PaginationBar :limit="pageRequest.limit" :total="pageResponse.total" :callback="pageload"
+            :current-page="page" />
     </div>
 </template>
 
