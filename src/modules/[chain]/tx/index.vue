@@ -82,7 +82,7 @@ const ellipsisHash = (tx: string) => {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in base.latestTxs" :index="index" class="hover">
+          <tr v-for="(item, index) in base.latestTxs" :key="item.hash" class="hover">
             <td class="text-sm text-primary">
               <RouterLink :to="`/${props.chain}/block/${item.height}`">{{
                 item.height
