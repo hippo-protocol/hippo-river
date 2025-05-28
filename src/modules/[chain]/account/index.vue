@@ -1,19 +1,21 @@
 <script lang="ts" setup>
 import { ref } from '@vue/reactivity';
-import { useBlockchain, useFormatter } from '@/stores';
-import { PageRequest, type AuthAccount, type Pagination } from '@/types';
+import { useBlockchain, useFormatter, useAccountStore } from '@/stores';
+import { type RichlistEntry } from '@/types';
 import { onMounted } from 'vue';
 import PaginationBar from '@/components/PaginationBar.vue';
 import router from '@/router';
+
 const props = defineProps(['chain']);
 
-const chainStore = useBlockchain()
+const formattter = useFormatter()
+const accountStore = useAccountStore()
 
-const accounts = ref([] as AuthAccount[])
-const pageRequest = ref(new PageRequest())
-const pageResponse = ref({} as Pagination)
+const accounts = ref([] as RichlistEntry[])
 const tab = ref('0')
 const page = ref(1)
+const pageSize = 20
+const total = ref('100')
 
 onMounted(() => {
     let currentPage: number;
@@ -27,37 +29,20 @@ onMounted(() => {
         }
     }
     pageload(currentPage)
-    page.value = currentPage
 });
 
 function pageload(p: number) {
-    pageRequest.value.setPage(p)
-    chainStore.rpc.getAuthAccounts(pageRequest.value).then(x => {
-        accounts.value = x.accounts
-        pageResponse.value = x.pagination
+    accountStore.getRichlist(p, pageSize).then(res => {
+        accounts.value = res
         router.replace(router.currentRoute.value.path + `?page=${p}`);
         page.value = p
     });
 }
 
-function findField(v: any, field: string) {
-    if (!v || Array.isArray(v) || typeof v === 'string') return null
-    const fields = Object.keys(v)
-    if (fields.includes(field)) {
-        return v[field]
-    }
-    for (let i = 0; i < fields.length; i++) {
-        const re: any = findField(v[fields[i]], field)
-        if (re) return re
-    }
-}
-function showAddress(v: any) {
-    return findField(v, 'address')
-}
-
 const changeTab = (_tab: string) => {
     tab.value = _tab
 }
+
 
 </script>
 <template>
@@ -76,16 +61,17 @@ const changeTab = (_tab: string) => {
                     <td>Amount</td>
                 </tr>
             </thead>
-            <tr v-for="acc in accounts">
-                <td># 1</td>
+            <tr v-for="(acc, index) in accounts">
+                <td># {{ index + 1 + (page - 1) * pageSize }}</td>
                 <td>
-                    <RouterLink :to="`/${chain}/account/${showAddress(acc)}`">{{ showAddress(acc) }}</RouterLink>
+                    <RouterLink :to="`/${chain}/account/${acc.address}`">{{ acc.address }}</RouterLink>
                 </td>
-                <td> 123 HP </td>
+                <td> {{ Number(acc.balance).toLocaleString(undefined, {
+                    maximumFractionDigits: 6,
+                }) }} HP </td>
             </tr>
         </table>
-        <PaginationBar :limit="pageRequest.limit" :total="pageResponse.total" :callback="pageload"
-            :current-page="page" />
+        <PaginationBar :limit="pageSize" :total="total" :callback="pageload" :current-page="page" />
     </div>
 </template>
 
