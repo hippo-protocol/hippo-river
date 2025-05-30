@@ -5,6 +5,7 @@ import TxsInBlocksChart from '@/components/charts/TxsInBlocksChart.vue';
 import { onMounted, watch } from 'vue';
 import PaginationBar from '@/components/PaginationBar.vue';
 import type { Validator } from '@/types';
+import router from '@/router';
 
 const props = defineProps(['chain']);
 
@@ -22,12 +23,18 @@ const list = computed(() => {
   return base.latestBlocks.block_metas || [];
 });
 
+const page = ref(1);
+
 const pageSize = 20;
-const onPageChange = (page: number) => {
-  const minHeight = Number(base.latest.block.header.height) - page * pageSize;
+const onPageChange = (_page: number) => {
+  const minHeight = Number(base.latest.block.header.height) - _page * pageSize;
   base.fetchBlocks(
-    minHeight < 0 ? 0: minHeight,
-    Number(base.latest.block.header.height) - (page - 1) * pageSize
+    minHeight < 0 ? 0 : minHeight,
+    Number(base.latest.block.header.height) - (_page - 1) * pageSize
+  );
+  page.value = _page;
+  router.replace(
+    router.currentRoute.value.path + `?page=${_page}`
   );
 };
 
@@ -88,10 +95,7 @@ watch(
   () => base.latest,
   (latest) => {
     if (latest && list.value.length === 0) {
-      base.fetchBlocks(
-        Number(latest.block.header.height) - pageSize,
-        latest.block.header.height
-      );
+      onPageChange(1)
     }
     if (!localStorage.getItem('avatars')) {
       loadAvatars();
@@ -101,10 +105,8 @@ watch(
 
 onMounted(() => {
   if (!base.latest.block) return;
-  base.fetchBlocks(
-    Number(base.latest.block.header.height) - pageSize,
-    base.latest.block.header.height
-  );
+  const currentPage = Number(router.currentRoute.value.query.page) || 1;
+  onPageChange(currentPage)
   loadAvatars();
 });
 
@@ -150,7 +152,8 @@ onMounted(() => {
             </span>
           </div>
         </RouterLink>
-        <PaginationBar :total="base.latest.block?.header.height" :limit="pageSize" :callback="onPageChange" />
+        <PaginationBar :total="base.latest.block?.header.height" :limit="pageSize" :callback="onPageChange"
+          :current-page="page" />
       </div>
     </div>
   </div>

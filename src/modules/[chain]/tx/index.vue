@@ -6,10 +6,12 @@ import { onMounted } from 'vue';
 import { fromBase64 } from '@cosmjs/encoding';
 import { decodeTxRaw } from '@cosmjs/proto-signing';
 import PaginationBar from '@/components/PaginationBar.vue';
+import router from '@/router';
 
 const props = defineProps(['chain']);
 const vueRouters = useRouter();
 const tab = ref('recent');
+const page = ref(1)
 
 const base = useBaseStore();
 const chainStore = useBlockchain();
@@ -24,7 +26,18 @@ onMounted(() => {
   );
   tab.value = currentTab;
   if (currentTab === 'recent') {
-    base.fetchTxs(1);
+    let currentPage: number;
+    if (!router.currentRoute.value.query.page) {
+      currentPage = 1
+    }
+    else {
+      currentPage = Number(router.currentRoute.value.query.page)
+      if (isNaN(currentPage) || currentPage < 1) {
+        currentPage = 1
+      }
+    }
+    page.value = currentPage
+    base.fetchTxs(currentPage);
   }
 });
 function search() {
@@ -32,11 +45,14 @@ function search() {
     vueRouters.push({ path: `/${current}/tx/${hash.value}` });
   }
 }
-const onPageChange=(page: number)=>{
-  base.fetchTxs(page);
+const onPageChange = (_page: number) => {
+  base.fetchTxs(_page).then(() => {
+    router.replace(router.currentRoute.value.path + `?page=${_page}`);
+    page.value = _page
+  });
 }
 const ellipsisHash = (tx: string) => {
-  return tx.slice(0,6) + '...' + tx.slice(tx.length - 6, tx.length);
+  return tx.slice(0, 6) + '...' + tx.slice(tx.length - 6, tx.length);
 };
 
 
@@ -44,18 +60,10 @@ const ellipsisHash = (tx: string) => {
 <template>
   <div>
     <div class="tabs tabs-boxed bg-transparent mb-4">
-      <a
-        class="tab text-gray-400 uppercase"
-        :class="{ 'tab-active': tab === 'recent' }"
-        @click="tab = 'recent'"
-        >{{ $t('block.recent') }}</a
-      >
-      <a
-        class="tab text-gray-400 uppercase"
-        :class="{ 'tab-active': tab === 'search' }"
-        @click="tab = 'search'"
-        >Search</a
-      >
+      <a class="tab text-gray-400 uppercase" :class="{ 'tab-active': tab === 'recent' }" @click="tab = 'recent'">{{
+        $t('block.recent') }}</a>
+      <a class="tab text-gray-400 uppercase" :class="{ 'tab-active': tab === 'search' }"
+        @click="tab = 'search'">Search</a>
     </div>
 
     <div v-show="tab === 'recent'" class="bg-base-100 rounded overflow-x-auto">
@@ -74,20 +82,16 @@ const ellipsisHash = (tx: string) => {
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="(item, index) in base.latestTxs"
-            :index="index"
-            class="hover"
-          >
+          <tr v-for="(item, index) in base.latestTxs" :key="item.hash" class="hover">
             <td class="text-sm text-primary">
               <RouterLink :to="`/${props.chain}/block/${item.height}`">{{
                 item.height
-              }}</RouterLink>
+                }}</RouterLink>
             </td>
-            <td class="truncate text-primary" >
+            <td class="truncate text-primary">
               <RouterLink :to="`/${props.chain}/tx/${item.hash}`">{{
                 ellipsisHash(item.hash)
-              }}</RouterLink>
+                }}</RouterLink>
             </td>
             <td>
               {{
@@ -96,10 +100,10 @@ const ellipsisHash = (tx: string) => {
             </td>
             <td class="truncate" style="max-width: 200px">
               {{
-                  decodeTxRaw(fromBase64(item.tx)).body.memo
-                
+                decodeTxRaw(fromBase64(item.tx)).body.memo
+
               }}
-              </td>
+            </td>
             <td>
               {{
                 format.formatTokens(
@@ -110,23 +114,14 @@ const ellipsisHash = (tx: string) => {
           </tr>
         </tbody>
       </table>
-      <PaginationBar
-          :total="base.txCount"
-          :limit="20"
-          :callback="onPageChange"
-        />
+      <PaginationBar :total="base.txCount" :limit="20" :callback="onPageChange" :current-page="page" />
     </div>
 
     <div v-show="tab === 'search'" class="bg-base-100 rounded overflow-x-auto">
       <div class="p-4">
         <div class="form-control">
-          <input
-            v-model="hash"
-            type="text"
-            class="input input-bordered"
-            placeholder="Search by Tx Hash"
-            @blur="search"
-          />
+          <input v-model="hash" type="text" class="input input-bordered" placeholder="Search by Tx Hash"
+            @blur="search" />
         </div>
       </div>
     </div>
