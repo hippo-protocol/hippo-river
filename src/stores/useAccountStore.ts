@@ -14,7 +14,7 @@ export const useAccountStore = defineStore('account', {
     async fetchRichlist(page: number, limit: number) {
       try {
         const response = await fetch(
-          `https://supply.hippoprotocol.ai/api/hp/richlist?limit=${limit}&offset=${
+          `https://supply.hippoprotocol.ai/api/hp/richlist?limit=${limit}&page=${
             page - 1
           }`
         );

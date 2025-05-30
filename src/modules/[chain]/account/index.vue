@@ -15,7 +15,8 @@ const accounts = ref([] as RichlistEntry[])
 const tab = ref('0')
 const page = ref(1)
 const pageSize = 20
-const total = ref('100')
+const maxSize = 1000
+const total = ref('0')
 
 onMounted(() => {
     let currentPage: number;
@@ -34,6 +35,7 @@ onMounted(() => {
 function pageload(p: number) {
     accountStore.getRichlist(p, pageSize).then(res => {
         accounts.value = res
+        total.value = Math.min(accountStore.total, maxSize).toString()
         router.replace(router.currentRoute.value.path + `?page=${p}`);
         page.value = p
     });
