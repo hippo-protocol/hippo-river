@@ -1,77 +1,87 @@
 <script lang="ts" setup>
-import { computed, ref } from '@vue/reactivity';
-import { useBaseStore, useBlockchain, useFormatter } from '@/stores';
-import { PageRequest, type AuthAccount, type Pagination } from '@/types';
+import { ref } from '@vue/reactivity';
+import { useBlockchain, useFormatter, useAccountStore } from '@/stores';
+import { type RichlistEntry } from '@/types';
 import { onMounted } from 'vue';
 import PaginationBar from '@/components/PaginationBar.vue';
+import router from '@/router';
+
 const props = defineProps(['chain']);
 
-const chainStore = useBlockchain()
+const formattter = useFormatter()
+const accountStore = useAccountStore()
 
-const accounts = ref([] as AuthAccount[])
-const pageRequest = ref(new PageRequest())
-const pageResponse = ref({} as Pagination)
+const accounts = ref([] as RichlistEntry[])
+const tab = ref('0')
+const page = ref(1)
+const pageSize = 20
+const maxSize = 1000
+const total = ref('0')
 
 onMounted(() => {
-  pageload(1)
+    let currentPage: number;
+    if (!router.currentRoute.value.query.page) {
+        currentPage = 1
+    }
+    else {
+        currentPage = Number(router.currentRoute.value.query.page)
+        if (isNaN(currentPage) || currentPage < 1) {
+            currentPage = 1
+        }
+    }
+    pageload(currentPage)
 });
 
 function pageload(p: number) {
-  pageRequest.value.setPage(p)
-  chainStore.rpc.getAuthAccounts(pageRequest.value).then(x => {
-    accounts.value = x.accounts
-    pageResponse.value = x.pagination
-  });
+    accountStore.getRichlist(p, pageSize).then(res => {
+        accounts.value = res
+        total.value = Math.min(accountStore.total, maxSize).toString()
+        router.replace(router.currentRoute.value.path + `?page=${p}`);
+        page.value = p
+    });
 }
 
-function showType(v: string) {
-    return v.replace("/cosmos.auth.v1beta1.", "")
+const changeTab = (_tab: string) => {
+    tab.value = _tab
 }
-function findField(v: any, field: string) {
-    if(!v || Array.isArray(v) || typeof v === 'string') return null
-    const fields = Object.keys(v)
-    if(fields.includes(field)) {
-        return v[field]
-    }
-    for(let i= 0; i < fields.length; i++) {
-        const re: any = findField(v[fields[i]], field)
-        if(re) return re
-    }
-}
-function showAddress(v: any) {
-    return findField(v, 'address')
-}
-function showAccountNumber(v: any) {
-    return findField(v, 'account_number')
-}
-function showSequence(v: any) {
-    return findField(v, 'sequence')
-}
-function showPubkey(v: any) {
-    return findField(v, 'pub_key')
-}
+
 
 </script>
 <template>
     <div class=" overflow-x-auto">
+        <div class="tabs tabs-boxed bg-transparent mb-4 text-center flex justify-between gap-4">
+            <div>
+                <a class="tab text-gray-400 uppercase" :class="{ 'tab-active': tab === '0' }"
+                    @click="changeTab('0')">Rich List</a>
+            </div>
+        </div>
         <table class="table table-compact">
             <thead>
                 <tr>
-                    <td>{{ $t('account.type') }}</td>
+                    <td>Rank</td>
                     <td>{{ $t('account.address') }}</td>
-                    <td>{{ $t('account.acc_num') }}</td>
-                    <td>{{ $t('account.sequence') }}</td>
-                    <td>{{ $t('account.pub_key') }}</td>
+                    <td>Amount</td>
                 </tr>
             </thead>
-            <tr v-for="acc in accounts">
-                <td>{{ showType(acc['@type']) }}</td>
-                <td><RouterLink :to="`/${chain}/account/${showAddress(acc)}`">{{ showAddress(acc) }}</RouterLink></td>
-                <td>{{ showAccountNumber(acc) }}</td>
-                <td>{{ showSequence(acc) }}</td>
-                <td>{{ showPubkey(acc) }}</td>
+            <tr v-for="(acc, index) in accounts">
+                <td># {{ index + 1 + (page - 1) * pageSize }}</td>
+                <td>
+                    <RouterLink :to="`/${chain}/account/${acc.address}`">{{ acc.address }}</RouterLink>
+                </td>
+                <td> {{ Number(acc.balance).toLocaleString(undefined, {
+                    maximumFractionDigits: 6,
+                }) }} HP </td>
             </tr>
         </table>
-        <PaginationBar :limit="pageRequest.limit" :total="pageResponse.total" :callback="pageload" />
+        <PaginationBar :limit="pageSize" :total="total" :callback="pageload" :current-page="page" />
     </div>
 </template>
+
+<route>
+    {
+      meta: {
+        i18n: 'account',
+        order: 6
+      }
+    }
+  </route>
