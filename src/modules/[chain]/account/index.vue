@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from '@vue/reactivity';
 import { useBlockchain, useFormatter, useAccountStore } from '@/stores';
-import { type RichlistEntry } from '@/types';
+import type { RichlistEntry } from '@/types';
 import { onMounted } from 'vue';
 import PaginationBar from '@/components/PaginationBar.vue';
 import router from '@/router';
