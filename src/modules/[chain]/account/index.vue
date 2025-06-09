@@ -56,14 +56,14 @@ const changeTab = (_tab: string) => {
             </div>
         </div>
         <table class="table table-compact">
-            <thead>
+            <thead class="bg-base-200">
                 <tr>
                     <td>Rank</td>
                     <td>{{ $t('account.address') }}</td>
                     <td>Amount</td>
                 </tr>
             </thead>
-            <tr v-for="(acc, index) in accounts">
+            <tr v-for="(acc, index) in accounts" class="bg-base-100 hover">
                 <td># {{ index + 1 + (page - 1) * pageSize }}</td>
                 <td>
                     <RouterLink :to="`/${chain}/account/${acc.address}`">{{ acc.address }}</RouterLink>
