@@ -153,6 +153,11 @@ export const useBlockchain = defineStore('blockchain', {
       }
     },
 
+    setRpc() {
+      const rpc = this.current?.endpoints?.rpc?.at(0);
+      this.rpc.endpointRpc = rpc?.address || '';
+    },
+
     async randomSetupEndpoint() {
       const endpoint = this.randomEndpoint(this.chainName);
       if (endpoint) await this.setRestEndpoint(endpoint);
@@ -162,6 +167,7 @@ export const useBlockchain = defineStore('blockchain', {
       this.connErr = '';
       this.endpoint = endpoint;
       this.rpc = CosmosRestClient.newStrategy(endpoint.address, this.current);
+      this.setRpc();
       localStorage.setItem(
         `endpoint-${this.chainName}`,
         JSON.stringify(endpoint)
