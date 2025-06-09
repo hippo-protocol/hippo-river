@@ -106,11 +106,16 @@ export const useBlockchain = defineStore('blockchain', {
                 i18n: true,
                 order: Number(x.meta.order || 100),
               }))
-              .sort((a, b) => a.order - b.order),
+              .sort((a, b) => a.order - b.order)
+              .filter(
+                (item) =>
+                  !window.location.hostname.includes('testnet') ||
+                  !item.title.includes('account')
+                // filter out account module on testnet
+              ),
           },
         ];
       }
-
       // combine all together
       return [
         ...currNavItem,
