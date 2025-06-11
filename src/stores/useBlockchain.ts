@@ -106,11 +106,16 @@ export const useBlockchain = defineStore('blockchain', {
                 i18n: true,
                 order: Number(x.meta.order || 100),
               }))
-              .sort((a, b) => a.order - b.order),
+              .sort((a, b) => a.order - b.order)
+              .filter(
+                (item) =>
+                  !window.location.hostname.includes('testnet') ||
+                  !item.title.includes('account')
+                // filter out account module on testnet
+              ),
           },
         ];
       }
-
       // combine all together
       return [
         ...currNavItem,
@@ -153,6 +158,11 @@ export const useBlockchain = defineStore('blockchain', {
       }
     },
 
+    setRpc() {
+      const rpc = this.current?.endpoints?.rpc?.at(0);
+      this.rpc.endpointRpc = rpc?.address || '';
+    },
+
     async randomSetupEndpoint() {
       const endpoint = this.randomEndpoint(this.chainName);
       if (endpoint) await this.setRestEndpoint(endpoint);
@@ -162,6 +172,7 @@ export const useBlockchain = defineStore('blockchain', {
       this.connErr = '';
       this.endpoint = endpoint;
       this.rpc = CosmosRestClient.newStrategy(endpoint.address, this.current);
+      this.setRpc();
       localStorage.setItem(
         `endpoint-${this.chainName}`,
         JSON.stringify(endpoint)
