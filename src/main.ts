@@ -1,4 +1,5 @@
 // import 'ping-widget';
+import '@/libs/initFirebase';
 import App from '@/App.vue';
 import i18n from '@/plugins/i18n';
 import '@/style.css';
