@@ -92,9 +92,6 @@ function loadAccount(address: string) {
   blockchain.rpc.getAuthAccount(address).then((x) => {
     account.value = x.account;
   });
-  blockchain.rpc.getTxsBySender(address).then((x) => {
-    txs.value = x.tx_responses;
-  });
   blockchain.rpc.getDistributionDelegatorRewards(address).then((x) => {
     rewards.value = x;
   });
@@ -113,9 +110,14 @@ function loadAccount(address: string) {
     });
   });
 
-  const receivedQuery =  `?&pagination.reverse=true&events=coin_received.receiver='${address}'&pagination.limit=5`;
+  const txsQuery =  `?order_by=ORDER_BY_DESC&events=message.sender='${address}'`;
+  blockchain.rpc.getTxs(txsQuery, {}).then((x) => {
+    txs.value = x.tx_responses
+  });
+
+  const receivedQuery =  `?order_by=ORDER_BY_DESC&events=coin_received.receiver='${address}'`;
   blockchain.rpc.getTxs(receivedQuery, {}).then((x) => {
-    recentReceived.value = x.tx_responses;
+    recentReceived.value = x.tx_responses
   });
 }
 
