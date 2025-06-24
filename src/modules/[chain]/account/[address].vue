@@ -112,12 +112,12 @@ function loadAccount(address: string) {
 
   const txsQuery =  `?order_by=ORDER_BY_DESC&events=message.sender='${address}'`;
   blockchain.rpc.getTxs(txsQuery, {}).then((x) => {
-    txs.value = x.tx_responses
+    txs.value = x.tx_responses;
   });
 
   const receivedQuery =  `?order_by=ORDER_BY_DESC&events=coin_received.receiver='${address}'`;
   blockchain.rpc.getTxs(receivedQuery, {}).then((x) => {
-    recentReceived.value = x.tx_responses
+    recentReceived.value = x.tx_responses;
   });
 }
 
