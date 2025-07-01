@@ -1,5 +1,5 @@
 {
-  "chain_name": "hippo-protocol",
+  "chain_name": "hippoprotocoltestnet",
   "api": ["https://api.testnet.hippo-protocol.com"],
   "rpc": ["https://rpc.testnet.hippo-protocol.com"],
   "snapshot_provider": "",
