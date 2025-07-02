@@ -4,6 +4,7 @@ import {
   type ChainConfig,
   type Endpoint,
   EndpointType,
+  NetworkType,
 } from './useDashboard';
 import type {
   NavGroup,
@@ -30,7 +31,7 @@ export const useBlockchain = defineStore('blockchain', {
     return {
       status: {} as Record<string, string>,
       rest: '',
-      chainName: 'hippo-protocol',
+      chainName: 'hippoprotocol',
       endpoint: {} as {
         type?: EndpointType;
         address: string;
@@ -183,8 +184,11 @@ export const useBlockchain = defineStore('blockchain', {
       if (this.dashboard.length === 0) {
         await this.dashboard.initial();
       }
-
-      this.chainName = 'hippo-protocol';
+      if (this.dashboard.networkType === NetworkType.Mainnet) {
+        this.chainName = 'hippoprotocol';
+      } else {
+        this.chainName = 'hippoprotocoltestnet';
+      }
     },
     supportModule(mod: string) {
       return !this.current?.features || this.current.features.includes(mod);
