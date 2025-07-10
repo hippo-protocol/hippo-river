@@ -1,18 +1,16 @@
 <script lang="ts" setup>
 import { Icon } from '@iconify/vue';
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 // Components
 import newFooter from '@/layouts/components/NavFooter.vue';
 import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue';
 import NavbarSearch from '@/layouts/components/NavbarSearch.vue';
 import ChainProfile from '@/layouts/components/ChainProfile.vue';
-import Sponsors from '@/layouts/components/Sponsors.vue';
 
-import { NetworkType, useDashboard } from '@/stores/useDashboard';
+import { useDashboard } from '@/stores/useDashboard';
 import { useBaseStore, useBlockchain } from '@/stores';
 
-import NavBarI18n from './NavBarI18n.vue';
 import NavBarWallet from './NavBarWallet.vue';
 import type { NavGroup, NavLink, NavSectionTitle, VerticalNavItems } from '../types';
 import dayjs from 'dayjs';
@@ -44,16 +42,12 @@ const changeOpen = (index: Number) => {
     sidebarOpen.value = !sidebarOpen.value;
   }
 };
-const showDiscord = window.location.host.search('ping.pub') > -1;
 
 function isNavGroup(nav: VerticalNavItems | any): nav is NavGroup {
   return (<NavGroup>nav).children !== undefined;
 }
 function isNavLink(nav: VerticalNavItems | any): nav is NavLink {
   return (<NavLink>nav).to !== undefined;
-}
-function isNavTitle(nav: VerticalNavItems | any): nav is NavSectionTitle {
-  return (<NavSectionTitle>nav).heading !== undefined;
 }
 function selected(route: any, nav: NavLink) {
   const b = route.path === nav.to?.path || route.path.startsWith(nav.to?.path) && nav.title.indexOf('dashboard') === -1
@@ -68,19 +62,43 @@ const behind = computed(() => {
   return blocktime.value.isBefore(current)
 });
 
-dayjs()
+const theme = computed(() => {
+  return baseStore.theme;
+});
 
+const changeMode = (val?: 'dark' | 'light') => {
+  let value: 'dark' | 'light' = 'dark';
+  const currentValue: 'dark' | 'light' = val || theme.value;
+  if (currentValue === 'dark') {
+    value = 'light';
+  }
+  if (value === 'light') {
+    document.documentElement.classList.add('light');
+    document.documentElement.classList.remove('dark');
+  } else {
+    document.documentElement.classList.add('dark');
+    document.documentElement.classList.remove('light');
+  }
+  document.documentElement.setAttribute('data-theme', value);
+  window.localStorage.setItem('theme', value);
+  baseStore.theme = value;
+};
+
+onMounted(() => {
+  // Original code from NavbarThemeSwitcher.vue
+  changeMode(theme.value === 'light' ? 'dark' : 'light');
+});
+
+dayjs()
 </script>
 
 <template>
-  <div class="bg-gray-100 dark:bg-[#171d30]">
+  <div class="bg-black">
     <!-- sidebar -->
-    <div
-      class="w-64 fixed z-50 left-0 top-0 bottom-0 overflow-auto bg-base-100 border-r border-gray-100 dark:border-gray-700"
+    <div class="w-64 fixed z-50 left-0 top-0 bottom-0 overflow-auto border-r border-bg"
       :class="{ block: sidebarShow, 'hidden xl:!block': !sidebarShow }">
-      <div class="flex justify-between mt-1 pl-4 py-4 mb-1">
+      <div class="flex justify-center py-[12px] px-[40px] h-[70px] border-b border-bg">
         <RouterLink to="/" class="flex items-center">
-          <img class="w-10 h-10" src="/hipporiver.png" />
           <h1 class="flex-1 ml-3 text-2xl font-semibold dark:text-white">
             Hippo River
           </h1>
@@ -111,11 +129,10 @@ dayjs()
             </div>
           </div>
           <div class="collapse-content">
-            <div v-for="(el, key) of item?.children" class="menu bg-base-100 w-full !p-0">
+            <div v-for="(el, key) of item?.children" class="menu bg-black w-full !p-0">
               <RouterLink v-if="isNavLink(el)" @click="sidebarShow = false"
-                class="hover:bg-gray-100 dark:hover:bg-[#373f59] rounded cursor-pointer px-3 py-2 flex items-center"
-                :class="{
-                  '!bg-primary': selected($route, el),
+                class="hover:bg-gray-100 dark:hover:bg-[#373f59] cursor-pointer px-3 py-2 flex items-center" :class="{
+                  'border-r-[6px] border-primary bg-[linear-gradient(90deg,rgba(26,33,30,0.5),rgba(16,223,137,0.25))]': selected($route, el),
                 }" :to="el.to">
                 <Icon v-if="!el?.icon?.image" icon="mdi:chevron-right" class="mr-2 ml-3" :class="{
                   'text-white':
@@ -132,33 +149,13 @@ dayjs()
                 </div>
               </RouterLink>
             </div>
-            <!-- <div v-if="index === 0 && dashboard.networkType === NetworkType.Testnet" class="menu bg-base-100 w-full !p-0">
-              <RouterLink 
-              class="hover:bg-gray-100 dark:hover:bg-[#373f59] rounded cursor-pointer px-3 py-2 flex items-center"
-              :to="`/${blockchain.chainName}/faucet`">
-                <Icon
-                  icon="mdi:chevron-right"
-                  class="mr-2 ml-3"
-                  ></Icon>
-                <div
-                  class="text-base capitalize text-gray-500 dark:text-gray-300"
-                >
-                  Faucet
-                </div>
-                <div
-                  class="badge badge-sm text-white border-none badge-error ml-auto" 
-                >
-                  New
-                </div>
-              </RouterLink>
-            </div> -->
           </div>
         </div>
       </div>
     </div>
-    <div class="xl:!ml-64 px-3 pt-4">
+    <div class="xl:!ml-64 ">
       <!-- header -->
-      <div class="flex items-center py-3 bg-base-100 mb-4 rounded px-4 sticky top-0 z-10">
+      <div class="flex items-center py-[15px] px-[60px] bg-black border-b border-bg rounded sticky top-0 z-10">
         <div class="text-2xl pr-3 cursor-pointer xl:!hidden" @click="sidebarShow = true">
           <Icon icon="mdi-menu" />
         </div>
@@ -167,7 +164,6 @@ dayjs()
 
         <div class="flex-1 w-0"></div>
 
-        <NavbarThemeSwitcher class="!inline-block" />
         <NavbarSearch class="!inline-block" />
         <NavBarWallet />
       </div>

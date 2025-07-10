@@ -13,13 +13,11 @@ export const useBaseStore = defineStore('baseStore', {
       earlest: {} as Block,
       latest: {} as Block,
       recents: [] as Block[],
-      theme: (window.localStorage.getItem('theme') || 'dark') as
-        | 'light'
-        | 'dark',
+      theme: 'dark' as 'dark' | 'light',
       connected: true,
       latestBlocks: {} as BlocksByHeight,
       latestTxs: [] as Transaction[],
-      txCount: "0",
+      txCount: '0',
     };
   },
   getters: {
@@ -131,13 +129,12 @@ export const useBaseStore = defineStore('baseStore', {
         this.latestBlocks = res.result;
       }
     },
-    async fetchTxs(page: number){
-      const res= await this.blockchain.rpc.getTxsByPage(page);
-      if(res.result){
+    async fetchTxs(page: number) {
+      const res = await this.blockchain.rpc.getTxsByPage(page);
+      if (res.result) {
         this.latestTxs = res.result.txs;
         this.txCount = res.result.total_count;
       }
-
-    }
+    },
   },
 });
