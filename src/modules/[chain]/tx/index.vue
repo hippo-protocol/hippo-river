@@ -107,7 +107,7 @@ const ellipsisHash = (tx: string) => {
             <td>
               {{
                 format.formatTokens(
-                  decodeTxRaw(fromBase64(item.tx)).authInfo.fee?.amount
+                  decodeTxRaw(fromBase64(item.tx)).authInfo.fee?.amount, true, '0.00a'
                 )
               }}
             </td>
