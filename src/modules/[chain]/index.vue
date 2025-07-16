@@ -79,7 +79,7 @@ const comLinks = [
     icon: 'mdi-github',
     href: 'https://github.com/hippo-protocol',
   },
-  
+
   {
     name: 'Medium',
     icon: 'mdi-medium',
@@ -153,8 +153,7 @@ const amount = computed({
           </div>
 
           <div class="my-4 flex flex-wrap items-center">
-            <a v-for="(item, index) of comLinks" :key="index" :href="item.href"
-              target="_blank"
+            <a v-for="(item, index) of comLinks" :key="index" :href="item.href" target="_blank"
               class="link link-primary px-2 py-1 rounded-sm no-underline hover:text-primary hover:bg-gray-100 dark:hover:bg-slate-800 flex items-center">
               <Icon :icon="item?.icon" />
               <span class="ml-1 text-sm uppercase">{{ item?.name }}</span>
@@ -390,7 +389,7 @@ const amount = computed({
               <td>
                 <div>
                   <label for="delegate" class="btn !btn-xs !btn-primary btn-ghost rounded-sm mr-2"
-                    @click="dialog.open('delegate', { validator_address: item.delegation.validator_address, fees:{amount:'1500000000000000000', denom:'ahp' } }, updateState)">
+                    @click="dialog.open('delegate', { validator_address: item.delegation.validator_address, fees: { amount: '150000000000000000', denom: 'ahp' } }, updateState)">
                     {{ $t('account.btn_delegate') }}
                   </label>
                   <label for="unbond" class="btn !btn-xs !btn-primary btn-ghost rounded-sm" @click="
@@ -398,7 +397,7 @@ const amount = computed({
                       'unbond',
                       {
                         validator_address: item.delegation.validator_address,
-                        fees:{amount:'1500000000000000000', denom:'ahp' }
+                        fees: { amount: '150000000000000000', denom: 'ahp' }
                       },
                       updateState
                     )
@@ -415,7 +414,8 @@ const amount = computed({
         <label for="send" class="btn !bg-yes !border-yes text-white" @click="dialog.open('send', {}, updateState)">{{
           $t('account.btn_send') }}</label>
         <label for="delegate" class="btn !bg-info !border-info text-white"
-          @click="dialog.open('delegate', {fees:{amount:'1500000000000000000', denom:'ahp' }}, updateState)">{{ $t('account.btn_delegate') }}</label>
+          @click="dialog.open('delegate', { fees: { amount: '150000000000000000', denom: 'ahp' } }, updateState)">{{
+            $t('account.btn_delegate') }}</label>
         <label for="withdraw" class="btn !bg-lime-500 !border-info text-white"
           @click="dialog.open('withdraw', {}, updateState)">{{ $t('index.btn_withdraw_reward') }}</label>
         <RouterLink to="/wallet/receive" class="btn !bg-info !border-info text-white hidden">{{ $t('index.receive') }}

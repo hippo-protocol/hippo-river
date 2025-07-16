@@ -479,7 +479,7 @@ const refresh = () => {
                   <label v-else for="delegate" class="btn btn-xs btn-primary rounded-sm capitalize" @click="
                     dialog.open('delegate', {
                       validator_address: v.operator_address,
-                      fees: { amount: '1500000000000000000', denom: 'ahp' }
+                      fees: { amount: '150000000000000000', denom: 'ahp' }
                     }, refresh)
                     ">{{ $t('account.btn_delegate') }}</label>
                 </td>
