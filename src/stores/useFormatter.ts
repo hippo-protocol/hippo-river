@@ -44,7 +44,40 @@ export const useFormatter = defineStore('formatter', {
   state: () => {
     return {
       ibcDenoms: {} as Record<string, DenomTrace>,
-      ibcMetadata: {} as Record<string, Asset>,
+      ibcMetadata: {
+        '6C9D4572489D0C80E14D39C8D0075CE0BBB0779FD582374448E96DB293325643': {
+          base: 'ibc/6C9D4572489D0C80E14D39C8D0075CE0BBB0779FD582374448E96DB293325643',
+          name: 'Tether USD',
+          display: 'usdt',
+          symbol: 'USDT',
+          denom_units: [
+            {
+              denom: 'ibc/6C9D4572489D0C80E14D39C8D0075CE0BBB0779FD582374448E96DB293325643',
+              exponent: 0,
+            },
+            {
+              denom: 'usdt',
+              exponent: 6,
+            },
+          ]
+        },
+        "F5FABF52B54E65064B57BF6DBD8E5FAD22CEE9F4B8A57ADBB20CCD0173AA72A4":{
+          base: 'ibc/F5FABF52B54E65064B57BF6DBD8E5FAD22CEE9F4B8A57ADBB20CCD0173AA72A4',
+          name: 'USD Coin',
+          display: 'usdc',
+          symbol: 'USDC',
+          denom_units: [
+            {
+              denom: 'ibc/F5FABF52B54E65064B57BF6DBD8E5FAD22CEE9F4B8A57ADBB20CCD0173AA72A4',
+              exponent: 0,
+            },
+            {
+              denom: 'usdc',
+              exponent: 6,
+            },
+          ]
+        }
+      } as Record<string, Asset>,
       loading: [] as string[],
     };
   },
@@ -223,9 +256,9 @@ export const useFormatter = defineStore('formatter', {
         let conf =
           mode === 'local'
             ? this.blockchain.current?.assets?.find(
-                // @ts-ignore
-                (x) => x.base === token.denom || x.base.denom === token.denom
-              )
+              // @ts-ignore
+              (x) => x.base === token.denom || x.base.denom === token.denom
+            )
             : this.findGlobalAssetConfig(token.denom);
 
         if (denom && denom.startsWith('ibc/')) {
@@ -264,9 +297,9 @@ export const useFormatter = defineStore('formatter', {
         let conf =
           mode === 'local'
             ? this.blockchain.current?.assets?.find(
-                // @ts-ignore
-                (x) => x.base === token.denom || x.base.denom === token.denom
-              )
+              // @ts-ignore
+              (x) => x.base === token.denom || x.base.denom === token.denom
+            )
             : this.findGlobalAssetConfig(token.denom);
 
         if (denom && denom.startsWith('ibc/')) {
@@ -295,9 +328,8 @@ export const useFormatter = defineStore('formatter', {
         if (amount < 0.01) {
           fmt = '0.[000000]';
         }
-        return `${numeral(amount).format(fmt)} ${
-          withDenom ? denom.substring(0, 10) : ''
-        }`;
+        return `${numeral(amount).format(fmt)} ${withDenom ? denom.substring(0, 10) : ''
+          }`;
       }
       return '-';
     },

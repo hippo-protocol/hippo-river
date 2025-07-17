@@ -283,7 +283,7 @@ function mapDelegators(messages: any[]) {
               <label for="delegate" class="btn btn-primary btn-sm w-full" @click="
                 dialog.open('delegate', {
                   validator_address: v.operator_address,
-                  fees: { amount: '1500000000000000000', denom: 'ahp' }
+                  fees: { amount: '150000000000000000', denom: 'ahp' }
                 })
                 ">{{ $t('account.btn_delegate') }}</label>
             </div>
