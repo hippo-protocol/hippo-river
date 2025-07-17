@@ -3,6 +3,7 @@ import { useRoute } from 'vue-router'
 import { useBaseStore, useBlockchain, useWalletStore } from '@/stores';
 import { Icon } from '@iconify/vue';
 import { ref, computed } from 'vue';
+import WalletIcon from '@/icons/WalletIcon.vue';
 
 const route = useRoute();
 const walletStore = useWalletStore();
@@ -39,7 +40,7 @@ const params = computed(() => {
   if (chainStore.chainName == 'side') {
     return JSON.stringify({
       wallet: ['okex', 'unisat'],
-   });
+    });
   }
   return "";
 });
@@ -48,9 +49,11 @@ const params = computed(() => {
 
 <template>
   <div class="dropdown dropdown-hover dropdown-end">
-    <label tabindex="0" class="btn btn-sm btn-primary m-1 lowercase truncate !inline-flex text-xs md:!text-sm">
-      <Icon icon="mdi:wallet" />
-      <span class="ml-1 hidden md:block">
+    <label tabindex="0"
+      class="btn w-[112px] truncate !inline-flex text-xs md:!text-sm border-[#19181C] bg-gra-dark-button rounded-[32px]"
+      :class="walletStore.shortAddress ? 'lowercase' : 'capitalize'">
+      <WalletIcon :size="'20'" />
+      <span class="ml-1 hidden md:block text-white">
         {{ walletStore.shortAddress || 'Wallet' }}</span>
     </label>
     <div tabindex="0" class="dropdown-content menu shadow p-2 bg-base-100 rounded w-52 md:!w-64 overflow-auto">
@@ -97,7 +100,7 @@ const params = computed(() => {
   <Teleport to="body">
     <ping-connect-wallet :chain-id="baseStore.currentChainId || 'cosmoshub-4'" :hd-path="chainStore.defaultHDPath"
       :addr-prefix="chainStore.current?.bech32Prefix || 'cosmos'" @connect="walletStateChange"
-      @keplr-config="walletStore.suggestChain()"  :params="params" />
+      @keplr-config="walletStore.suggestChain()" :params="params" />
   </Teleport>
 </template>
 

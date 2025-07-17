@@ -14,6 +14,7 @@ import { useBaseStore, useBlockchain } from '@/stores';
 import NavBarWallet from './NavBarWallet.vue';
 import type { NavGroup, NavLink, NavSectionTitle, VerticalNavItems } from '../types';
 import dayjs from 'dayjs';
+import LanguageIcon from '@/icons/LanguageIcon.vue';
 
 const dashboard = useDashboard();
 dashboard.initial();
@@ -114,14 +115,12 @@ dayjs()
           'collapse-close': index === 0 && !sidebarOpen,
         }">
           <input v-if="index > 0" type="checkbox" class="cursor-pointer !h-10 block" @click="changeOpen(index)" />
-          <div
-            class="collapse-title !py-0 px-4 flex items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-[#373f59]">
+          <div class="collapse-titleflex items-center cursor-pointer pt-[24px]">
             <Icon v-if="item?.icon?.icon" :icon="item?.icon?.icon" class="text-xl mr-2" :class="{
               'text-yellow-500': item?.title === 'Favorite',
               'text-blue-500': item?.title !== 'Favorite',
             }" />
-            <img v-if="item?.icon?.image" :src="item?.icon?.image" class="w-6 h-6 rounded-full mr-3" />
-            <div class="text-base capitalize flex-1 text-gray-700 dark:text-gray-200 whitespace-nowrap">
+            <div class="text-base capitalize flex-1 text-gray30 whitespace-nowrap px-[40px] py-[4px]">
               Hippo Protocol
             </div>
             <div v-if="item?.badgeContent" class="mr-6 badge badge-sm text-white border-none" :class="item?.badgeClass">
@@ -134,18 +133,11 @@ dayjs()
                 class="hover:bg-gray-100 dark:hover:bg-[#373f59] cursor-pointer px-3 py-2 flex items-center" :class="{
                   'border-r-[6px] border-primary bg-[linear-gradient(90deg,rgba(26,33,30,0.5),rgba(16,223,137,0.25))]': selected($route, el),
                 }" :to="el.to">
-                <Icon v-if="!el?.icon?.image" icon="mdi:chevron-right" class="mr-2 ml-3" :class="{
-                  'text-white':
-                    $route.path === el?.to?.path &&
-                    item?.title !== 'Favorite',
-                }" />
-                <img v-if="el?.icon?.image" :src="el?.icon?.image" class="w-6 h-6 rounded-full mr-3 ml-4 " :class="{
-                  'border border-gray-300 bg-white': selected($route, el),
-                }" />
+                <img v-if="el?.icon?.image" :src="el?.icon?.image" class="w-6 h-6 rounded-full mr-3 ml-4 " />
                 <div class="text-base capitalize text-gray-500 dark:text-gray-300" :class="{
                   '!text-white': selected($route, el),
                 }">
-                  {{ item?.title === 'Favorite' ? el?.title : $t(el?.title) }}
+                  {{ $t(el?.title) }}
                 </div>
               </RouterLink>
             </div>
@@ -155,7 +147,7 @@ dayjs()
     </div>
     <div class="xl:!ml-64 ">
       <!-- header -->
-      <div class="flex items-center py-[15px] px-[60px] bg-black border-b border-bg rounded sticky top-0 z-10">
+      <div class="flex items-center py-[15px] px-[60px] bg-black border-b border-bg rounded sticky top-0 z-10 h-[70px]">
         <div class="text-2xl pr-3 cursor-pointer xl:!hidden" @click="sidebarShow = true">
           <Icon icon="mdi-menu" />
         </div>
@@ -166,6 +158,11 @@ dayjs()
 
         <NavbarSearch class="!inline-block" />
         <NavBarWallet />
+        <button
+          class="btn btn-ghost px-[16px] py-[2px] flex items-center gap-[8px] justify-center border-[#19181C] bg-gra-dark-button rounded-[32px]">
+          <LanguageIcon :size="'20'" />
+          <span class="text-white">EN</span>
+        </button>
       </div>
 
       <!-- 👉 Pages -->
@@ -186,8 +183,6 @@ dayjs()
           </Transition>
         </RouterView>
       </div>
-
-      <newFooter />
     </div>
   </div>
 </template>

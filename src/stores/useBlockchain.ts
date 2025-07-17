@@ -103,7 +103,10 @@ export const useBlockchain = defineStore('blockchain', {
                       ? '/'
                       : x.path.replace(':chain', this.chainName),
                 },
-                icon: { icon: 'mdi-chevron-right', size: '22' },
+                icon: {
+                  image: `src/assets/images/svg/${x.meta.i18n}.svg`,
+                  size: '24',
+                },
                 i18n: true,
                 order: Number(x.meta.order || 100),
               }))
@@ -117,6 +120,7 @@ export const useBlockchain = defineStore('blockchain', {
           },
         ];
       }
+      console.info(currNavItem);
       // combine all together
       return [
         ...currNavItem,
