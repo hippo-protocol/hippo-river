@@ -62,7 +62,7 @@ function confirm() {
 <template>
   <div>
     <button
-      class="btn btn-ghost w-[280px] h-[40px] px-[16px] py-[10px] flex items-center gap-[12px] bg-[#0e0f11] justify-start"
+      class="btn btn-ghost w-[280px] h-[40px] px-[16px] py-[10px] flex items-center gap-[12px] !bg-[#0e0f11] !justify-start"
       @click="openSearchModal">
       <Icon icon="mdi:magnify" class="text-2xl text-gray-500 dark:text-gray-400 shrink-0 w-[20px] h-[20px]" />
       <span class="capitalize">Search</span>

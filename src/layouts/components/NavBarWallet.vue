@@ -50,10 +50,10 @@ const params = computed(() => {
 <template>
   <div class="dropdown dropdown-hover dropdown-end">
     <label tabindex="0"
-      class="btn w-[112px] truncate !inline-flex text-xs md:!text-sm border-[#19181C] bg-gra-dark-button rounded-[32px]"
+      class="btn w-[112px] truncate !inline-flex text-xs md:!text-sm border-[#19181C] bg-gra-dark-button !rounded-[32px]"
       :class="walletStore.shortAddress ? 'lowercase' : 'capitalize'">
       <WalletIcon :size="'20'" />
-      <span class="ml-1 hidden md:block text-white">
+      <span class="ml-1 md:block text-white">
         {{ walletStore.shortAddress || 'Wallet' }}</span>
     </label>
     <div tabindex="0" class="dropdown-content menu shadow p-2 bg-base-100 rounded w-52 md:!w-64 overflow-auto">
