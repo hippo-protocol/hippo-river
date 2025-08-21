@@ -4,6 +4,7 @@ import ProposalListItem from '@/components/ProposalListItem.vue';
 import { ref, onMounted } from 'vue';
 import PaginationBar from '@/components/PaginationBar.vue';
 import { PageRequest } from '@/types';
+import ActiveProposals from '@/components/ActiveProposals.vue';
 
 const tab = ref('0');
 const store = useGovStore();
@@ -42,6 +43,7 @@ const proposeCallback = () => {
 </script>
 <template>
   <div>
+    <ActiveProposals type="gov"/>
     <div class="tabs tabs-boxed bg-transparent mb-4 text-center flex justify-between gap-4">
       <div>
         <a class="tab text-gray-400 uppercase" :class="{ 'tab-active': tab === '0' }" @click="changeTab('0')">ALL</a>
