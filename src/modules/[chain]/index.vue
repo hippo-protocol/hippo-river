@@ -361,9 +361,9 @@ function changeChart(type: string) {
               </div>
               <ProposalProcess :pool="staking.pool" :tally="proposal.final_tally_result" />
             </div>
-            <RouterLink :to="`/${chain}/gov/${proposal.proposal_id}`"
+            <RouterLink :to="`/${blockchain.chainName}/gov/${proposal.proposal_id}`"
               class="text-[14px] text-white text-bold px-[10px] py-[12px] h-[40px] flex items-center justify-center gap-[2px] rounded-[12px] bg-[#10DF89]">
-              Vote<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+              Vote&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
                 <path d="M6.33333 1L10.5 6M10.5 6L6.33333 11M10.5 6L0.5 6" stroke="white" stroke-width="2" />
               </svg>
             </RouterLink>
@@ -375,47 +375,53 @@ function changeChart(type: string) {
       </div>
     </div>
 
-    <div class="bg-black rounded mt-4 ">
-      <div class="flex justify-between px-4 pt-4 pb-2 text-lg font-semibold text-main">
+    <div class="bg-black rounded shadow px-[40px] py-[48px] flex flex-col gap-[16px] border-t border-[#2C3443]">
+      <div class="flex justify-between text-[21px] font-bold text-main">
         <span class="truncate">{{ walletStore.currentAddress || 'Not Connected' }}</span>
-        <RouterLink v-if="walletStore.currentAddress"
-          class="float-right text-sm cursor-pointert link link-primary no-underline font-medium"
-          :to="`/${chain}/account/${walletStore.currentAddress}`">{{ $t('index.more') }}</RouterLink>
+        <label v-if="!walletStore.currentAddress" class="flex items-center gap-[8px] cursor-pointer"
+          for="PingConnectWallet">
+          <span class="text-[12px] font-normal">Connect Wallet</span>
+          <div class="w-[28px] h-[28px] p-[4px] flex items-center justify-center rounded-[32px] bg-white">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M5.83333 1L10 6M10 6L5.83333 11M10 6L0 6" stroke="black" stroke-width="2" />
+            </svg>
+          </div>
+        </label>
       </div>
-      <div class="grid grid-cols-1 md:!grid-cols-2 auto-cols-auto gap-4 px-[40px] pb-[48px]">
+      <div class="grid grid-cols-1 md:!grid-cols-2 auto-cols-auto gap-4">
         <div class="bg-gra-dark rounded-[32px] px-[32px] py-[20px]">
           <div class="text-sm mb-1">{{ $t('account.balance') }}</div>
-          <div class="text-lg font-semibold text-main">
+          <div class="text-lg font-semibold text-main text-right">
             {{ format.formatToken(walletStore.balanceOfStakingToken) }}
           </div>
-          <div class="text-sm" :class="color">
+          <div class="text-sm text-right" :class="color">
             ${{ format.tokenValue(walletStore.balanceOfStakingToken) }}
           </div>
         </div>
         <div class="bg-gra-dark rounded-[32px] px-[32px] py-[20px]">
           <div class="text-sm mb-1">{{ $t('module.staking') }}</div>
-          <div class="text-lg font-semibold text-main">
+          <div class="text-lg font-semibold text-main text-right">
             {{ format.formatToken(walletStore.stakingAmount) }}
           </div>
-          <div class="text-sm" :class="color">
+          <div class="text-sm text-right" :class="color">
             ${{ format.tokenValue(walletStore.stakingAmount) }}
           </div>
         </div>
         <div class="bg-gra-dark rounded-[32px] px-[32px] py-[20px]">
           <div class="text-sm mb-1">{{ $t('index.reward') }}</div>
-          <div class="text-lg font-semibold text-main">
+          <div class="text-lg font-semibold text-main text-right">
             {{ format.formatToken(walletStore.rewardAmount) }}
           </div>
-          <div class="text-sm" :class="color">
+          <div class="text-sm text-right" :class="color">
             ${{ format.tokenValue(walletStore.rewardAmount) }}
           </div>
         </div>
         <div class="bg-gra-dark rounded-[32px] px-[32px] py-[20px]">
           <div class="text-sm mb-1">{{ $t('index.unbonding') }}</div>
-          <div class="text-lg font-semibold text-main">
+          <div class="text-lg font-semibold text-main text-right">
             {{ format.formatToken(walletStore.unbondingAmount) }}
           </div>
-          <div class="text-sm" :class="color">
+          <div class="text-sm text-right" :class="color">
             ${{ format.tokenValue(walletStore.unbondingAmount) }}
           </div>
         </div>
@@ -477,16 +483,42 @@ function changeChart(type: string) {
         </table>
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-4 px-4 pb-6 mt-4">
-        <label for="PingTokenConvert" class="btn btn-primary round-[12px] text-white">{{ $t('index.btn_swap') }}</label>
-        <label for="send" class="btn !bg-yes round-[12px] text-white" @click="dialog.open('send', {}, updateState)">{{
-          $t('account.btn_send') }}</label>
-        <label for="delegate" class="btn !bg-info round-[12px] text-white"
-          @click="dialog.open('delegate', { fees: { amount: '150000000000000000', denom: 'ahp' } }, updateState)">{{
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-[16px] text-bold">
+        <label for="PingTokenConvert" class="btn !bg-[#10df89] round-[12px] text-white flex gap-[8px] items-center"><svg
+            xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+            <path
+              d="M8.80005 6.5C9.25478 4.49601 11.047 3 13.1885 3C15.6738 3 17.6885 5.01472 17.6885 7.5C17.6885 9.80209 15.9599 11.7004 13.7298 11.9678M5.80005 5L7.80005 3L5.80005 1M1.80005 7V3H7.5M14.8001 15L12.8001 17L14.8001 19M18.8001 13V17H13.1885M10.8 13.5C10.8 15.9853 8.78533 18 6.30005 18C3.81477 18 1.80005 15.9853 1.80005 13.5C1.80005 11.0147 3.81477 9 6.30005 9C8.78533 9 10.8 11.0147 10.8 13.5Z"
+              stroke="white" stroke-linecap="square" />
+          </svg>{{ $t('index.btn_swap') }}</label>
+        <label for="send" class="btn !bg-[#666CFF] round-[12px] text-white flex gap-[8px] items-center"
+          @click="dialog.open('send', {}, updateState)"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="20"
+            viewBox="0 0 21 20" fill="none">
+            <path
+              d="M5.40018 5.00037V8.50037M15.4002 5.00037V8.50037M14.9002 12.0004H16.9002H18.5V2.00012L16.9002 2.00037H3.90018H2.5V12.0005L3.90018 12.0004H5.90018M7.57096 15.1718L10.3994 18.0002M10.3994 18.0002L13.0373 15.3623M10.3994 18.0002L10.3995 12.2149M12.4002 7.00037C12.4002 8.10494 11.5048 9.00037 10.4002 9.00037C9.29561 9.00037 8.40018 8.10494 8.40018 7.00037C8.40018 5.8958 9.29561 5.00037 10.4002 5.00037C11.5048 5.00037 12.4002 5.8958 12.4002 7.00037Z"
+              stroke="white" stroke-linecap="square" />
+          </svg>{{
+            $t('account.btn_send') }}</label>
+        <label for="delegate" class="btn !bg-[#FF57CC] round-[12px] text-white flex gap-[8px] items-center"
+          @click="dialog.open('delegate', { fees: { amount: '150000000000000000', denom: 'ahp' } }, updateState)"><svg
+            xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M6.70259 17.0512C7.67243 16.7307 9.93538 17.5177 11.5518 17.3718C12.834 17.2559 13.3042 17.2905 14.4613 16.7307C15.4685 16.2434 16.5409 15.0809 17.2414 14.2233C17.6875 13.6773 17.5355 12.8866 16.9458 12.4968C16.441 12.1632 15.7689 12.2292 15.34 12.6545L14.0596 13.9239C13.6958 14.2845 13.2024 14.4871 12.688 14.4871L10 14.5M6.70259 12.5641L7.68664 12.0762C8.31509 11.7647 9.00806 11.6025 9.71069 11.6025H9.97584C10.3781 11.6025 10.7786 11.6557 11.1667 11.7606L12.5257 12.1281C13.2441 12.3224 13.4828 13.2136 12.9563 13.7357L12.1983 14.4871M9.6121 6.79483C9.6121 8.21095 10.77 9.35893 12.1983 9.35893C13.6267 9.35893 14.7846 8.21095 14.7846 6.79483C14.7846 5.37872 13.6267 4.23073 12.1983 4.23073M9.6121 6.79483C9.6121 5.37872 10.77 4.23073 12.1983 4.23073M9.6121 6.79483C8.18376 6.79483 7.02587 5.64684 7.02587 4.23073C7.02587 2.81461 8.18376 1.66663 9.6121 1.66663C11.0404 1.66663 12.1983 2.81461 12.1983 4.23073M2.5 18.5H6.5V11H2.5V18.5Z"
+              stroke="white" />
+          </svg>{{
             $t('account.btn_delegate') }}</label>
-        <label for="withdraw" class="btn !bg-lime-500 round-[12px] text-white"
-          @click="dialog.open('withdraw', {}, updateState)">{{ $t('index.btn_withdraw_reward') }}</label>
-        <label for="transfer" class="btn !bg-[#ff5e3a] round-[12px] text-white">Transfer</label>
+        <label for="withdraw" class="btn !bg-[#41AAFF] round-[12px] text-white flex gap-[8px] items-center !flex-nowrap"
+          @click="dialog.open('withdraw', {}, updateState)"><svg xmlns="http://www.w3.org/2000/svg" width="21"
+            height="20" viewBox="0 0 21 20" fill="none">
+            <path
+              d="M17.3002 12.2999V16H2.10024L2.09985 4H17.3002V7.64244M18.1002 12.2999H15.5002C14.2852 12.2999 13.3002 11.3149 13.3002 10.0999C13.3002 8.88488 14.2852 7.8999 15.5002 7.8999H18.1002V12.2999Z"
+              stroke="white" stroke-linecap="square" />
+          </svg>{{ $t('index.btn_withdraw_reward') }}</label>
+        <label for="transfer" class="btn !bg-[#FF5E3A] round-[12px] text-white flex gap-[8px] items-center"><svg
+            xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+            <path
+              d="M8.61113 14.9017C8.27714 14.9662 7.9316 15 7.57781 15C4.6998 15 2.3667 12.7614 2.3667 10C2.3667 7.23858 4.6998 5 7.57781 5C7.9316 5 8.27714 5.03383 8.61113 5.09829M19.0334 10C19.0334 12.7614 16.7003 15 13.8223 15C10.9442 15 8.61113 12.7614 8.61113 10C8.61113 7.23858 10.9442 5 13.8223 5C16.7003 5 19.0334 7.23858 19.0334 10Z"
+              stroke="white" stroke-linecap="square" />
+          </svg>Transfer</label>
       </div>
 
       <!-- TODO Hippo Blog -->
