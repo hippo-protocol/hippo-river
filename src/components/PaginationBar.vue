@@ -44,12 +44,11 @@ watch(() => { return props.currentPage }, (newPage) => {
 
 </script>
 <template>
-    <div class="my-5 text-center">
-        <div v-if="total && limit" class="btn-group">
+    <div class="py-[40px]">
+        <div v-if="total && limit" class="flex justify-center items-center gap-[4px] p-[8px]">
             <button v-for="{ page, color } in pages" :key="page"
-                class="btn bg-gray-100 text-gray-500 hover:text-white border-none dark:bg-gray-800 dark:text-white"
-                :class="{
-                    '!btn-primary': color === 'btn-primary',
+                class="bg-transparent text-white rounded-[100px] w-[28px] h-[28px] text-[11px] font-bold" :class="{
+                    '!bg-white !text-black': current === page
                 }" @click="gotoPage(page)">
                 {{ page }}
             </button>
