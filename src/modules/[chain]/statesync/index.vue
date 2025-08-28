@@ -41,13 +41,13 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div>
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
-      <h2 class="card-title truncate mb-2">{{ $t('statesync.title') }}</h2>
+  <div class="px-[48px] py-[76px]">
+    <div class="mb-[124px] flex flex-col gap-[13px] text-white">
+      <h2 class="card-title truncate">{{ $t('statesync.title') }}</h2>
       <div class="text-sm">
         {{ $t('statesync.description') }}
-        <a class="text-primary lowercase" href="https://blog.cosmos.network/cosmos-sdk-state-sync-guide-99e4cf43be2f">{{
-          $t('statesync.here') }}&nbsp;</a>
+        <a class="text-sm underline lowercase" href="https://blog.cosmos.network/cosmos-sdk-state-sync-guide-99e4cf43be2f">{{
+          $t('statesync.here') }}</a>&nbsp;
         <a class="lowercase">
           {{ $t('statesync.for_more_info') }}.</a>
       </div>
