@@ -43,13 +43,11 @@ const validAddress = computed(() => {
 });
 
 const faucetUrl = computed(() => {
-    return `https://faucet.ping.pub/${chainStore.current?.chainName}`;
-    // return `http://localhost:3000/${chainStore.current?.chainName}`;
+    return `https://faucet.ping.pub/hippo-protocol`;
 });
 
 
-function claim() {
-    
+function claim() {  
     ret.value = {} as FaucetResponse;
     const prefix = chainStore.current?.bech32Prefix || 'cosmos';
     if (!address.value ) return;
