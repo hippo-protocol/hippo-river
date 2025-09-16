@@ -59,7 +59,7 @@ const ellipsisHash = (tx: string) => {
 </script>
 <template>
   <div class="px-[44px] py-[40px]">
-    <div class="flex gap-[4px]  rounded-[24px] border border-[#2c3443] p-[4px] mb-[50px]">
+    <div class="flex gap-[4px]  rounded-[24px] border border-[#2c3443] p-[4px] mb-[50px] size-fit">
       <a class="tab text-white text-normal capitalize !rounded-[20px]"
         :class="{ 'tab-active !text-black !bg-white': tab === 'recent' }" @click="tab = 'recent'">{{
           $t('block.recent') }}</a>
@@ -88,12 +88,12 @@ const ellipsisHash = (tx: string) => {
             <td class="text-sm">
               <RouterLink :to="`/${props.chain}/block/${item.height}`">{{
                 item.height
-              }}</RouterLink>
+                }}</RouterLink>
             </td>
             <td class="truncate ">
               <RouterLink :to="`/${props.chain}/tx/${item.hash}`">{{
                 ellipsisHash(item.hash)
-              }}</RouterLink>
+                }}</RouterLink>
             </td>
             <td>
               {{

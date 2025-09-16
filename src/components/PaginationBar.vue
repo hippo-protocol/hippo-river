@@ -49,8 +49,8 @@ watch(() => { return props.currentPage }, (newPage) => {
 
 </script>
 <template>
-    <div class="py-[40px]">
-        <div v-if="total && limit" class="flex justify-center items-center gap-[4px] p-[8px]">
+    <div class="py-[40px] flex justify-center">
+        <div v-if="total && limit" class="flex justify-center items-center gap-[4px] p-[8px] rounded-[100px] border border-[#1E1F22]">
             <button v-for="{ page, color } in pages" :key="page"
                 class="bg-transparent text-white rounded-[100px] min-w-[28px] min-h-[28px] text-[11px] font-bold" :class="{
                     '!bg-white !text-black': current === page

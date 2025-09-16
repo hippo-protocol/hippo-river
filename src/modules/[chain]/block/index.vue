@@ -112,14 +112,18 @@ onMounted(() => {
 
 </script>
 <template>
-  <div>
-    <div class="tabs tabs-boxed bg-transparent mb-4">
-      <a class="tab text-gray-400 uppercase" :class="{ 'tab-active': tab === 'blocks' }" @click="tab = 'blocks'">{{
-        $t('block.recent') }}</a>
-      <RouterLink class="tab text-gray-400 uppercase" :to="`/${chain}/block/${Number(base.latest?.block?.header.height || 0) + 10000
-        }`">{{ $t('block.future') }}</RouterLink>
+  <div class="px-[44px] py-[40px]">
+    <div class="flex items-center justify-between mb-[40px]">
+      <div class="flex gap-[4px]  rounded-[24px] border border-[#2c3443] p-[4px] size-fit">
+        <a class="tab text-white text-normal capitalize !rounded-[20px]"
+          :class="{ 'tab-active !text-black !bg-white': tab === 'blocks' }" @click="tab = 'blocks'">{{
+            $t('block.recent') }}</a>
+        <RouterLink class="tab text-white text-normal capitalize !rounded-[20px]"
+          :class="{ 'tab-active !text-black !bg-white': tab === 'inactive' }" :to="`/${chain}/block/${Number(base.latest?.block?.header.height || 0) + 10000
+            }`">{{
+              $t('block.future') }}</RouterLink>
+      </div>
     </div>
-
     <div v-show="tab === 'blocks'">
       <TxsInBlocksChart />
 

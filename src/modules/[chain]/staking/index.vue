@@ -274,120 +274,88 @@ const refresh = () => {
 </script>
 <template>
   <div>
-    <div class="bg-base-100 rounded-lg grid sm:grid-cols-1 md:grid-cols-5 p-4">
-      <div class="flex">
-        <span>
-          <div class="relative w-9 h-9 rounded overflow-hidden flex items-center justify-center mr-2">
-            <Icon class="text-success" icon="mdi:trending-up" size="32" />
-            <div class="absolute top-0 left-0 bottom-0 right-0 opacity-20 bg-success"></div>
-          </div>
-        </span>
-        <span>
-          <div class="font-bold">{{ format.percent(mintStore.inflation) }}</div>
-          <div class="text-xs">{{ $t('staking.inflation') }}</div>
-        </span>
+    <div class="grid sm:grid-cols-1 md:grid-cols-5 gap-[8px] px-[40px] pt-[90px] pb-[40px]">
+      <div class="flex flex-col items-start gap-[12px] py-[24px] px-[32px] bg-gra-dark rounded-[32px]">
+        <p class="text-[13px] text-[#98a9ce]">
+          {{ $t('staking.inflation') }}
+        </p>
+        <div class="font-bold text-white">{{ format.percent(mintStore.inflation) }}</div>
       </div>
-      <div class="flex">
-        <span>
-          <div class="relative w-9 h-9 rounded overflow-hidden flex items-center justify-center mr-2">
-            <Icon class="text-primary" icon="mdi:lock-open-outline" size="32" />
-            <div class="absolute top-0 left-0 bottom-0 right-0 opacity-20 bg-primary"></div>
-          </div>
-        </span>
-        <span>
-          <div class="font-bold">
-            {{ formatSeconds(staking.params?.unbonding_time) }}
-          </div>
-          <div class="text-xs">{{ $t('staking.unbonding_time') }}</div>
-        </span>
+      <!-- Unbonding Time -->
+      <div class="flex flex-col items-start gap-[12px] py-[24px] px-[32px] bg-gra-dark rounded-[32px]">
+        <p class="text-[13px] text-[#98a9ce]">
+          {{ $t('staking.unbonding_time') }}
+        </p>
+        <div class="font-bold text-white">{{ formatSeconds(staking.params?.unbonding_time) }}</div>
       </div>
-      <div class="flex">
-        <span>
-          <div class="relative w-9 h-9 rounded overflow-hidden flex items-center justify-center mr-2">
-            <Icon class="text-error" icon="mdi:alert-octagon-outline" size="32" />
-            <div class="absolute top-0 left-0 bottom-0 right-0 opacity-20 bg-error"></div>
-          </div>
-        </span>
-        <span>
-          <div class="font-bold">
-            {{ format.percent(slashing.slash_fraction_double_sign) }}
-          </div>
-          <div class="text-xs">{{ $t('staking.double_sign_slashing') }}</div>
-        </span>
+
+      <!-- Double Sign Slashing -->
+      <div class="flex flex-col items-start gap-[12px] py-[24px] px-[32px] bg-gra-dark rounded-[32px]">
+        <p class="text-[13px] text-[#98a9ce]">
+          {{ $t('staking.double_sign_slashing') }}
+        </p>
+        <div class="font-bold text-white">
+          {{ format.percent(slashing.slash_fraction_double_sign) }}
+        </div>
       </div>
-      <div class="flex">
-        <span>
-          <div class="relative w-9 h-9 rounded overflow-hidden flex items-center justify-center mr-2">
-            <Icon class="text-error" icon="mdi:pause" size="32" />
-            <div class="absolute top-0 left-0 bottom-0 right-0 opacity-20 bg-error"></div>
-          </div>
-        </span>
-        <span>
-          <div class="font-bold">
-            {{ format.percent(slashing.slash_fraction_downtime) }}
-          </div>
-          <div class="text-xs">{{ $t('staking.downtime_slashing') }}</div>
-        </span>
+
+      <!-- Downtime Slashing -->
+      <div class="flex flex-col items-start gap-[12px] py-[24px] px-[32px] bg-gra-dark rounded-[32px]">
+        <p class="text-[13px] text-[#98a9ce]">
+          {{ $t('staking.downtime_slashing') }}
+        </p>
+        <div class="font-bold text-white">
+          {{ format.percent(slashing.slash_fraction_downtime) }}
+        </div>
       </div>
-      <div class="flex">
-        <span>
-          <div class="relative w-9 h-9 rounded overflow-hidden flex items-center justify-center mr-2">
-            <Icon class="text-success" icon="mdi:trending-up" size="32" />
-            <div class="absolute top-0 left-0 bottom-0 right-0 opacity-20 bg-success"></div>
-          </div>
-        </span>
-        <span>
-          <div class="font-bold">
-            {{ apr }}
-          </div>
-          <div class="text-xs">Staking APR</div>
-        </span>
+
+      <!-- Staking APR -->
+      <div class="flex flex-col items-start gap-[12px] py-[24px] px-[32px] bg-gra-dark rounded-[32px]">
+        <p class="text-[13px] text-[#98a9ce]">
+          Staking APR
+        </p>
+        <div class="font-bold text-white">
+          {{ apr }}
+        </div>
       </div>
     </div>
-
-    <div>
-      <div class="flex items-center justify-between py-1">
-        <div class="tabs tabs-boxed bg-transparent">
-          <a class="tab text-gray-400" :class="{ 'tab-active': tab === 'featured' }" @click="tab = 'featured'">{{
-            $t('staking.popular') }}</a>
-          <a class="tab text-gray-400" :class="{ 'tab-active': tab === 'active' }" @click="tab = 'active'">{{
-            $t('staking.active') }}</a>
-          <a class="tab text-gray-400" :class="{ 'tab-active': tab === 'inactive' }" @click="tab = 'inactive'">{{
-            $t('staking.inactive') }}</a>
+    <div class="divider"></div>
+    <div class="px-[40px] py-[60px]">
+      <div class="flex items-center justify-between mb-[50px]">
+        <div class="flex gap-[4px]  rounded-[24px] border border-[#2c3443] p-[4px] size-fit">
+          <a class="tab text-white text-normal capitalize !rounded-[20px]"
+            :class="{ 'tab-active !text-black !bg-white': tab === 'active' }" @click="tab = 'active'">{{
+              $t('staking.active') }}</a>
+          <a class="tab text-white text-normal capitalize !rounded-[20px]"
+            :class="{ 'tab-active !text-black !bg-white': tab === 'inactive' }" @click="tab = 'inactive'">{{
+              $t('staking.inactive') }}</a>
         </div>
-
-        <div class="text-lg font-semibold">
-          {{ list.length }}/{{ staking.params.max_validators }}
+        <div class="text-[#515151] text-[13px]">
+          Active · <strong class="text-white">{{ list.length }}</strong> | Total · <strong class="text-white">{{
+            staking.params.max_validators }}</strong>
         </div>
       </div>
 
-      <div class="bg-base-100 px-4 pt-3 pb-4 rounded shadow">
+      <div class="rounded shadow">
         <div class="overflow-x-auto">
-          <table class="table staking-table w-full">
-            <thead class="bg-base-200">
-              <tr>
-                <th scope="col" class="uppercase" style="width: 3rem; position: relative">
+          <table class="table w-full table-compact">
+            <thead class="border-0 text-white">
+              <tr class="border-0">
+                <th style="position: relative; z-index: 2">
                   {{ $t('staking.rank') }}
                 </th>
-                <th scope="col" class="uppercase">
+                <th style="position: relative; z-index: 2">
                   {{ $t('staking.validator') }}
                 </th>
-                <th scope="col" class="text-right uppercase">
-                  {{ $t('staking.voting_power') }}
-                </th>
-                <th scope="col" class="text-right uppercase">
-                  {{ $t('staking.24h_changes') }}
-                </th>
-                <th scope="col" class="text-right uppercase">
-                  {{ $t('staking.commission') }}
-                </th>
-                <th scope="col" class="text-right uppercase">ACTUAL APR</th>
-                <th scope="col" class="text-center uppercase">
-                  {{ $t('staking.actions') }}
-                </th>
+                <th class="text-right">{{ $t('staking.voting_power') }}</th>
+                <th class="text-center">{{ $t('staking.24h_changes') }}</th>
+                <th class="text-right">{{ $t('staking.commission') }}</th>
+                <th class="text-right">Actual APR</th>
+                <th class="text-center">{{ $t('staking.actions') }}</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="text-white">
+              <tr class="h-[20px] border-0"></tr>
               <tr v-for="({ v, rank, logo }, i) in list" :key="v.operator_address"
                 class="hover:bg-gray-100 dark:hover:bg-[#384059]">
                 <!-- 👉 rank -->
@@ -452,7 +420,7 @@ const refresh = () => {
                   </div>
                 </td>
                 <!-- 👉 24h Changes -->
-                <td class="text-right text-xs" :class="change24Color(v)">
+                <td class="text-right text-xs text-white">
                   {{ change24Text(v) }}
                 </td>
                 <!-- 👉 commission -->
@@ -490,14 +458,14 @@ const refresh = () => {
 
         <div class="divider"></div>
         <div class="flex flex-row items-center">
-          <div class="text-xs truncate relative py-2 px-4 rounded-md w-fit text-error mr-2">
+          <!-- <div class="text-xs truncate relative py-2 px-4 rounded-md w-fit text-error mr-2">
             <span class="inset-x-0 inset-y-0 opacity-10 absolute bg-error"></span>
             {{ $t('staking.top') }} 33%
           </div>
           <div class="text-xs truncate relative py-2 px-4 rounded-md w-fit text-warning">
             <span class="inset-x-0 inset-y-0 opacity-10 absolute bg-warning"></span>
             {{ $t('staking.top') }} 67%
-          </div>
+          </div> -->
           <div class="text-xs hidden md:!block pl-2">
             {{ $t('staking.description') }}
           </div>
