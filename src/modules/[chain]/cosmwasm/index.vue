@@ -45,25 +45,30 @@ function gotoHistory() {
 <template>
     <div class="px-[48px] py-[76px] text-white">
         <h2 class="truncate w-full mb-[35px] text-[21px]">{{ $t('cosmwasm.title') }}</h2>
-        <div class="grid grid-flow-col auto-cols-max gap-4 overflow-hidden">
-            <div class="join w-full border border-[#1D1D1D] p-[8px] !rounded-[24px] bg-[#0E0F11]">
-                <select v-model="field"
-                    class="cursor-pointer bg-inherit rounded-none px-[12px] py-[7px]">
-                    <option value="contract">Contract</option>
-                    <option value="creator">Creator</option>
-                </select>
-                <input v-model="creator" type=text class="w-full join-item !ml-[12px] bg-inherit border-l border-l-[#2c3443] pl-[20px] "
-                    placeholder="address" />
+        <div class="flex justify-between items-center ">
+            <div class="grid grid-flow-col auto-cols-max gap-4 overflow-hidden">
+                <div class="join w-full border border-[#1D1D1D] p-[8px] !rounded-[24px] bg-[#0E0F11]">
+                    <select v-model="field" class="cursor-pointer bg-inherit rounded-none px-[12px] py-[7px]">
+                        <option value="contract">Contract</option>
+                        <option value="creator">Creator</option>
+                    </select>
+                    <input v-model="creator" type=text
+                        class="w-full join-item !ml-[12px] bg-inherit border-l border-l-[#2c3443] pl-[20px] "
+                        placeholder="address" />
 
+                </div>
+                <button @click="myContracts()"
+                    class="rounded-[32px] bg-white text-black px-[20px] py-[7px] font-bold">{{
+                        $t('cosmwasm.btn_query')
+                    }}</button>
             </div>
-            <button @click="myContracts()" class="rounded-[32px] bg-white text-black px-[20px] py-[7px] font-bold">{{ $t('cosmwasm.btn_query')
-            }}</button>
-            <!-- <div>
-                <select v-model="togo" class="select select-primary" @change="gotoHistory()">
+            <div class="">
+                <select v-model="togo" class="select !bg-inherit" @change="gotoHistory()">
                     <option value="">History</option>
-                    <option v-for="(v, index) in history" :key="index" :value="v" >...{{ String(v).substring(45) }}</option>
+                    <option v-for="(v, index) in history" :key="index" :value="v">...{{ String(v).substring(45) }}
+                    </option>
                 </select>
-            </div> -->
+            </div>
         </div>
 
         <div class="overflow-x-auto">
@@ -96,8 +101,9 @@ function gotoHistory() {
             </table>
             <div class="flex justify-between">
                 <PaginationBar :limit="pageRequest.limit" :total="codes.pagination?.total" :callback="pageload" />
-                <label for="wasm_store_code" class="btn !bg-white !text-black my-5" @click="dialog.open('wasm_store_code', {})">{{
-                    $t('cosmwasm.btn_up_sc') }}</label>
+                <label for="wasm_store_code" class="btn !bg-white !text-black my-5"
+                    @click="dialog.open('wasm_store_code', {})">{{
+                        $t('cosmwasm.btn_up_sc') }}</label>
             </div>
         </div>
     </div>

@@ -22,7 +22,7 @@ const keyword = ref('');
 const live = ref(true);
 const slashingParam = ref({} as SlashingParam);
 const signingInfo = ref({} as Record<string, SigningInfo>);
-const consumerValidators = ref([] as {moniker: string, base64: string}[]);
+const consumerValidators = ref([] as { moniker: string, base64: string }[]);
 
 interface BlockColor {
   height: string;
@@ -53,7 +53,7 @@ const validatorSet = computed(() => {
         base64: v.base64
       };
     });
-  }; 
+  };
   return stakingStore.validators.map((v) => {
     const hex = consensusPubkeyToHexAddress(v.consensus_pubkey)
     return {
@@ -93,7 +93,7 @@ baseStore.$subscribe((_, state) => {
   if (newHeight > latest.value) {
     latest.value = newHeight;
     // initialize if it's the first time
-    if(!preload.value) {
+    if (!preload.value) {
       preFill();
       preload.value = true;
     }
@@ -101,18 +101,18 @@ baseStore.$subscribe((_, state) => {
     // reset the consumer validators
     if (newHeight > 0 && consumerValidators.value.length === 0) {
       const chain_id = state.latest.block.header.chain_id;
-      Promise.resolve().then(async () =>{
+      Promise.resolve().then(async () => {
         await stakingStore.getConsumerValidators(chain_id).then((x) => {
-        x.validators.sort((a,b) => Number(b.power)-Number(a.power)).forEach(v => {
-          const base64 = toBase64(fromHex(consensusPubkeyToHexAddress({"@type": "/cosmos.crypto.ed25519.PubKey", key: v.consumer_key.ed25519 })));
-          const moniker = v.provider_address;
-          consumerValidators.value.push({ moniker, base64});
-        });
+          x.validators.sort((a, b) => Number(b.power) - Number(a.power)).forEach(v => {
+            const base64 = toBase64(fromHex(consensusPubkeyToHexAddress({ "@type": "/cosmos.crypto.ed25519.PubKey", key: v.consumer_key.ed25519 })));
+            const moniker = v.provider_address;
+            consumerValidators.value.push({ moniker, base64 });
+          });
 
-      });
-      }) 
+        });
+      })
     }
-    
+
     if (Number(state.latest.block.header.height) % 7 === 0) updateTotalSigningInfo();
     fillblock(state.latest);
   }
@@ -135,7 +135,7 @@ onMounted(() => {
 
 function preFill() {
 
-  if(latest.value > 50 && baseStore.recents.length >= 49 ) return
+  if (latest.value > 50 && baseStore.recents.length >= 49) return
   // preload 50 blocks if recent blocks are not enough
   let promise = Promise.resolve();
   for (let i = latest.value - baseStore.recents.length; i > latest.value - 50 && i > 1; i -= 1) {
@@ -198,20 +198,24 @@ function changeTab(v: string) {
 </script>
 
 <template>
-  <div>
-    <div class="tabs tabs-boxed bg-transparent mb-4">
-      <a class="tab text-gray-400 capitalize" :class="{ 'tab-active': tab === '3' }" @click="changeTab('3')">{{
-        $t('uptime.overall') }}</a>
-      <a class="tab text-gray-400 capitalize" :class="{ 'tab-active': tab === '2' }" @click="changeTab('2')">{{
-        $t('module.blocks') }}</a>
-      <RouterLink :to="`/${chain}/uptime/customize`">
-        <a class="tab text-gray-400 capitalize">{{ $t('uptime.customize') }}</a>
-      </RouterLink>
+  <div class="px-[40px] py-[35px]">
+
+    <div class="flex items-center justify-between mb-[40px]">
+      <div class="flex gap-[4px]  rounded-[24px] border border-[#2c3443] p-[4px] size-fit">
+        <a class="tab text-white text-normal capitalize !rounded-[20px]"
+          :class="{ 'tab-active !text-black !bg-white': tab === '3' }" @click="changeTab('3')">{{
+            $t('uptime.overall') }}</a>
+        <a class="tab text-white text-normal capitalize !rounded-[20px]"
+          :class="{ 'tab-active !text-black !bg-white': tab === '2' }" @click="changeTab('2')">{{
+            $t('module.blocks') }}</a>
+        <RouterLink class="tab text-white text-normal capitalize !rounded-[20px]" :to="`/${chain}/uptime/customize`">{{
+          $t('uptime.customize') }}</RouterLink>
+      </div>
     </div>
-    <div class="bg-base-100 px-5 pt-5">
+    <div class="bg-gra-dark px-5 pt-5">
       <div class="flex items-center gap-x-4">
         <input type="text" v-model="keyword" placeholder="Keywords to filter validators"
-          class="input input-sm w-full flex-1 border border-gray-200 dark:border-gray-600" />
+          class="input input-sm w-full flex-1 border border-gray-200 !bg-[#191B1D]" />
       </div>
 
       <!-- grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-x-4 mt-4 -->
@@ -234,7 +238,7 @@ function changeTab(v: string) {
           </div>
         </div>
         <div class="mt-5 text-xs flex justify-center gap-2">
-          <span class=" font-bold">{{ $t('uptime.legend') }}: </span>
+          <span class="font-bold">{{ $t('uptime.legend') }}: </span>
           <span class="bg-green-500">&nbsp;</span> {{ $t('uptime.committed') }}
           <span class="bg-yellow-500">&nbsp;</span> {{ $t('uptime.precommitted') }}
           <span class="bg-red-500">&nbsp;</span> {{ $t('uptime.missed') }}
@@ -261,7 +265,7 @@ function changeTab(v: string) {
             </td>
             <td class="text-right">
               <span :class="v.uptime && v.uptime > 0.95 ? 'text-green-500' : 'text-red-500'
-        ">
+                ">
                 <div class="tooltip" :data-tip="`${v.missed_blocks_counter} missing blocks`">
                   {{ format.percent(v.uptime) }}
                 </div>
@@ -276,11 +280,11 @@ function changeTab(v: string) {
             </td>
             <td class="text-xs text-right">
               <span v-if="v.signing && v.signing.jailed_until.startsWith('1970')" class="text-right">{{
-        format.percent(
-          Number(v.signing.index_offset) /
-          (latest - Number(v.signing.start_height))
-        )
-      }}</span>
+                format.percent(
+                  Number(v.signing.index_offset) /
+                  (latest - Number(v.signing.start_height))
+                )
+              }}</span>
               {{ v.signing?.index_offset }}
             </td>
             <td class="text-right">{{ v.signing?.start_height }}</td>
@@ -292,7 +296,7 @@ function changeTab(v: string) {
                 {{ $t('uptime.minimum_uptime') }}:
                 <span class="lowercase tooltip" :data-tip="`Window size: ${slashingParam.signed_blocks_window}`"><span
                     class="ml-2 btn btn-error btn-xs">{{
-        format.percent(slashingParam.min_signed_per_window)
+                      format.percent(slashingParam.min_signed_per_window)
                     }}</span>
                 </span>
               </td>

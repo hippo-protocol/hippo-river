@@ -19,14 +19,16 @@ const hdPath = computed(() => {
 const basePath = computed(() => chainId.value.includes('testnet') ? 'https://river-testnet.hippoprotocol.ai' : 'https://river.hippoprotocol.ai')
 </script>
 <template>
-  <div>
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded shadow">
-      <h2 class="card-title">{{ $t('widget.title') }}</h2>
+  <div class="px-[40px] py-[76px] text-white">
+    <h2 class="card-title mb-[20px]">{{ $t('widget.title') }}</h2>
+    <div class="p-[32px] bg-gra-dark border border-[#1E1F22] rounded-[32px] mb-[100px] shadow">
       <div class="my-4 grid grid-flow-col auto-cols-max  overflow-auto">
         <div class="form-control">
-          <div class="input-group">
-            <span>{{ $t('widget.endpoint') }}</span>
-            <select v-model="endpoint" class="select select-bordered w-fit">
+          <div class="input-group py-[4px] pl-[4px] pr-[16px] rounded-[24px] border border-[#2C3443]">
+            <span class="text-[12px] !bg-white text-black !px-[20px] !py-[7px] !rounded-l-[20px]">{{
+              $t('widget.endpoint')
+            }}</span>
+            <select v-model="endpoint" class="bg-black w-fit px-[20px] py-[7px]">
               <option disabled selected>{{ $t('widget.select_endpoint') }}</option>
               <option v-for="v in chainStore.current?.endpoints.rest" :value="v.address">{{ v.address }}</option>
             </select>
@@ -36,25 +38,26 @@ const basePath = computed(() => chainId.value.includes('testnet') ? 'https://riv
       <span class="text-base">{{ $t('widget.text_1') }}</span>
       <div class="mockup-code bg-base-200 my-2">
         <pre
-          data-prefix="1"><code class="text-gray-800 dark:invert">&lt;script type="module" src="{{ basePath }}/widget/ping-widget.js"&gt;</code></pre>
+          data-prefix="1"><code class="text-white">&lt;script type="module" src="{{ basePath }}/widget/ping-widget.js"&gt;</code></pre>
       </div>
     </div>
-    <div class="bg-base-100 my-5 px-4 pt-3 pb-4 rounded shadow">
-      <h2 class="card-title">{{ $t('module.widget') }}</h2>
-      <div class="mt-4">
+
+    <h2 class="card-title mb-[20px]">{{ $t('module.widget') }}</h2>
+    <div class="p-[32px] bg-gra-dark border border-[#1E1F22] rounded-[32px] mb-[100px] shadow">
+      <div class="">
         <span class="text-base"> 1. {{ $t('widget.text_2') }}</span>
         <div class="mockup-code bg-base-200 my-2">
           <pre data-prefix=">"><code class="text-green-400">&lt;!-- This widget is optional. --&gt; </code></pre>
           <pre
-            data-prefix=">"><code  class="text-gray-800 dark:invert">&lt;ping-connect-wallet chain-id="{{ chainId }}" hd-path="{{ hdPath }}"/&gt;</code></pre>
+            data-prefix=">"><code  class="text-white">&lt;ping-connect-wallet chain-id="{{ chainId }}" hd-path="{{ hdPath }}"/&gt;</code></pre>
         </div>
 
         <span class="text-base"> 2. {{ $t('widget.text_3') }}</span>
         <div class="mockup-code bg-base-200 my-2">
           <pre
-            data-prefix=">"><code class=" text-gray-800 dark:invert">&lt;ping-token-convert chain-name="{{ chainName }}" endpoint="{{ endpoint }}" hd-path="{{ hdPath }}"/&gt;</code></pre>
+            data-prefix=">"><code class="text-white">&lt;ping-token-convert chain-name="{{ chainName }}" endpoint="{{ endpoint }}" hd-path="{{ hdPath }}"/&gt;</code></pre>
           <pre
-            data-prefix=">"><code class="text-gray-800 dark:invert">&lt;label for="PingTokenConvert" class="btn btn-sm"&gt;Buy {{ chainName.toUpperCase() }}&lt;/label&gt;</code></pre>
+            data-prefix=">"><code class="text-white">&lt;label for="PingTokenConvert" class="btn btn-sm"&gt;Buy {{ chainName.toUpperCase() }}&lt;/label&gt;</code></pre>
         </div>
       </div>
     </div>

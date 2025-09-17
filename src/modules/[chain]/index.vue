@@ -183,7 +183,7 @@ function changeChart(type: string) {
 
     <div v-if="coinInfo && coinInfo.name"
       class="bg-black rounded shadow px-[40px] pt-[44px] pb-[48px] flex flex-col gap-[16px] border-t border-[#2C3443]">
-      <div class="flex justify-between px-[20px] items-center">
+      <div class="flex justify-between px-[20px] items-center max-w-[1150px]">
         <h3 class="text-[21px] font-bold text-white">Market</h3>
         <div class="tabs tabs-boxed bg-black p-[4px] gap-[4px] items-center rounded-[24px] border border-[#1d1f23]">
           <a class="tab text-xs mr-2 text-white " :class="{ 'tab-active !text-black !bg-white': kind === 'price' }"
@@ -311,7 +311,7 @@ function changeChart(type: string) {
       </div>
     </div>
 
-   <ActiveProposals type="dashboard"/>
+    <ActiveProposals type="dashboard" />
     <div class="bg-black rounded shadow px-[40px] py-[48px] flex flex-col gap-[16px] border-t border-[#2C3443]">
       <div class="flex justify-between text-[21px] font-bold text-main">
         <span class="truncate">{{ walletStore.currentAddress || 'Not Connected' }}</span>
