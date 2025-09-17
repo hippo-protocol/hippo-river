@@ -67,16 +67,19 @@ const changeTab = (_tab: string) => {
                     <td>Amount</td>
                 </tr>
             </thead>
-            <tr class="h-[20px] border-0"></tr>
-            <tr v-for="(acc, index) in accounts" class="hover">
-                <td>#{{ index + 1 + (page - 1) * pageSize }}</td>
-                <td>
-                    <RouterLink :to="`/${chain}/account/${acc.address}`">{{ acc.address }}</RouterLink>
-                </td>
-                <td> {{ Number(acc.balance).toLocaleString(undefined, {
-                    maximumFractionDigits: 6,
-                }) }} HP </td>
-            </tr>
+            <tbody>
+                <tr class="h-[20px] border-0"></tr>
+                <tr v-for="(acc, index) in accounts" class="hover">
+                    <td>#{{ index + 1 + (page - 1) * pageSize }}</td>
+                    <td>
+                        <RouterLink :to="`/${chain}/account/${acc.address}`">{{ acc.address }}</RouterLink>
+                    </td>
+                    <td> {{ Number(acc.balance).toLocaleString(undefined, {
+                        maximumFractionDigits: 6,
+                        }) }} HP </td>
+                </tr>
+            </tbody>
+
         </table>
         <PaginationBar :limit="pageSize" :total="total" :callback="pageload" :current-page="page" />
     </div>

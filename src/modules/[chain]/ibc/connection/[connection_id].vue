@@ -197,12 +197,12 @@ function color(v: string) {
 
       </div>
     </div>
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow overflow-hidden">
+    <div class="rounded shadow overflow-hidden text-white">
       <h2 class="card-title">{{ $t('ibc.channels') }}</h2>
       <div class="overflow-auto">
-        <table class="table w-full mt-4">
+        <table class="table mt-4 text-white">
           <thead>
-            <tr>
+            <tr class="text-white">
               <th>{{ $t('ibc.txs') }}</th>
               <th style="position: relative; z-index: 2">{{ $t('ibc.channel_id') }}</th>
               <th>{{ $t('ibc.port_id') }}</th>
@@ -234,7 +234,7 @@ function color(v: string) {
               <td>
                 <a href="#">{{
                   v[ibcStore.sourceField].channel_id
-                  }}</a>
+                }}</a>
               </td>
               <td>{{ v[ibcStore.sourceField].port_id }}</td>
             </tr>
@@ -254,7 +254,7 @@ function color(v: string) {
               <td>
                 <a href="#" @click="loadChannel(v.channel_id, v.port_id)">{{
                   v.channel_id
-                  }}</a>
+                }}</a>
               </td>
               <td>{{ v.port_id }}</td>
               <td>
