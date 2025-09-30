@@ -3,8 +3,6 @@ import { Icon } from '@iconify/vue';
 import { computed, onMounted, ref } from 'vue';
 
 // Components
-import newFooter from '@/layouts/components/NavFooter.vue';
-import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue';
 import NavbarSearch from '@/layouts/components/NavbarSearch.vue';
 import ChainProfile from '@/layouts/components/ChainProfile.vue';
 
@@ -12,7 +10,7 @@ import { NetworkType, useDashboard } from '@/stores/useDashboard';
 import { useBaseStore, useBlockchain } from '@/stores';
 
 import NavBarWallet from './NavBarWallet.vue';
-import type { NavGroup, NavLink, NavSectionTitle, VerticalNavItems } from '../types';
+import type { NavGroup, NavLink, VerticalNavItems } from '../types';
 import dayjs from 'dayjs';
 import LanguageIcon from '@/icons/LanguageIcon.vue';
 
@@ -141,13 +139,15 @@ dayjs()
                 </div>
               </RouterLink>
             </div>
-            <div v-if="index === 0 && dashboard.networkType === NetworkType.Testnet"
-              class="menu bg-base-100 w-full !p-0">
-              <RouterLink
-                class="hover:bg-gray-100 dark:hover:bg-[#373f59] rounded cursor-pointer px-3 py-2 flex items-center"
-                :to="`/${blockchain.chainName}/faucet`">
-                <Icon icon="mdi:chevron-right" class="mr-2 ml-3"></Icon>
-                <div class="text-base capitalize text-gray-500 dark:text-gray-300">
+            <div v-if="index === 0 && dashboard.networkType === NetworkType.Testnet" class="menu bg-black w-full !p-0">
+              <RouterLink class="hover:bg-gray-100 dark:hover:bg-[#373f59] cursor-pointer px-3 py-2 flex items-center"
+                :class="{
+                  'border-r-[6px] border-primary bg-[linear-gradient(90deg,rgba(26,33,30,0.5),rgba(16,223,137,0.25))]': selected($route, { to: { path: `/${blockchain.chainName}/faucet` }, title: 'module.faucet' }),
+                }" :to="`/${blockchain.chainName}/faucet`">
+                <img src="/src/assets/images/svg/staking.svg" class="w-6 h-6 rounded-full mr-3 ml-4 " />
+                <div class="text-[13px] capitalize text-white" :class="{
+                  '!text-white': false,
+                }">
                   Faucet
                 </div>
               </RouterLink>
