@@ -444,12 +444,17 @@ const refresh = () => {
                   <div v-if="v.jailed" class="badge badge-error gap-2 text-white">
                     {{ $t('staking.jailed') }}
                   </div>
-                  <label v-else for="delegate" class="btn btn-xs btn-primary rounded-sm capitalize" @click="
-                    dialog.open('delegate', {
-                      validator_address: v.operator_address,
-                      fees: { amount: '150000000000000000', denom: 'ahp' }
-                    }, refresh)
-                    ">{{ $t('account.btn_delegate') }}</label>
+                  <label v-else for="delegate" class="btn btn-xs !bg-[#10DF89] !text-white rounded-sm capitalize"
+                    @click="
+                      dialog.open('delegate', {
+                        validator_address: v.operator_address,
+                        fees: { amount: '150000000000000000', denom: 'ahp' }
+                      }, refresh)
+                      ">{{ $t('account.btn_delegate') }}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                      <path d="M5.83333 1L10 6M10 6L5.83333 11M10 6L0 6" stroke="white" stroke-width="2" />
+                    </svg>
+                  </label>
                 </td>
               </tr>
             </tbody>

@@ -260,8 +260,8 @@ function mapDelegators(messages: any[]) {
 
 </script>
 <template>
-  <div>
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded shadow border-indigo-500">
+  <div class="px-[40px] py-[36px] text-white">
+    <div class="px-4 pt-3 pb-4 rounded shadow border-indigo-500">
       <div class="flex flex-col lg:!flex-row pt-2 pb-1">
         <div class="flex-1">
           <div class="flex">
@@ -280,7 +280,7 @@ function mapDelegators(messages: any[]) {
               <div class="text-sm mb-4">
                 {{ v.description?.identity || '-' }}
               </div>
-              <label for="delegate" class="btn btn-primary btn-sm w-full" @click="
+              <label for="delegate" class="btn !bg-white !text-black btn-sm w-full" @click="
                 dialog.open('delegate', {
                   validator_address: v.operator_address,
                   fees: { amount: '150000000000000000', denom: 'ahp' }
@@ -425,7 +425,7 @@ function mapDelegators(messages: any[]) {
       <div>
         <CommissionRate :commission="v.commission"></CommissionRate>
       </div>
-      <div class="bg-base-100 rounded shadow relative overflow-auto">
+      <div class="rounded shadow relative overflow-auto">
         <div class="text-lg font-semibold text-main px-4 pt-4">
           {{ $t('staking.commissions_&_rewards') }}
         </div>
@@ -442,7 +442,7 @@ function mapDelegators(messages: any[]) {
             </div>
           </div>
           <div class="">
-            <label for="withdraw_commission" class="btn btn-primary w-full" @click="
+            <label for="withdraw_commission" class="btn !bg-white !text-black w-full" @click="
               dialog.open('withdraw_commission', {
                 validator_address: v.operator_address,
               })
@@ -450,7 +450,7 @@ function mapDelegators(messages: any[]) {
           </div>
         </div>
       </div>
-      <div class="bg-base-100 rounded shadow overflow-x-auto">
+      <div class="rounded shadow overflow-x-auto">
         <div class="px-4 pt-4 mb-2 text-main font-lg font-semibold">
           {{ $t('staking.addresses') }}
         </div>
@@ -498,7 +498,7 @@ function mapDelegators(messages: any[]) {
       </div>
     </div>
 
-    <div v-if="delegations.delegation_responses" class="mt-5 bg-base-100 shadow rounded p-4 ">
+    <div v-if="delegations.delegation_responses" class="mt-5 shadow rounded p-4 ">
       <div class="text-lg mb-4 font-semibold">{{ $t('account.delegations') }}
         <span class="float-right"> {{ delegations.delegation_responses?.length || 0 }} / {{
           delegations.pagination?.total || 0 }} </span>
@@ -527,11 +527,11 @@ function mapDelegators(messages: any[]) {
       </div>
     </div>
 
-    <div class="mt-5 bg-base-100 shadow rounded p-4">
+    <div class="mt-5 shadow rounded p-4">
       <div class="text-lg mb-4 font-semibold">{{ $t('account.transactions') }}</div>
       <div class="rounded overflow-auto">
         <table class="table validatore-table w-full">
-          <thead>
+          <thead class="text-white">
             <th class="text-left pl-4" style="position: relative; z-index: 2">
               {{ $t('account.height') }}
             </th>
@@ -567,20 +567,20 @@ function mapDelegators(messages: any[]) {
       </div>
     </div>
 
-    <div class="mt-5 bg-base-100 shadow rounded p-4">
+    <div class="mt-5 shadow rounded p-4">
       <div class="text-lg mb-4 font-semibold">
         <div class="tabs tabs-boxed bg-transparent">
 
           <span class="mr-10">Voting Power Events: </span>
-          <a class="tab text-gray-400" :class="{ 'tab-active': selectedEventType === EventType.Delegate }"
+          <a class="tab" :class="{ 'tab-active  !bg-white !text-black': selectedEventType === EventType.Delegate }"
             @click="loadPowerEvents(1, EventType.Delegate)">{{ $t('account.btn_delegate') }}</a>
-          <a class="tab text-gray-400" :class="{ 'tab-active': selectedEventType === EventType.Unbond }"
+          <a class="tab" :class="{ 'tab-active  !bg-white !text-black': selectedEventType === EventType.Unbond }"
             @click="loadPowerEvents(1, EventType.Unbond)">{{ $t('account.btn_unbond') }}</a>
         </div>
       </div>
       <div class="rounded overflow-auto">
         <table class="table validatore-table w-full">
-          <thead>
+          <thead class="text-white">
             <th class="text-left pl-4">{{ $t('account.delegator') }}</th>
             <th class="text-left pl-4">{{ $t('account.amount') }}</th>
             <th class="text-left pl-4">{{ $t('account.height') }} / {{ $t('account.time') }}</th>
