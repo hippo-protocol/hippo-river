@@ -144,7 +144,7 @@ dayjs()
           </div>
         </div>
       </div>
-      <div class="px-2 border-b border-bg collapse  collapse-open">
+      <!-- <div class="px-2 border-b border-bg collapse  collapse-open">
         <div class="collapse-titleflex items-center cursor-pointer pt-[24px]">
           <div class="font-bold text-[13px] capitalize flex-1 text-gray30 whitespace-nowrap px-[40px] py-[4px]">
             Information
@@ -189,7 +189,7 @@ dayjs()
           </div>
         </div>
 
-      </div>
+      </div> -->
     </div>
     <div class="xl:!ml-64 ">
       <!-- header -->
