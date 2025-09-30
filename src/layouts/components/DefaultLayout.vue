@@ -8,7 +8,7 @@ import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue';
 import NavbarSearch from '@/layouts/components/NavbarSearch.vue';
 import ChainProfile from '@/layouts/components/ChainProfile.vue';
 
-import { useDashboard } from '@/stores/useDashboard';
+import { NetworkType, useDashboard } from '@/stores/useDashboard';
 import { useBaseStore, useBlockchain } from '@/stores';
 
 import NavBarWallet from './NavBarWallet.vue';
@@ -138,6 +138,17 @@ dayjs()
                   '!text-white': selected($route, el),
                 }">
                   {{ $t(el?.title) }}
+                </div>
+              </RouterLink>
+            </div>
+            <div v-if="index === 0 && dashboard.networkType === NetworkType.Testnet"
+              class="menu bg-base-100 w-full !p-0">
+              <RouterLink
+                class="hover:bg-gray-100 dark:hover:bg-[#373f59] rounded cursor-pointer px-3 py-2 flex items-center"
+                :to="`/${blockchain.chainName}/faucet`">
+                <Icon icon="mdi:chevron-right" class="mr-2 ml-3"></Icon>
+                <div class="text-base capitalize text-gray-500 dark:text-gray-300">
+                  Faucet
                 </div>
               </RouterLink>
             </div>
