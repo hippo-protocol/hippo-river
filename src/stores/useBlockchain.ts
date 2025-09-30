@@ -104,7 +104,7 @@ export const useBlockchain = defineStore('blockchain', {
                       : x.path.replace(':chain', this.chainName),
                 },
                 icon: {
-                  image: `/src/assets/images/svg/${x.meta.i18n}.svg`,
+                  image: `/images/${x.meta.i18n}.svg`,
                   size: '24',
                 },
                 i18n: true,

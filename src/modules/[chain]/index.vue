@@ -159,7 +159,7 @@ function changeChart(type: string) {
           <div class="flex items-center gap-[20px] flex-wrap">
             <a v-for="(item, index) of comLinks" :key="index" :href="item.href" target="_blank"
               class="link link-primary flex items-center">
-              <img :src="`/src/assets/images/svg/${item.icon}.svg`" class="w-[20px] h-[20px]" />
+              <img :src="`/images/${item.icon}.svg`" class="w-[20px] h-[20px]" />
             </a>
           </div>
           <div class="flex flex-wrap gap-[4px] items-center">
@@ -345,8 +345,10 @@ function changeChart(type: string) {
           </label>
         </div>
 
-        <div class="bg-gra-dark rounded-[32px] px-[32px] py-[20px] flex flex-col gap-[24px] justify-center min-h-[320px]">
-          <div class="px-[20px] flex flex-col gap-[16px] justify-between items-start self-stretch rounded-[20px] border border-[#1E1F22] py-[16px]">
+        <div
+          class="bg-gra-dark rounded-[32px] px-[32px] py-[20px] flex flex-col gap-[24px] justify-center min-h-[320px]">
+          <div
+            class="px-[20px] flex flex-col gap-[16px] justify-between items-start self-stretch rounded-[20px] border border-[#1E1F22] py-[16px]">
             <div class="text-sm mb-1 text-[#98A9CE]">{{ $t('account.balance') }}</div>
             <div class="flex items-center justify-between self-stretch">
               <div class="text-sm text-right" :class="color">
