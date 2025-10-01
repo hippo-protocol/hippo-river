@@ -98,9 +98,9 @@ dayjs()
       :class="{ block: sidebarShow, 'hidden xl:!block': !sidebarShow }">
       <div class="flex justify-center py-[12px] px-[40px] h-[70px] border-b border-bg">
         <RouterLink to="/" class="flex items-center">
-          <h1 class="flex-1 ml-3 text-2xl font-semibold dark:text-white">
-            Hippo River
-          </h1>
+          <img class="flex-1 text-2xl font-semibold dark:text-white w-[124px] h-[30px]"
+            src="/images/HippoRiver-logo-white.png" alt="Hippo River Logo" />
+          </img>
         </RouterLink>
         <div class="pr-4 cursor-pointer xl:!hidden" @click="sidebarShow = false">
           <Icon icon="mdi-close" class="text-2xl" />

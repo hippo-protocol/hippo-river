@@ -175,15 +175,19 @@ function changeChart(type: string) {
       <div
         class="px-[24px] py-[16px] flex gap-[20px] justify-center items-center shrink-0 w-[465px] h-[170px] bg-[#0E0F11] rounded-[32px] border-1 border-[#1E1F22]">
         <a class="text-[11px] font-normal text-[#777] max-w-[180px] flex flex-col justify-between h-full"
-          href="https://x.com/Hippo_Protocol/status/1971080156367507841" target="_blank">
+          href="https://x.com/Hippo_Protocol/status/1917857715000599005" target="_blank">
           <div
             class="overflow-hidden [display:-webkit-box] [-webkit-line-clamp:5] [-webkit-box-orient:vertical] leading-[1.35] break-words pt-[12px]">
-            🔥 #DeSciSeoul was a huge success!
-            Over 5x more attendees than last year — DeSci is heating up fast. AI builders & industry teams joined in,
-            making the energy even stronger.
-            Big spotlight on @BioProtocol, while last year's co-host @ResearchHub just got listed on @Coinbase alongside
-            them.
-            The DeSci movement isn't just growing — it's exploding.
+            🚀 Hippo Protocol Mainnet is Now Live!
+
+            Healthcare needs its own blockchain - this is it
+
+            🔎 Explorer: https://river.hippoprotocol.ai
+
+            Hippo Protocol is a purpose-built Layer 1 designed to unify fragmented healthcare systems with
+            interoperable, privacy-preserving infrastructure
+
+            Experience true data sovereignty without compromising usability or regulatory compliance
           </div>
           <div class="flex justify-between items-center self-stretch">
             Sep 25, 2025
@@ -196,7 +200,7 @@ function changeChart(type: string) {
         </a>
 
         <div class="flex w-[220px] h-[130px] justify-center items-center rounded-[12px] overflow-hidden">
-          <img src="/src/assets/images/hippo-social.png" class="object-contain" />
+          <img src="/src/assets/images/hippo-social.jpg" class="object-contain" />
         </div>
       </div>
     </div>
@@ -206,12 +210,12 @@ function changeChart(type: string) {
       <div class="flex justify-between px-[20px] items-center max-w-[1150px]">
         <h3 class="text-[21px] font-bold text-white">Market</h3>
         <div class="tabs tabs-boxed bg-black p-[4px] gap-[4px] items-center rounded-[24px] border border-[#1d1f23]">
-          <a class="tab text-xs mr-2 text-white " :class="{ 'tab-active !text-black !bg-white': kind === 'price' }"
-            @click="changeChart('price')">
+          <a class="tab text-xs mr-2 text-white !font-bold !rounded-[20px]"
+            :class="{ 'tab-active !text-black !bg-white': kind === 'price' }" @click="changeChart('price')">
             Price
           </a>
-          <a class="tab text-xs text-white" :class="{ 'tab-active !text-black !bg-white': kind === 'volume' }"
-            @click="changeChart('volume')">
+          <a class="tab text-xs text-white !font-bold !rounded-[20px]"
+            :class="{ 'tab-active !text-black !bg-white': kind === 'volume' }" @click="changeChart('volume')">
             Volume
           </a>
         </div>
@@ -308,21 +312,22 @@ function changeChart(type: string) {
                 </div>
                 <label class="modal-backdrop" for="calculator">{{ $t('index.close') }}</label>
               </div>
-              <a class="!px-[10px] !py-[12px] !text-white btn grow ml-[8px] !h-[42px]"
+              <a class="!px-[10px] !py-[12px] !text-white btn grow ml-[8px] !h-[42px] !bg-[#10DF89]"
                 :class="{ '!btn-success': store.trustColor === 'green', '!btn-warning': store.trustColor === 'yellow' }"
-                :href="'https://apps.apple.com/app/data-hippo/id6738997275'" target="_blank">
+                :href="ticker.trade_url" target="_blank">
                 Get HP
               </a>
             </div>
           </label>
         </div>
         <PriceMarketChart :kind="kind" class="max-w-[826px] grow" />
+
       </div>
     </div>
 
     <div class="grid grid-cols-2 w-full">
       <div
-        class="bg-black rounded shadow px-[40px] pt-[44px] pb-[48px] flex flex-col gap-[16px] border-t border-r border-[#2C3443]">
+        class="bg-black shadow px-[40px] pt-[44px] pb-[48px] flex flex-col gap-[16px] border-t border-r border-[#2C3443]">
         <h3 class="text-[21px] font-bold text-white">Onchain Metrics</h3>
         <div class="grid grid-cols-1 gap-[8px] md:!grid-cols-2">
           <div v-for="(item, key) in store.stats" :key="key">
@@ -330,8 +335,7 @@ function changeChart(type: string) {
           </div>
         </div>
       </div>
-      <div
-        class="bg-black rounded shadow px-[40px] pt-[44px] pb-[48px] flex flex-col gap-[16px] border-t border-[#2C3443]">
+      <div class="bg-black shadow px-[40px] pt-[44px] pb-[48px] flex flex-col gap-[16px] border-t border-[#2C3443]">
         <div class="flex justify-between text-[21px] font-bold text-main">
           <span class="truncate">{{ walletStore.currentAddress || 'Not Connected' }}</span>
           <label v-if="!walletStore.currentAddress" class="flex items-center gap-[8px] cursor-pointer"
