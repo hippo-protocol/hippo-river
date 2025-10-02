@@ -10,19 +10,30 @@
       content="Hippo Protocol is a Cooperative Protocol for Healthcare Data Collection & Utilization."
     />
     <link rel="stylesheet" type="text/css" href="/loader.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.13.0/lottie.min.js"></script>
   </head>
   <body>
     <div id="app">
       <div id="loading-bg">
+        <div id="lottie-preloader-container"></div>
         <div class="loading-logo">
           <img
-            style="width: 124px; height: 30px"
+            style="width: 200px; height: 48px"
             src="/images/HippoRiver-logo-white.png"
             alt="Logo"
           />
         </div>
       </div>
     </div>
+    <script>
+      lottie.loadAnimation({
+        container: document.getElementById('lottie-preloader-container'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: './loading-animation.json',
+      });
+    </script>
     <script type="module" src="/src/main.ts"></script>
     <script type="module" src="/widget/ping-widget.js"></script>
   </body>

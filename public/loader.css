@@ -9,8 +9,16 @@
 
 .loading-logo {
   position: absolute;
-  inset-block-start: 40%;
-  inset-inline-start: calc(50% - 75px);
+  inset-block-start: 50%;
+  inset-inline-start: calc(50% - 100px);
+}
+
+#lottie-preloader-container{
+  position: absolute;
+  inset-block-start: calc(50% - 120px);  inset-inline-start: calc(50% - 50px);
+
+  width: 100px;
+  height: 100px;
 }
 
 .pre-loading {
