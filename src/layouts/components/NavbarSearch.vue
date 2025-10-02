@@ -62,10 +62,10 @@ function confirm() {
 <template>
   <div>
     <button
-      class="btn btn-ghost w-[280px] h-[40px] px-[16px] py-[10px] flex items-center gap-[12px] !bg-[#0e0f11] !justify-start"
+      class="btn !w-[280px] !h-[40px] !px-[16px] !py-[10px] !flex !items-center !gap-[12px] !bg-[#0e0f11] !justify-start !rounded-[24px] !border !border-[#1d1d1d] mr-[4px] !min-h-[auto]"
       @click="openSearchModal">
-      <Icon icon="mdi:magnify" class="text-2xl text-gray-500 dark:text-gray-400 shrink-0 w-[20px] h-[20px]" />
-      <span class="capitalize">Search</span>
+      <img src="/images/icon_search.svg" class="text-2xl text-gray-500 dark:text-gray-400 shrink-0 w-[20px] h-[20px]" />
+      <span class="capitalize text-white font-normal">Search</span>
     </button>
 
     <!-- modal -->

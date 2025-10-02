@@ -128,7 +128,7 @@ dayjs()
           <div class="collapse-content">
             <div v-for="(el, key) of item?.children" class="menu bg-black w-full !p-0">
               <RouterLink v-if="isNavLink(el)" @click="sidebarShow = false"
-                class="hover:bg-gray-100 dark:hover:bg-[#373f59] cursor-pointer px-3 py-2 flex items-center" :class="{
+                class="hover:bg-[linear-gradient(90deg,rgba(26,33,30,0.1),rgba(16,223,137,0.25))] cursor-pointer px-3 py-2 flex items-center" :class="{
                   'border-r-[6px] border-primary bg-[linear-gradient(90deg,rgba(26,33,30,0.5),rgba(16,223,137,0.25))]': selected($route, el),
                 }" :to="el.to">
                 <img v-if="el?.icon?.image" :src="el?.icon?.image" class="w-6 h-6 rounded-full mr-3 ml-4 " />
@@ -140,7 +140,7 @@ dayjs()
               </RouterLink>
             </div>
             <div v-if="index === 0 && dashboard.networkType === NetworkType.Testnet" class="menu bg-black w-full !p-0">
-              <RouterLink class="hover:bg-gray-100 dark:hover:bg-[#373f59] cursor-pointer px-3 py-2 flex items-center"
+              <RouterLink class="hover:bg-[linear-gradient(90deg,rgba(26,33,30,0.1),rgba(16,223,137,0.25))] cursor-pointer px-3 py-2 flex items-center"
                 :class="{
                   'border-r-[6px] border-primary bg-[linear-gradient(90deg,rgba(26,33,30,0.5),rgba(16,223,137,0.25))]': selected($route, { to: { path: `/${blockchain.chainName}/faucet` }, title: 'module.faucet' }),
                 }" :to="`/${blockchain.chainName}/faucet`">
@@ -216,7 +216,7 @@ dayjs()
         <NavbarSearch class="!inline-block" />
         <NavBarWallet />
         <button
-          class="btn btn-ghost px-[16px] py-[2px] flex items-center gap-[8px] justify-center border-[#19181C] bg-gra-dark-button !rounded-[32px] ml-[4px]">
+          class="btn btn-ghost px-[16px] py-[2px] flex items-center gap-[8px] justify-center border-[#19181C] bg-gra-dark-button !rounded-[32px] ml-[4px] !h-[40px] !min-h-[auto]">
           <LanguageIcon :size="'20'" />
           <span class="text-white">EN</span>
         </button>

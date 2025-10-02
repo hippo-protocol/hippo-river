@@ -50,7 +50,7 @@ const params = computed(() => {
 <template>
   <div class="dropdown dropdown-hover dropdown-end">
     <label tabindex="0"
-      class="btn w-[112px] truncate !inline-flex text-xs md:!text-sm border-[#19181C] bg-gra-dark-button !rounded-[32px]"
+      class="btn w-[112px] truncate !inline-flex text-xs md:!text-sm border-[#19181C] bg-gra-dark-button !rounded-[32px] !h-[40px] !min-h-[auto]"
       :class="walletStore.shortAddress ? 'lowercase' : 'capitalize'">
       <WalletIcon :size="'20'" />
       <span class="ml-1 md:block text-white">

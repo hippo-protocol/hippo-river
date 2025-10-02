@@ -275,14 +275,14 @@ const refresh = () => {
 <template>
   <div>
     <div class="grid sm:grid-cols-1 md:grid-cols-5 gap-[8px] px-[40px] pt-[90px] pb-[40px]">
-      <div class="flex flex-col items-start gap-[12px] py-[24px] px-[32px] bg-gra-dark rounded-[32px]">
+      <div class="flex flex-col items-start gap-[12px] py-[24px] px-[32px] bg-gra-dark rounded-[32px] border border-[#1E1F22]">
         <p class="text-[13px] text-[#98a9ce]">
           {{ $t('staking.inflation') }}
         </p>
         <div class="font-bold text-white">{{ format.percent(mintStore.inflation) }}</div>
       </div>
       <!-- Unbonding Time -->
-      <div class="flex flex-col items-start gap-[12px] py-[24px] px-[32px] bg-gra-dark rounded-[32px]">
+      <div class="flex flex-col items-start gap-[12px] py-[24px] px-[32px] bg-gra-dark rounded-[32px] border border-[#1E1F22]">
         <p class="text-[13px] text-[#98a9ce]">
           {{ $t('staking.unbonding_time') }}
         </p>
@@ -290,7 +290,7 @@ const refresh = () => {
       </div>
 
       <!-- Double Sign Slashing -->
-      <div class="flex flex-col items-start gap-[12px] py-[24px] px-[32px] bg-gra-dark rounded-[32px]">
+      <div class="flex flex-col items-start gap-[12px] py-[24px] px-[32px] bg-gra-dark rounded-[32px] border border-[#1E1F22]">
         <p class="text-[13px] text-[#98a9ce]">
           {{ $t('staking.double_sign_slashing') }}
         </p>
@@ -300,7 +300,7 @@ const refresh = () => {
       </div>
 
       <!-- Downtime Slashing -->
-      <div class="flex flex-col items-start gap-[12px] py-[24px] px-[32px] bg-gra-dark rounded-[32px]">
+      <div class="flex flex-col items-start gap-[12px] py-[24px] px-[32px] bg-gra-dark rounded-[32px] border border-[#1E1F22]">
         <p class="text-[13px] text-[#98a9ce]">
           {{ $t('staking.downtime_slashing') }}
         </p>
@@ -310,7 +310,7 @@ const refresh = () => {
       </div>
 
       <!-- Staking APR -->
-      <div class="flex flex-col items-start gap-[12px] py-[24px] px-[32px] bg-gra-dark rounded-[32px]">
+      <div class="flex flex-col items-start gap-[12px] py-[24px] px-[32px] bg-gra-dark rounded-[32px] border border-[#1E1F22]">
         <p class="text-[13px] text-[#98a9ce]">
           Staking APR
         </p>

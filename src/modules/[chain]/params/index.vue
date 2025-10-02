@@ -16,7 +16,7 @@ onMounted(() => {
     <div class="mb-[60px]">
       <div class="text-[21px] mb-[35px]">{{ chain.title }}</div>
       <div class="grid grid-cols-2 md:!grid-cols-4 gap-4">
-        <div v-for="(item, index) of chain.items" :key="index" class="px-[32px] py-[24px] rounded-[32px] bg-gra-dark">
+        <div v-for="(item, index) of chain.items" :key="index" class="px-[32px] py-[24px] rounded-[32px] bg-gra-dark border border-[#1E1F22]">
           <div class="text-[13px] mb-[14px] text-[#98a9ce]">{{ item.subtitle }}</div>
           <div class="text-[16px] text-white">{{ item.value }}</div>
         </div>

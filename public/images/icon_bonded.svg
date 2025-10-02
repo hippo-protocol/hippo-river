@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+  <path opacity="0.21" fill-rule="evenodd" clip-rule="evenodd" d="M20 40C31.0457 40 40 31.0457 40 20C40 8.95431 31.0457 0 20 0C8.95431 0 0 8.95431 0 20C0 31.0457 8.95431 40 20 40Z" fill="black"/>
+  <path opacity="0.5" d="M15.9999 17C15.9999 14.2302 15.5 12 19.9999 12C24.4999 12 23.9999 14.2302 23.9999 17" stroke="#FF57CC" stroke-width="2" stroke-linecap="round"/>
+  <path d="M28 30H12V16H28V30ZM20 21C19.4477 21 19 21.4477 19 22V24C19 24.5523 19.4477 25 20 25C20.5523 25 21 24.5523 21 24V22C21 21.4477 20.5523 21 20 21Z" fill="#FF57CC"/>
+</svg>

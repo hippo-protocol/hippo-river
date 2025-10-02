@@ -44,7 +44,7 @@ function formatTitle(v: string) {
       <div
         v-for="(item, index) of props.cardItem?.items"
         :key="index"
-        class="px-[32px] py-[24px] rounded-[32px] bg-gra-dark"
+        class="px-[32px] py-[24px] rounded-[32px] bg-gra-dark border border-[#1E1F22]"
       >
         <div class="text-[13px] mb-[14px] text-[#98a9ce]">{{ formatTitle(item?.subtitle) }}</div>
         <div class="text-[16px] text-white">{{ calculateValue(item?.value) }}</div>

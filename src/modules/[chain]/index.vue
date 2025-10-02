@@ -276,7 +276,7 @@ function changeChart(type: string) {
               </div>
             </div>
             <div class="flex">
-              <label class="btn !p-[12px] rounded-[12px] border border-[#19181C] bg-gra-dark-button" for="calculator">
+              <label class="btn !px-[10px] !py-[12px] rounded-[12px] border border-[#19181C] bg-gra-dark-button !min-h-[auto] !h-[42px]" for="calculator">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                   <path
                     d="M2 10.2162H9.78378M10.2162 18V1.99999M6.10811 7.62161V4.8108M4.7027 6.21621H7.51351M4.7027 14.5405H7.51351M12.8108 11.7297H15.6216M12.8108 9.13513H15.6216M4.16216 18H15.8378H18V1.99999H15.8378H4.16216H2V18H4.16216Z"
@@ -312,7 +312,7 @@ function changeChart(type: string) {
                 </div>
                 <label class="modal-backdrop" for="calculator">{{ $t('index.close') }}</label>
               </div>
-              <a class="!px-[10px] !py-[12px] !text-white btn grow ml-[8px] !h-[42px] !bg-[#10DF89]"
+              <a class="!px-[10px] !py-[12px] !text-white btn grow ml-[8px] !h-[42px] !bg-[#10DF89] !rounded-[12px] !min-h-[auto]"
                 :class="{ '!btn-success': store.trustColor === 'green', '!btn-warning': store.trustColor === 'yellow' }"
                 :href="ticker.trade_url" target="_blank">
                 Get HP
@@ -350,7 +350,7 @@ function changeChart(type: string) {
         </div>
 
         <div
-          class="bg-gra-dark rounded-[32px] px-[32px] py-[20px] flex flex-col gap-[24px] justify-center min-h-[320px]">
+          class="bg-gra-dark rounded-[32px] px-[32px] py-[20px] flex flex-col gap-[24px] justify-center min-h-[320px] border border-[#1E1F22]">
           <div
             class="px-[20px] flex flex-col gap-[16px] justify-between items-start self-stretch rounded-[20px] border border-[#1E1F22] py-[16px]">
             <div class="text-sm mb-1 text-[#98A9CE]">{{ $t('account.balance') }}</div>
