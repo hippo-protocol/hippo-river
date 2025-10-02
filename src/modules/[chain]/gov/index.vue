@@ -53,7 +53,8 @@ const closeProposeModal = () => {
   <div>
     <ActiveProposals type="gov" />
     <div class="h-[1px] w-full bg-[#2c3443] mb-[62px] mt-[17px]"></div>
-    <div class="tabs tabs-boxed bg-transparent text-center flex justify-between mb-[48px] px-[40px]">
+    <h3 class="text-[21px] text-white font-bold ml-[40px] px-[20px] mb-[56px]">All Proposals</h3>
+    <div class="tabs tabs-boxed bg-transparent text-center flex justify-between mb-[48px] px-[60px]">
       <div class="flex gap-[4px]  rounded-[24px] border border-[#2c3443]  p-[4px]">
         <a class="tab text-white text-normal capitalize !rounded-[20px]"
           :class="{ 'tab-active !text-black !bg-white': tab === '0' }" @click="changeTab('0')">All</a>

@@ -276,7 +276,9 @@ function changeChart(type: string) {
               </div>
             </div>
             <div class="flex">
-              <label class="btn !px-[10px] !py-[12px] rounded-[12px] border border-[#19181C] bg-gra-dark-button !min-h-[auto] !h-[42px]" for="calculator">
+              <label
+                class="btn !px-[10px] !py-[12px] rounded-[12px] border border-[#19181C] bg-gra-dark-button !min-h-[auto] !h-[42px]"
+                for="calculator">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                   <path
                     d="M2 10.2162H9.78378M10.2162 18V1.99999M6.10811 7.62161V4.8108M4.7027 6.21621H7.51351M4.7027 14.5405H7.51351M12.8108 11.7297H15.6216M12.8108 9.13513H15.6216M4.16216 18H15.8378H18V1.99999H15.8378H4.16216H2V18H4.16216Z"
@@ -328,7 +330,7 @@ function changeChart(type: string) {
     <div class="grid grid-cols-2 w-full">
       <div
         class="bg-black shadow px-[40px] pt-[44px] pb-[48px] flex flex-col gap-[16px] border-t border-r border-[#2C3443]">
-        <h3 class="text-[21px] font-bold text-white">Onchain Metrics</h3>
+        <h3 class="text-[21px] font-bold text-white px-[20px]">Onchain Metrics</h3>
         <div class="grid grid-cols-1 gap-[8px] md:!grid-cols-2">
           <div v-for="(item, key) in store.stats" :key="key">
             <CardStatisticsVertical v-bind="item" />
@@ -337,7 +339,7 @@ function changeChart(type: string) {
       </div>
       <div class="bg-black shadow px-[40px] pt-[44px] pb-[48px] flex flex-col gap-[16px] border-t border-[#2C3443]">
         <div class="flex justify-between text-[21px] font-bold text-main">
-          <span class="truncate">{{ walletStore.currentAddress || 'Not Connected' }}</span>
+          <span class="truncate px-[20px]">{{ walletStore.currentAddress || 'Not Connected' }}</span>
           <label v-if="!walletStore.currentAddress" class="flex items-center gap-[8px] cursor-pointer"
             for="PingConnectWallet">
             <span class="text-[12px] font-normal">Connect Wallet</span>

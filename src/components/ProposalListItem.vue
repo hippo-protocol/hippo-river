@@ -6,7 +6,7 @@ import {
   useTxDialog,
 } from '@/stores';
 import { select } from '@/components/dynamic/index';
-import type { PaginatedProposals } from '@/types';
+import type { GovProposal, PaginatedProposals } from '@/types';
 import ProposalProcess from './ProposalProcess.vue';
 import type { PropType } from 'vue';
 import { computed, ref } from 'vue';
@@ -56,12 +56,29 @@ function metaItem(metadata: string | undefined): { title: string; summary: strin
   return metadata ? JSON.parse(metadata) : {}
 }
 
+const calcTurnout = (proposal: GovProposal) => {
+  const tally = proposal.final_tally_result;
+  let sum = 0;
+  if (tally) {
+    sum += Number(tally.abstain || 0);
+    sum += Number(tally.yes || 0);
+    sum += Number(tally.no || 0);
+    sum += Number(tally.no_with_veto || 0);
+  }
+  const total = sum;
+  if (total > 0) {
+    const bonded = staking.pool?.bonded_tokens || '1';
+    return format.percent(total / Number(bonded));
+  }
+  return 0;
+}
+
 </script>
 <template>
   <div class="rounded text-sm px-[40px]">
     <table class="table-compact w-full table-fixed hidden lg:!table">
       <thead>
-        <tr>
+        <tr class="text-white">
           <th class="w-20 text-left">ID</th>
           <th class="text-left">Title</th>
           <th class="text-left">Type</th>
@@ -85,17 +102,17 @@ function metaItem(metadata: string | undefined): { title: string; summary: strin
               </RouterLink>
             </div>
           </td>
-          <td>{{ showType(item.content['@type']) }}</td>
-          <td class="">
-            <ProposalProcess :pool="staking.pool" :tally="item.final_tally_result"></ProposalProcess>
+          <td>
+            <div class="px-[8px] py-[4px] rounded-[4px] bg-[#1f2638] w-fit text-[12px]"> {{
+              showType(item.content['@type']) }}</div>
+          </td>
+          <td class="text-white">
+            <!-- <ProposalProcess :pool="staking.pool" :tally="item.final_tally_result"></ProposalProcess> -->
+            <!-- {{ item.final_tally_result }} -->
+            {{ calcTurnout(item) }}
           </td>
           <td class="">
-            <div class="flex items-center" :class="statusMap?.[item?.status] === 'PASSED'
-              ? 'text-yes'
-              : statusMap?.[item?.status] === 'REJECTED'
-                ? 'text-no'
-                : 'text-info'
-              ">
+            <div class="flex items-center text-white">
 
               <div class="text-xs">
                 {{ statusMap?.[item?.status] || item?.status }}
@@ -145,7 +162,7 @@ function metaItem(metadata: string | undefined): { title: string; summary: strin
 
         <div class="mt-4" v-if="statusMap?.[item?.status] === 'VOTING'">
           <div class="flex justify-between">
-            <div class="flex items-center" :class="statusMap?.[item?.status] === 'PASSED'
+            <div class="flex items-center text-white" :class="statusMap?.[item?.status] === 'PASSED'
               ? 'text-yes'
               : statusMap?.[item?.status] === 'REJECTED'
                 ? 'text-no'
@@ -168,7 +185,7 @@ function metaItem(metadata: string | undefined): { title: string; summary: strin
               ">
               <span v-if="item?.voterStatus !== 'VOTE_OPTION_NO_WITH_VETO'">{{
                 item?.voterStatus?.replace('VOTE_OPTION_', '')
-              }}</span>
+                }}</span>
 
               <span v-else>Vote</span></label>
 
