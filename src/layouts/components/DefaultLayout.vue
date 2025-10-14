@@ -94,15 +94,15 @@ dayjs()
 <template>
   <div class="bg-black">
     <!-- sidebar -->
-    <div class="w-64 fixed z-50 left-0 top-0 bottom-0 overflow-auto border-r border-bg"
+    <div class="w-64 fixed z-50 left-0 top-0 bottom-0 overflow-auto border-r border-bg bg-black items-center"
       :class="{ block: sidebarShow, 'hidden xl:!block': !sidebarShow }">
-      <div class="flex justify-center py-[12px] px-[40px] h-[70px] border-b border-bg">
+      <div class="flex justify-between py-[12px] px-[40px] h-[70px] border-b border-bg xl:!justify-center">
         <RouterLink to="/" class="flex items-center">
           <img class="flex-1 text-2xl font-semibold dark:text-white w-[124px] h-[30px]"
             src="/images/HippoRiver-logo-white.png" alt="Hippo River Logo" />
           </img>
         </RouterLink>
-        <div class="pr-4 cursor-pointer xl:!hidden" @click="sidebarShow = false">
+        <div class="cursor-pointer flex items-center xl:!hidden" @click="sidebarShow = false">
           <Icon icon="mdi-close" class="text-2xl" />
         </div>
       </div>
@@ -128,7 +128,8 @@ dayjs()
           <div class="collapse-content">
             <div v-for="(el, key) of item?.children" class="menu bg-black w-full !p-0">
               <RouterLink v-if="isNavLink(el)" @click="sidebarShow = false"
-                class="hover:bg-[linear-gradient(90deg,rgba(26,33,30,0.1),rgba(16,223,137,0.25))] cursor-pointer px-3 py-2 flex items-center" :class="{
+                class="hover:bg-[linear-gradient(90deg,rgba(26,33,30,0.1),rgba(16,223,137,0.25))] cursor-pointer px-3 py-2 flex items-center"
+                :class="{
                   'border-r-[6px] border-primary bg-[linear-gradient(90deg,rgba(26,33,30,0.5),rgba(16,223,137,0.25))]': selected($route, el),
                 }" :to="el.to">
                 <img v-if="el?.icon?.image" :src="el?.icon?.image" class="w-6 h-6 rounded-full mr-3 ml-4 " />
@@ -140,7 +141,8 @@ dayjs()
               </RouterLink>
             </div>
             <div v-if="index === 0 && dashboard.networkType === NetworkType.Testnet" class="menu bg-black w-full !p-0">
-              <RouterLink class="hover:bg-[linear-gradient(90deg,rgba(26,33,30,0.1),rgba(16,223,137,0.25))] cursor-pointer px-3 py-2 flex items-center"
+              <RouterLink
+                class="hover:bg-[linear-gradient(90deg,rgba(26,33,30,0.1),rgba(16,223,137,0.25))] cursor-pointer px-3 py-2 flex items-center"
                 :class="{
                   'border-r-[6px] border-primary bg-[linear-gradient(90deg,rgba(26,33,30,0.5),rgba(16,223,137,0.25))]': selected($route, { to: { path: `/${blockchain.chainName}/faucet` }, title: 'module.faucet' }),
                 }" :to="`/${blockchain.chainName}/faucet`">
