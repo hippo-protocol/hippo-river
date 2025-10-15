@@ -32,9 +32,9 @@ onMounted(() => {
 })
 
 function myContracts() {
-    if(field.value === "contract")
+    if (field.value === "contract")
         router.push(`/${props.chain}/cosmwasm/0/transactions?contract=${creator.value}`)
-    else if(field.value === "creator")
+    else if (field.value === "creator")
         router.push(`/${props.chain}/cosmwasm/${creator.value}/contracts`)
 }
 const togo = ref("")
@@ -43,26 +43,38 @@ function gotoHistory() {
 }
 </script>
 <template>
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
-        <h2 class="card-title truncate w-full mb-4">{{ $t('cosmwasm.title') }}</h2>
-        <div class="grid grid-flow-col auto-cols-max gap-4 overflow-hidden">
-            <div class="join w-full border border-primary">
-                <select v-model="field" class="select select-primary"><option value="contract">Contract</option><option value="creator">Creator</option></select>
-                <input v-model="creator" type=text class="input input-bordered w-full join-item" placeholder="address" />
-                <button class="join-item btn  btn-primary" @click="myContracts()">{{ $t('cosmwasm.btn_query') }}</button>
+    <div class="px-[48px] py-[76px] text-white">
+        <h2 class="truncate w-full mb-[35px] text-[21px]">{{ $t('cosmwasm.title') }}</h2>
+        <div class="flex justify-between items-center ">
+            <div class="grid grid-flow-col auto-cols-max gap-4 overflow-hidden">
+                <div class="join w-full border border-[#1D1D1D] p-[8px] !rounded-[24px] bg-[#0E0F11]">
+                    <select v-model="field" class="cursor-pointer bg-inherit rounded-none px-[12px] py-[7px]">
+                        <option value="contract">Contract</option>
+                        <option value="creator">Creator</option>
+                    </select>
+                    <input v-model="creator" type=text
+                        class="w-full join-item !ml-[12px] bg-inherit border-l border-l-[#2c3443] pl-[20px] "
+                        placeholder="address" />
+
+                </div>
+                <button @click="myContracts()"
+                    class="rounded-[32px] bg-white text-black px-[20px] py-[7px] font-bold">{{
+                        $t('cosmwasm.btn_query')
+                    }}</button>
             </div>
-            <div>
-                <select v-model="togo" class="select select-primary" @change="gotoHistory()">
+            <div class="">
+                <select v-model="togo" class="select !bg-inherit" @change="gotoHistory()">
                     <option value="">History</option>
-                    <option v-for="(v, index) in history" :key="index" :value="v" >...{{ String(v).substring(45) }}</option>
+                    <option v-for="(v, index) in history" :key="index" :value="v">...{{ String(v).substring(45) }}
+                    </option>
                 </select>
             </div>
         </div>
 
         <div class="overflow-x-auto">
             <table class="table table-compact w-full mt-4 text-sm">
-                <thead class=" bg-base-200">
-                    <tr>
+                <thead class="text-white">
+                    <tr class="border-0">
                         <th>{{ $t('cosmwasm.code_id') }}</th>
                         <th>{{ $t('cosmwasm.code_hash') }}</th>
                         <th>{{ $t('cosmwasm.creator') }}</th>
@@ -89,7 +101,9 @@ function gotoHistory() {
             </table>
             <div class="flex justify-between">
                 <PaginationBar :limit="pageRequest.limit" :total="codes.pagination?.total" :callback="pageload" />
-                <label for="wasm_store_code" class="btn btn-primary my-5" @click="dialog.open('wasm_store_code', {})">{{ $t('cosmwasm.btn_up_sc') }}</label>
+                <label for="wasm_store_code" class="btn !bg-white !text-black my-5"
+                    @click="dialog.open('wasm_store_code', {})">{{
+                        $t('cosmwasm.btn_up_sc') }}</label>
             </div>
         </div>
     </div>

@@ -1,30 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hippo River</title>
-    <meta name="description" content="Hippo Protocol is a Cooperative Protocol for Healthcare Data Collection & Utilization." />
-    <link rel="stylesheet" type="text/css" href="/loader.css" />    
+    <meta
+      name="description"
+      content="Hippo Protocol is a Cooperative Protocol for Healthcare Data Collection & Utilization."
+    />
+    <link rel="stylesheet" type="text/css" href="/loader.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.13.0/lottie.min.js"></script>
   </head>
   <body>
     <div id="app">
       <div id="loading-bg">
+        <div id="lottie-preloader-container"></div>
         <div class="loading-logo">
-          <img src="/logo.svg" alt="Logo" />
-        </div>
-        <div class="pre-loading">
-          <div class="effect-1 effects"></div>
-          <div class="effect-2 effects"></div>
-          <div class="effect-3 effects"></div>
+          <img
+            style="width: 200px; height: 48px"
+            src="/images/HippoRiver-logo-white.png"
+            alt="Logo"
+          />
         </div>
       </div>
     </div>
+    <script>
+      lottie.loadAnimation({
+        container: document.getElementById('lottie-preloader-container'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: '/loading-animation.json',
+      });
+    </script>
     <script type="module" src="/src/main.ts"></script>
-    <script
-      type="module"
-      src="/widget/ping-widget.js"
-    ></script>
+    <script type="module" src="/widget/ping-widget.js"></script>
   </body>
 </html>

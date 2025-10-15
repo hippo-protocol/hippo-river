@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue';
 import { controlledComputed } from '@vueuse/core'
 
 interface Props {
@@ -22,31 +21,12 @@ const isPositive = controlledComputed(
 </script>
 
 <template>
-  <div class="bg-base-100 shadow rounded p-4">
-    <div class="flex items-center justify-center">
-      <div v-if="props.icon" class="relative w-9 h-9 rounded overflow-hidden flex items-center justify-center">
-        <Icon :class="[`text-${props?.color}`]" :icon="props.icon" size="32" />
-        <div class="absolute top-0 left-0 bottom-0 right-0 opacity-20" :class="[`bg-${props?.color}`]"></div>
-      </div>
-
-      <div v-if="props.change" :class="isPositive ? 'text-success' : 'text-error'"
-        class="flex items-center text-sm font-semibold">
-        <span>{{ isPositive ? `+${props.change}` : props.change }}%</span>
-        <Icon :icon="isPositive ? 'mdi-chevron-up' : 'mdi-chevron-down'" />
-      </div>
+  <div
+    class="bg-gra-dark rounded-[32px] border border-[#1E1F22] py-[24px] px-[32px] items-start gap-[24px] grow flex flex-col">
+    <div class="flex items-center justify-between self-stretch">
+      <p class="text-[#98a9ce] text-[14px]">{{ props.title }}</p>
+      <img :src="props.icon" :alt="props.title" class="w-[40px] h-[40px] shrink-0" />
     </div>
-
-    <div class="">
-      <h6 class="text-lg text-center font-semibold mt-2 mb-1 break-all">
-        {{ props.stats || '-' }}
-      </h6>
-      <p class="text-sm text-center">
-        {{ props.title }}
-      </p>
-
-      <div v-if="props.subtitle" size="x-small" class="font-semibold">
-        <span class="truncate">{{ props.subtitle }}</span>
-      </div>
-    </div>
+    <span class="text-white text-[20px] text-bold">{{ props.stats || '-' }}</span>
   </div>
 </template>

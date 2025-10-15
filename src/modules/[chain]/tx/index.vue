@@ -58,18 +58,19 @@ const ellipsisHash = (tx: string) => {
 
 </script>
 <template>
-  <div>
-    <div class="tabs tabs-boxed bg-transparent mb-4">
-      <a class="tab text-gray-400 uppercase" :class="{ 'tab-active': tab === 'recent' }" @click="tab = 'recent'">{{
-        $t('block.recent') }}</a>
-      <a class="tab text-gray-400 uppercase" :class="{ 'tab-active': tab === 'search' }"
-        @click="tab = 'search'">Search</a>
+  <div class="px-[44px] py-[40px]">
+    <div class="flex gap-[4px]  rounded-[24px] border border-[#2c3443] p-[4px] mb-[50px] size-fit">
+      <a class="tab text-white text-normal capitalize !rounded-[20px]"
+        :class="{ 'tab-active !text-black !bg-white': tab === 'recent' }" @click="tab = 'recent'">{{
+          $t('block.recent') }}</a>
+      <a class="tab text-white text-normal capitalize !rounded-[20px]"
+        :class="{ 'tab-active !text-black !bg-white': tab === 'search' }" @click="tab = 'search'">Search</a>
     </div>
 
-    <div v-show="tab === 'recent'" class="bg-base-100 rounded overflow-x-auto">
+    <div v-show="tab === 'recent'" class="rounded overflow-x-auto">
       <table class="table w-full table-compact">
-        <thead class="bg-base-200">
-          <tr>
+        <thead class="border-0 text-white">
+          <tr class="border-0">
             <th style="position: relative; z-index: 2">
               {{ $t('account.height') }}
             </th>
@@ -81,14 +82,15 @@ const ellipsisHash = (tx: string) => {
             <th>{{ $t('block.fees') }}</th>
           </tr>
         </thead>
-        <tbody>
-          <tr v-for="(item, index) in base.latestTxs" :key="item.hash" class="hover">
-            <td class="text-sm text-primary">
+        <tbody class="text-white">
+          <tr class="h-[20px] border-0"></tr>
+          <tr v-for="(item, index) in base.latestTxs" :key="item.hash" class="hover border-0">
+            <td class="text-sm">
               <RouterLink :to="`/${props.chain}/block/${item.height}`">{{
                 item.height
                 }}</RouterLink>
             </td>
-            <td class="truncate text-primary">
+            <td class="truncate ">
               <RouterLink :to="`/${props.chain}/tx/${item.hash}`">{{
                 ellipsisHash(item.hash)
                 }}</RouterLink>
@@ -117,7 +119,7 @@ const ellipsisHash = (tx: string) => {
       <PaginationBar :total="base.txCount" :limit="20" :callback="onPageChange" :current-page="page" />
     </div>
 
-    <div v-show="tab === 'search'" class="bg-base-100 rounded overflow-x-auto">
+    <div v-show="tab === 'search'" class="rounded overflow-x-auto">
       <div class="p-4">
         <div class="form-control">
           <input v-model="hash" type="text" class="input input-bordered" placeholder="Search by Tx Hash"

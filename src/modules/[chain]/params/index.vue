@@ -11,20 +11,14 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="overflow-hidden">
+  <div class="overflow-hidden px-[48px] py-[76px] text-white">
     <!-- Chain ID -->
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded">
-      <div class="text-base mb-3 text-main">{{ chain.title }}</div>
-      <div
-        class="grid grid-cols-2 md:!grid-cols-4 lg:!grid-cols-5 2xl:!grid-cols-6 gap-4"
-      >
-        <div
-          v-for="(item, index) of chain.items"
-          :key="index"
-          class="rounded-sm bg-active px-4 py-2"
-        >
-          <div class="text-xs mb-2 text-secondary">{{ item.subtitle }}</div>
-          <div class="text-base text-main">{{ item.value }}</div>
+    <div class="mb-[60px]">
+      <div class="text-[21px] mb-[35px]">{{ chain.title }}</div>
+      <div class="grid grid-cols-2 md:!grid-cols-4 gap-4">
+        <div v-for="(item, index) of chain.items" :key="index" class="px-[32px] py-[24px] rounded-[32px] bg-gra-dark border border-[#1E1F22]">
+          <div class="text-[13px] mb-[14px] text-[#98a9ce]">{{ item.subtitle }}</div>
+          <div class="text-[16px] text-white">{{ item.value }}</div>
         </div>
       </div>
     </div>
@@ -38,7 +32,7 @@ onMounted(() => {
     <CardParameter :cardItem="store.distribution" />
     <!-- Slashing Parameters -->
     <CardParameter :cardItem="store.slashing" />
-    
+
   </div>
 </template>
 

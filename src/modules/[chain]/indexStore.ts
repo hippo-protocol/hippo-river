@@ -167,14 +167,14 @@ export const useIndexModule = defineStore('module-index', {
         {
           title: 'Height',
           color: 'primary',
-          icon: 'mdi-pound',
+          icon: '/images/icon_height.svg',
           stats: String(base?.latest?.block?.header?.height || 0),
           change: 0,
         },
         {
           title: 'Validators',
           color: 'error',
-          icon: 'mdi-human-queue',
+          icon: '/images/icon_validator.svg',
           stats: String(
             base?.latest?.block?.last_commit?.signatures.length || 0
           ),
@@ -183,21 +183,40 @@ export const useIndexModule = defineStore('module-index', {
         {
           title: 'Total Supply',
           color: 'success',
-          icon: 'mdi-currency-usd',
+          icon: '/images/icon_totalsupply.svg',
           stats: formatter.formatTokenAmount(bank.supply),
           change: 0,
         },
         {
           title: 'Circulating Supply',
           color: 'success',
-          icon: 'mdi-currency-usd',
+          icon: '/images/icon_totalsupply.svg',
           stats: formatter.formatTokenAmount(bank.supply),
+          change: 0,
+        },
+        {
+          title: 'Staking APR',
+          color: 'success',
+          icon: '/images/icon_apr.svg',
+          stats: formatter.formatDecimalToPercent(this.stakingApr.toString()),
+          change: 0,
+        },
+        {
+          title: 'Community Pool',
+          color: 'primary',
+          icon: '/images/icon_community.svg',
+          stats: formatter.formatTokens(
+            // @ts-ignore
+            this.communityPool?.filter(
+              (x: Coin) => x.denom === staking.params.bond_denom
+            )
+          ),
           change: 0,
         },
         {
           title: 'Bonded Tokens',
           color: 'warning',
-          icon: 'mdi-lock',
+          icon: '/images/icon_bonded.svg',
           stats: formatter.formatTokenAmount({
             // @ts-ignore
             amount: this.pool.bonded_tokens,
@@ -208,27 +227,8 @@ export const useIndexModule = defineStore('module-index', {
         {
           title: 'Inflation',
           color: 'success',
-          icon: 'mdi-chart-multiple',
+          icon: '/images/icon_inflation.svg',
           stats: formatter.formatDecimalToPercent(mintStore.inflation),
-          change: 0,
-        },
-        {
-          title: 'Staking APR',
-          color: 'success',
-          icon: 'mdi-chart-multiple',
-          stats: formatter.formatDecimalToPercent(this.stakingApr.toString()),
-          change: 0,
-        },
-        {
-          title: 'Community Pool',
-          color: 'primary',
-          icon: 'mdi-bank',
-          stats: formatter.formatTokens(
-            // @ts-ignore
-            this.communityPool?.filter(
-              (x: Coin) => x.denom === staking.params.bond_denom
-            )
-          ),
           change: 0,
         },
       ];

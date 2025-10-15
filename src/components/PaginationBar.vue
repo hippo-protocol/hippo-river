@@ -12,6 +12,7 @@ const showSize = 3
 const pages = computed(() => {
     const pages: { color: string, page: number }[] = []
     const total = Number(props.total || 0)
+    let skipFlag = false; // to add ' ... '
     if (total > 0 && props.limit && total > props.limit) {
         let page = 0
         while (true) {
@@ -19,6 +20,10 @@ const pages = computed(() => {
             page += 1
             if (total / props.limit > 10 && page > showSize && page < (total / props.limit - showSize + 1)) {
                 if (!(page >= current.value - 1 && page <= current.value + 1)) {
+                    if(!skipFlag){
+                        pages.push({ color: '', page: '...' as any })
+                        skipFlag = true
+                    }
                     continue
                 }
             }
@@ -44,13 +49,12 @@ watch(() => { return props.currentPage }, (newPage) => {
 
 </script>
 <template>
-    <div class="my-5 text-center">
-        <div v-if="total && limit" class="btn-group">
+    <div class="py-[40px] flex justify-center">
+        <div v-if="total && limit" class="flex justify-center items-center gap-[4px] p-[8px] rounded-[100px] border border-[#1E1F22]">
             <button v-for="{ page, color } in pages" :key="page"
-                class="btn bg-gray-100 text-gray-500 hover:text-white border-none dark:bg-gray-800 dark:text-white"
-                :class="{
-                    '!btn-primary': color === 'btn-primary',
-                }" @click="gotoPage(page)">
+                class="bg-transparent text-white rounded-[100px] min-w-[28px] min-h-[28px] text-[11px] font-bold" :class="{
+                    '!bg-white !text-black': current === page
+                }" @click="(page as any) ==='...' ? undefined : gotoPage(page)">
                 {{ page }}
             </button>
         </div>

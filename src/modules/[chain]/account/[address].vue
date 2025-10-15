@@ -133,9 +133,9 @@ function mapAmount(events: { type: string, attributes: { key: string, value: str
 }
 </script>
 <template>
-  <div v-if="account">
+  <div v-if="account" class="px-[40px] py-[35px] text-white">
     <!-- address -->
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
+    <div class="px-4 pt-3 pb-4 rounded mb-4 shadow">
       <div class="flex items-center">
         <!-- img -->
         <div class="inline-flex relative w-11 h-11 rounded-md">
@@ -153,14 +153,14 @@ function mapAmount(events: { type: string, attributes: { key: string, value: str
     </div>
 
     <!-- Assets -->
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
+    <div class="px-4 pt-3 pb-4 rounded mb-4 shadow">
       <div class="flex justify-between">
         <h2 class="card-title mb-4">{{ $t('account.assets') }}</h2>
         <!-- button -->
         <div class="flex justify-end mb-4 pr-5">
-          <label for="send" class="btn btn-primary btn-sm mr-2" @click="dialog.open('send', {}, updateEvent)">{{
+          <label for="send" class="btn !text-black !bg-white btn-sm mr-2" @click="dialog.open('send', {}, updateEvent)">{{
             $t('account.btn_send') }}</label>
-          <label for="transfer" class="btn btn-primary btn-sm" @click="
+          <label for="transfer" class="btn !text-black !bg-white btn-sm" @click="
             dialog.open(
               'transfer',
               {
@@ -276,21 +276,21 @@ function mapAmount(events: { type: string, attributes: { key: string, value: str
     </div>
 
     <!-- Delegations -->
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
+    <div class="px-4 pt-3 pb-4 rounded mb-4 shadow">
       <div class="flex justify-between">
         <h2 class="card-title mb-4">{{ $t('account.delegations') }}</h2>
         <div class="flex justify-end mb-4">
-          <label for="delegate" class="btn btn-primary btn-sm mr-2"
+          <label for="delegate" class="btn !text-black !bg-white btn-sm mr-2"
             @click="dialog.open('delegate', { fees: { amount: '150000000000000000', denom: 'ahp' } }, updateEvent)">{{
               $t('account.btn_delegate') }}</label>
-          <label for="withdraw" class="btn btn-primary btn-sm" @click="dialog.open('withdraw', {}, updateEvent)">{{
+          <label for="withdraw" class="btn !text-black !bg-white btn-sm" @click="dialog.open('withdraw', {}, updateEvent)">{{
             $t('account.btn_withdraw') }}</label>
         </div>
       </div>
       <div class="overflow-x-auto">
         <table class="table w-full text-sm table-zebra">
           <thead>
-            <tr>
+            <tr class="text-white">
               <th class="py-3">{{ $t('account.validator') }}</th>
               <th class="py-3">{{ $t('account.delegation') }}</th>
               <th class="py-3">{{ $t('account.rewards') }}</th>
@@ -324,7 +324,7 @@ function mapAmount(events: { type: string, attributes: { key: string, value: str
               </td>
               <td class="py-3">
                 <div v-if="v.balance" class="flex justify-end">
-                  <label for="delegate" class="btn btn-primary btn-xs mr-2" @click="
+                  <label for="delegate" class="btn !text-black !bg-white btn-xs mr-2" @click="
                     dialog.open(
                       'delegate',
                       {
@@ -334,7 +334,7 @@ function mapAmount(events: { type: string, attributes: { key: string, value: str
                       updateEvent
                     )
                     ">{{ $t('account.btn_delegate') }}</label>
-                  <label for="redelegate" class="btn btn-primary btn-xs mr-2" @click="
+                  <label for="redelegate" class="btn !text-black !bg-white btn-xs mr-2" @click="
                     dialog.open(
                       'redelegate',
                       {
@@ -344,7 +344,7 @@ function mapAmount(events: { type: string, attributes: { key: string, value: str
                       updateEvent
                     )
                     ">{{ $t('account.btn_redelegate') }}</label>
-                  <label for="unbond" class="btn btn-primary btn-xs" @click="
+                  <label for="unbond" class="btn !text-black !bg-white btn-xs" @click="
                     dialog.open(
                       'unbond',
                       {
@@ -363,12 +363,12 @@ function mapAmount(events: { type: string, attributes: { key: string, value: str
     </div>
 
     <!-- Unbonding Delegations -->
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow" v-if="unbonding && unbonding.length > 0">
+    <div class="px-4 pt-3 pb-4 rounded mb-4 shadow" v-if="unbonding && unbonding.length > 0">
       <h2 class="card-title mb-4">{{ $t('account.unbonding_delegations') }}</h2>
       <div class="overflow-x-auto">
         <table class="table text-sm w-full">
           <thead>
-            <tr>
+            <tr class="text-white">
               <th class="py-3">{{ $t('account.creation_height') }}</th>
               <th class="py-3">{{ $t('account.initial_balance') }}</th>
               <th class="py-3">{{ $t('account.balance') }}</th>
@@ -419,12 +419,12 @@ function mapAmount(events: { type: string, attributes: { key: string, value: str
     </div>
 
     <!-- Transactions -->
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
+    <div class="px-4 pt-3 pb-4 rounded mb-4 shadow">
       <h2 class="card-title mb-4">{{ $t('account.transactions') }}</h2>
       <div class="overflow-x-auto">
         <table class="table w-full text-sm">
           <thead>
-            <tr>
+            <tr class="text-white">
               <th class="py-3">{{ $t('account.height') }}</th>
               <th class="py-3">{{ $t('account.hash') }}</th>
               <th class="py-3">{{ $t('account.messages') }}</th>
@@ -464,12 +464,12 @@ function mapAmount(events: { type: string, attributes: { key: string, value: str
     </div>
 
     <!-- Received -->
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
+    <div class="px-4 pt-3 pb-4 rounded mb-4 shadow">
       <h2 class="card-title mb-4">{{ $t('account.received') }}</h2>
       <div class="overflow-x-auto">
         <table class="table w-full text-sm">
           <thead>
-            <tr>
+            <tr class="text-white">
               <th class="py-3">{{ $t('account.height') }}</th>
               <th class="py-3">{{ $t('account.hash') }}</th>
               <th class="py-3">{{ $t('account.amount') }}</th>
@@ -509,7 +509,7 @@ function mapAmount(events: { type: string, attributes: { key: string, value: str
     </div>
 
     <!-- Account -->
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
+    <div class="px-4 pt-3 pb-4 rounded mb-4 shadow">
       <h2 class="card-title mb-4">{{ $t('account.acc') }}</h2>
       <DynamicComponent :value="account" />
     </div>

@@ -112,42 +112,66 @@ onMounted(() => {
 
 </script>
 <template>
-  <div>
-    <div class="tabs tabs-boxed bg-transparent mb-4">
-      <a class="tab text-gray-400 uppercase" :class="{ 'tab-active': tab === 'blocks' }" @click="tab = 'blocks'">{{
-        $t('block.recent') }}</a>
-      <RouterLink class="tab text-gray-400 uppercase" :to="`/${chain}/block/${Number(base.latest?.block?.header.height || 0) + 10000
-        }`">{{ $t('block.future') }}</RouterLink>
+  <div class="px-[44px] py-[40px]">
+    <div class="flex items-center justify-between mb-[40px]">
+      <div class="flex gap-[4px]  rounded-[24px] border border-[#2c3443] p-[4px] size-fit">
+        <a class="tab text-white text-normal capitalize !rounded-[20px]"
+          :class="{ 'tab-active !text-black !bg-white': tab === 'blocks' }" @click="tab = 'blocks'">{{
+            $t('block.recent') }}</a>
+        <RouterLink class="tab text-white text-normal capitalize !rounded-[20px]"
+          :class="{ 'tab-active !text-black !bg-white': tab === 'inactive' }" :to="`/${chain}/block/${Number(base.latest?.block?.header.height || 0) + 10000
+            }`">{{
+              $t('block.future') }}</RouterLink>
+      </div>
     </div>
-
     <div v-show="tab === 'blocks'">
       <TxsInBlocksChart />
 
-      <div class="grid grid-cols-1 gap-3">
-        <RouterLink v-for="item in list" class="flex flex-col justify-between rounded p-5 shadow bg-base-100"
+      <div class="grid grid-cols-1 gap-[28px] text-white">
+        <div class="flex justify-between">
+          <h3 class="text-[13px] font-normal w-[75px]">
+            Height
+          </h3>
+          <span
+            class="text-right whitespace-nowrap text-[13px] font-normal w-[150px] sm:!w-[200px] truncate flex items-start">
+            Hash
+          </span>
+          <div class="flex justify-between tooltip" data-tip="Block Proposor">
+            <div
+              class="hidden text-[13px] font-normal items-center sm:!flex truncate text-ellipsis sm:gap-2 w-[124px] md:w-[184px] ">
+              Proposer
+            </div>
+          </div>
+          <span class="text-right whitespace-nowrap font-normal text-[13px] w-[46px]">
+            Tx Count
+          </span>
+          <span class="w-auto rounded whitespace-nowrap font-normal text-[13px] w-[70px]">
+            Created At
+          </span>
+        </div>
+        <RouterLink v-for="item in list" class="flex flex-col justify-between rounded shadow"
           :to="`/${chain}/block/${item.header.height}`">
           <div class="flex justify-between">
-            <h3 class="text-md font-bold sm:!text-lg w-[75px]">
+            <h3 class="text-[13px] font-normal w-[75px]">
               {{ item.header.height }}
             </h3>
             <span
-              class="text-right whitespace-nowrap font-normal w-[150px] text-md sm:!text-lg sm:!w-[200px] truncate flex items-start">
+              class="text-right whitespace-nowrap font-normal w-[150px] text-[13px] sm:!w-[200px] truncate flex items-start">
               {{ ellipsisHash(item.block_id.hash) }}
             </span>
             <div class="flex justify-between tooltip" data-tip="Block Proposor">
-              <div class="hidden text-md items-center sm:!flex truncate text-ellipsis sm:gap-2 ">
+              <div class="hidden text-[13px] font-normal items-center sm:!flex truncate text-ellipsis sm:gap-2 ">
                 <img :src="validatorMonikerToLogo(format.validatorFromHex(item.header?.proposer_address))" width="28"
                   height="28" />
-                <h3
-                  class="text-md font-bold text-left overflow-hidden text-ellipsis sm:!text-xs w-[100px] md:w-[160px] md:!text-lg">
+                <h3 class="text-[13px] font-normal text-left overflow-hidden text-ellipsis w-[100px] md:w-[160px]">
                   {{ format.validatorFromHex(item.header?.proposer_address)?.description.moniker }}
                 </h3>
               </div>
             </div>
-            <span class="text-right whitespace-nowrap font-normal text-md sm:!text-lg w-[46px]">
+            <span class="text-right whitespace-nowrap font-normal text-[13px] w-[46px]">
               {{ item.num_txs }} txs
             </span>
-            <span class="w-auto rounded whitespace-nowrap font-normal text-green-600 text-md sm:!text-lg w-[70px]">
+            <span class="w-auto rounded whitespace-nowrap font-normal text-[13px] w-[70px]">
               {{ format.toDay(item.header?.time, 'from') }}
             </span>
           </div>

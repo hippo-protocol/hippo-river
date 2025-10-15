@@ -41,22 +41,23 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div>
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
-      <h2 class="card-title truncate mb-2">{{ $t('statesync.title') }}</h2>
+  <div class="px-[48px] py-[76px]">
+    <div class="mb-[124px] flex flex-col gap-[13px] text-white">
+      <h2 class="card-title truncate">{{ $t('statesync.title') }}</h2>
       <div class="text-sm">
         {{ $t('statesync.description') }}
-        <a class="text-primary lowercase" href="https://blog.cosmos.network/cosmos-sdk-state-sync-guide-99e4cf43be2f">{{
-          $t('statesync.here') }}&nbsp;</a>
+        <a class="text-sm underline lowercase"
+          href="https://blog.cosmos.network/cosmos-sdk-state-sync-guide-99e4cf43be2f">{{
+            $t('statesync.here') }}</a>&nbsp;
         <a class="lowercase">
           {{ $t('statesync.for_more_info') }}.</a>
       </div>
     </div>
 
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
-      <h2 class="card-title truncate mb-2">
-        {{ $t('statesync.title_2') }}
-      </h2>
+    <h2 class="card-title truncate mb-[20px] text-white">
+      {{ $t('statesync.title_2') }}
+    </h2>
+    <div class="p-[32px] bg-gra-dark border border-[#1E1F22] rounded-[32px] mb-[100px] shadow  text-white">
       <div class="text-sm">
         1. {{ $t('statesync.text_1') }} ({{ appName }} {{ $t('statesync.version') }}:
         {{ nodeInfo.application_version?.version || '' }})
@@ -67,7 +68,7 @@ onMounted(() => {
         2. {{ $t('statesync.text_2') }}<br />
         {{ $t('statesync.text_2_1') }}.
         <br /><br />
-        <div class="mockup-code bg-base-200 my-2">
+        <div class="mockup-code bg-[#191B1D] my-2">
           <pre data-prefix=">"><code class="text-gray-800 dark:invert">[state-sync]</code></pre>
           <pre data-prefix=">"><code class="text-gray-800 dark:invert">enable = true</code></pre>
           <pre data-prefix=">"><code class="text-gray-800"></code></pre>
@@ -90,12 +91,13 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded shadow">
-      <h2 class="card-title truncate mb-2">{{ $t('statesync.title_3') }}</h2>
+
+    <h2 class="card-title truncate mb-[20px] text-white">{{ $t('statesync.title_3') }}</h2>
+    <div class="p-[32px] bg-gra-dark border border-[#1E1F22] rounded-[32px] mb-[100px] shadow  text-white">
       <div class="text-sm">
         {{ $t('statesync.text_title_3') }}
         <br /><br />
-        <div class="mockup-code bg-base-200 my-2">
+        <div class="mockup-code bg-[#191B1D] my-2">
           <pre data-prefix=">"><code class="text-gray-800 dark:invert">[state-sync]</code></pre>
           <pre
             data-prefix=">"><code class="text-green-400"># snapshot-interval specifies the block interval at which local state sync snapshots are</code></pre>

@@ -53,9 +53,9 @@ function loadChannel(channel: string, port: string) {
 
 function pageload(pageNum: number) {
   if (direction.value === 'In') {
-    fetchSendingTxs(channel_id.value, port_id.value, pageNum -1)
+    fetchSendingTxs(channel_id.value, port_id.value, pageNum - 1)
   } else {
-    fetchSendingTxs(channel_id.value, port_id.value, pageNum -1)
+    fetchSendingTxs(channel_id.value, port_id.value, pageNum - 1)
   }
 
 }
@@ -94,51 +94,48 @@ function color(v: string) {
 }
 </script>
 <template>
-  <div class="">
-    <div class="px-4 pt-3 pb-4 bg-base-200 rounded mb-4 shadow ">
-      <div class="mx-auto max-w-7xl px-6 lg:!px-8">
-        <dl class="grid grid-cols-1 gap-x-6 text-center lg:!grid-cols-3">
-          <div class="mx-auto flex items-center">
-            <div>
-              <div class="order-first text-3xl font-semibold tracking-tight text-main mb-1">
-                {{ baseStore.latest?.block?.header?.chain_id }}
-              </div>
-              <div class="text-sm text-gray-500 dark:text-gray-400">
-                {{ conn.client_id }} {{ props.connection_id }}
-              </div>
-            </div>
+  <div class="flex flex-col gap-[60px]">
+    <dl class="flex text-center gap-[45px] text-white">
+      <div class="items-center text-left">
+        <div>
+          <div class="order-first text-[21px] font-bold tracking-tight text-main mb-1">
+            {{ baseStore.latest?.block?.header?.chain_id }}
           </div>
-          <div class="mx-auto flex items-center">
-            <div :class="{ 'text-success': conn.state?.indexOf('_OPEN') > -1 }">
-              <span class="text-lg rounded-full">&#x21cc;</span>
-              <div class=" text-c">
-                {{ conn.state }}
-              </div>
-            </div>
+          <div class="text-[13px]">
+            {{ conn.client_id }} {{ props.connection_id }}
           </div>
-          <div class="mx-auto">
-            <div class="order-first text-3xl font-semibold tracking-tight text-main mb-2">
-              {{ clientState.client_state?.chain_id }}
-            </div>
-            <div class="text-sm text-gray-500 dark:text-gray-400">
-              {{ conn.counterparty?.connection_id }} {{ clientState.client_id }}
-            </div>
-          </div>
-        </dl>
+        </div>
       </div>
-    </div>
+      <div class="flex items-center text-white">
+        <div>
+          <span class="text-[13px] rounded-full">{{ '⇌' }}</span>
+          <div class="text-center text-[13px]">
+            {{ conn.state }}
+          </div>
+        </div>
+      </div>
+      <div class="items-center text-left">
+        <div class="order-first text-[21px] font-bold tracking-tight text-main mb-1">
+          {{ clientState.client_state?.chain_id }}
+        </div>
+        <div class="text-[13px]">
+          {{ conn.counterparty?.connection_id }} {{ clientState.client_id }}
+        </div>
+      </div>
+    </dl>
 
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
-      <h2 class="card-title mb-4 overflow-hidden">{{ $t('ibc.title_2') }}<span class="ml-2 text-sm">{{
+    <div class="rounded shadow text-white">
+      <h2 class="card-title mb-4 overflow-hidden">{{ $t('ibc.title_2') }}<span class="text-sm">{{
         clientState.client_state?.['@type'] }}</span></h2>
-      <div class="overflow-x-auto grid grid-cols-1 md:grid-cols-2 gap-4">
-        <table class="table table-sm capitalize">
-          <thead class="bg-base-200">
+      <div class="overflow-x-auto flex gap-[40px]">
+        <table class="table table-sm capitalize text-white">
+          <thead class="">
             <tr>
-              <td colspan="3">{{ $t('ibc.trust_parameters') }}</td>
+              <td colspan="3" class="text-white text-[16px]">{{ $t('ibc.trust_parameters') }}</td>
             </tr>
           </thead>
           <tbody>
+            <tr class="h-[10px] border-0"></tr>
             <tr>
               <td class="w-52">{{ $t('ibc.trust_level') }}:</td>
               <td>
@@ -169,13 +166,14 @@ function color(v: string) {
             </tr>
           </tbody>
         </table>
-        <table class="table table-sm text-sm w-full capitalize">
-          <thead class="bg-base-200">
+        <table class="table table-sm text-sm w-full capitalize text-white size-fit">
+          <thead class="">
             <tr>
-              <td colspan="2">{{ $t('ibc.upgrade_parameters') }}</td>
+              <td colspan="2" class="text-white text-[16px]">{{ $t('ibc.upgrade_parameters') }}</td>
             </tr>
           </thead>
           <tbody>
+            <tr class="h-[10px] border-0"></tr>
             <tr>
               <td colspan="2">
                 <div class="flex justify-between"><span>{{ $t('ibc.allow_update_after_expiry') }}:</span> <span>{{
@@ -184,8 +182,10 @@ function color(v: string) {
             </tr>
             <tr>
               <td colspan="2">
-                <div class="flex justify-between"><span>{{ $t('ibc.allow_update_after_misbehaviour') }}: </span> <span>{{
-                  clientState.client_state?.allow_update_after_misbehaviour }}</span></div>
+                <div class="flex justify-between"><span>{{ $t('ibc.allow_update_after_misbehaviour') }}: </span>
+                  <span>{{
+                    clientState.client_state?.allow_update_after_misbehaviour }}</span>
+                </div>
               </td>
             </tr>
             <tr>
@@ -197,12 +197,12 @@ function color(v: string) {
 
       </div>
     </div>
-    <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow overflow-hidden">
+    <div class="rounded shadow overflow-hidden text-white">
       <h2 class="card-title">{{ $t('ibc.channels') }}</h2>
       <div class="overflow-auto">
-        <table class="table w-full mt-4">
+        <table class="table mt-4 text-white">
           <thead>
-            <tr>
+            <tr class="text-white">
               <th>{{ $t('ibc.txs') }}</th>
               <th style="position: relative; z-index: 2">{{ $t('ibc.channel_id') }}</th>
               <th>{{ $t('ibc.port_id') }}</th>

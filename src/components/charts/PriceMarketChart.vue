@@ -12,13 +12,19 @@ const chartConfig = computed(() => {
     const labels = store.marketData.prices.map((item: any) => item[0]);
     return getMarketPriceChartConfig(theme, labels);
 });
-const kind = ref('price');
+const props=defineProps({
+    kind: {
+        type: String,
+        required: true
+    }
+})
+
 const series = computed(() => {
     return [
         {
-            name: kind.value === 'price' ? 'Price' : 'Volume',
+            name: props.kind === 'price' ? 'Price' : 'Volume',
             data:
-                kind.value === 'price'
+                props.kind === 'price'
                     ? store.marketData.prices.map((item: any) => item[1])
                     : store.marketData.total_volumes.map(
                           (item: any) => item[1]
@@ -27,28 +33,10 @@ const series = computed(() => {
     ];
 });
 
-function changeChart(type: string) {
-    kind.value = type;
-}
 </script>
 
 <template>
-    <div class="tabs tabs-boxed bg-transparent justify-end">
-        <a
-            class="tab text-xs mr-2 text-gray-400 uppercase"
-            :class="{ 'tab-active': kind === 'price' }"
-            @click="changeChart('price')"
-        >
-            Price
-        </a>
-        <a
-            class="tab text-xs text-gray-400 uppercase"
-            :class="{ 'tab-active': kind === 'volume' }"
-            @click="changeChart('volume')"
-        >
-            Volume
-        </a>
-    </div>
+    
     <ApexCharts
         type="area"
         height="230"

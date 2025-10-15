@@ -1,33 +1,32 @@
 <script lang="ts" setup>
-import MdEditor from 'md-editor-v3';
 import PriceMarketChart from '@/components/charts/PriceMarketChart.vue';
 
-import { Icon } from '@iconify/vue';
 import {
   useBlockchain,
   useFormatter,
   useTxDialog,
   useWalletStore,
-  useStakingStore,
   useParamStore,
+  useGovStore,
+  useStakingStore,
 } from '@/stores';
 import { onMounted, ref } from 'vue';
 import { useIndexModule, colorMap } from './indexStore';
 import { computed } from '@vue/reactivity';
 
 import CardStatisticsVertical from '@/components/CardStatisticsVertical.vue';
-import ProposalListItem from '@/components/ProposalListItem.vue';
 import ArrayObjectElement from '@/components/dynamic/ArrayObjectElement.vue'
-import AdBanner from '@/components/ad/AdBanner.vue';
-
+import ActiveProposals from '@/components/ActiveProposals.vue';
 const props = defineProps(['chain']);
+
 
 const blockchain = useBlockchain();
 const store = useIndexModule();
 const walletStore = useWalletStore();
+const govStore = useGovStore()
+const staking = useStakingStore();
 const format = useFormatter();
 const dialog = useTxDialog();
-const stakingStore = useStakingStore();
 const paramStore = useParamStore()
 const coinInfo = computed(() => {
   return store.coinInfo;
@@ -52,48 +51,48 @@ blockchain.$subscribe((m, s) => {
   }
 });
 function shortName(name: string, id: string) {
-  return name.toLowerCase().startsWith('ibc/') ||
-    name.toLowerCase().startsWith('0x')
+  return name?.toLowerCase().startsWith('ibc/') ||
+    name?.toLowerCase().startsWith('0x')
     ? id
     : name;
 }
 
 const comLinks = [
-  {
-    name: 'Website',
-    icon: 'mdi-web',
-    href: 'https://hippoprotocol.ai',
-  },
+
   {
     name: 'Twitter',
-    icon: 'mdi-twitter',
+    icon: 'icon_twitter',
     href: 'https://x.com/Hippo_Protocol',
   },
   {
-    name: 'Telegram',
-    icon: 'mdi-telegram',
-    href: 'https://t.me/hippoprotocol',
-  },
-  {
-    name: 'Github',
-    icon: 'mdi-github',
-    href: 'https://github.com/hippo-protocol',
-  },
-
-  {
-    name: 'Medium',
-    icon: 'mdi-medium',
-    href: 'https://medium.com/hippoprotocol',
-  },
-  {
     name: 'LinkedIn',
-    icon: 'mdi-linkedin',
+    icon: 'icon_linkedin',
     href: 'https://www.linkedin.com/company/hippoprotocol',
   },
   {
+    name: 'Medium',
+    icon: 'icon_medium',
+    href: 'https://medium.com/hippoprotocol',
+  },
+  {
     name: 'Discord',
-    icon: 'mdi-discord',
+    icon: 'icon_discord',
     href: 'https://discord.com/invite/hippoprotocol',
+  },
+  {
+    name: 'Github',
+    icon: 'icon_github',
+    href: 'https://github.com/hippo-protocol',
+  },
+  {
+    name: 'Telegram',
+    icon: 'icon_telegram',
+    href: 'https://t.me/hippoprotocol',
+  },
+  {
+    name: 'Website',
+    icon: 'icon_web',
+    href: 'https://hippoprotocol.ai',
   }
 ];
 
@@ -132,104 +131,158 @@ const qty = computed({
 })
 const amount = computed({
   get: () => {
-    return quantity.value * ticker.value.converted_last.usd || 0
+    return quantity.value * ticker.value?.converted_last.usd || 0
   },
   set: val => {
-    quantity.value = val / ticker.value.converted_last.usd || 0
+    quantity.value = val / ticker.value?.converted_last.usd || 0
   }
 })
+
+const kind = ref('price')
+function changeChart(type: string) {
+  kind.value = type;
+}
 
 </script>
 
 <template>
   <div>
-    <div v-if="coinInfo && coinInfo.name" class="bg-base-100 rounded shadow">
-      <div class="grid grid-cols-2 md:grid-cols-3 p-4">
-        <div class="col-span-2 md:col-span-1">
-          <div class="text-xl font-semibold text-main ">
-            {{ coinInfo.name }} (<span class="uppercase">{{
-              coinInfo.symbol
-            }}</span>)
-          </div>
-
-          <div class="my-4 flex flex-wrap items-center">
+    <div class="bg-black rounded shadow px-[40px] pt-[44px] pb-[48px] flex gap-[60px]">
+      <div class="flex flex-col justify-between flex-1">
+        <div class="flex flex-col gap-[16px]">
+          <h2 class="text-[32px] font-bold text-white">Hippo Protocol</h2>
+          <p class="text-[#BCBCBC] text-[14px] font-normal">Hippo Protocol is a blockchain optimized for secure,
+            decentralized management of healthcare data.
+            Its native token, HP, is used for governance, staking, and transaction fees.</p>
+        </div>
+        <div class="flex items-center justify-between flex-wrap gap-[4px] mt-[10px] 2xl:mt-0">
+          <div class="flex items-center gap-[20px] flex-wrap">
             <a v-for="(item, index) of comLinks" :key="index" :href="item.href" target="_blank"
-              class="link link-primary px-2 py-1 rounded-sm no-underline hover:text-primary hover:bg-gray-100 dark:hover:bg-slate-800 flex items-center">
-              <Icon :icon="item?.icon" />
-              <span class="ml-1 text-sm uppercase">{{ item?.name }}</span>
+              class="link link-primary flex items-center">
+              <img :src="`/images/${item.icon}.svg`" class="w-[20px] h-[20px]" />
             </a>
           </div>
+          <div class="flex flex-wrap gap-[4px] items-center">
+            <div class="text-[#41aaff] text-[12px] font-semibold rounded-[4px] bg-[#16253D] px-[8px] py-[4px]">
+              #Healthcare</div>
+            <div class="text-[#10DF89] text-[12px] font-semibold rounded-[4px] bg-[#0c2623] px-[8px] py-[4px]">#Smart
+              Contract Platform</div>
+            <div class="text-[#FF57CC] text-[12px] font-semibold rounded-[4px] bg-[#3A1037] px-[8px] py-[4px]">#Layer 1
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="px-[24px] py-[16px] flex gap-[20px] justify-center items-center shrink-0 w-[465px] h-[170px] bg-[#0E0F11] rounded-[32px] border-1 border-[#1E1F22]">
+        <a class="text-[11px] font-normal text-[#777] max-w-[180px] flex flex-col justify-between h-full"
+          href="https://x.com/Hippo_Protocol/status/1917857715000599005" target="_blank">
+          <div
+            class="overflow-hidden [display:-webkit-box] [-webkit-line-clamp:5] [-webkit-box-orient:vertical] leading-[1.35] break-words pt-[12px]">
+            🚀 Hippo Protocol Mainnet is Now Live!
 
-          <div>
-            <div class="dropdown dropdown-hover w-full">
-              <label>
-                <div
-                  class="bg-gray-100 dark:bg-[#384059] flex items-center justify-between px-4 py-2 cursor-pointer rounded">
-                  <div>
-                    <div class="font-semibold text-xl text-[#666] dark:text-white">
-                      {{ ticker?.market?.name || '' }}
-                    </div>
-                    <div class="text-info text-sm">
-                      {{ shortName(ticker?.base, ticker?.coin_id) }}/{{
-                        shortName(ticker?.target, ticker?.target_coin_id)
-                      }}
-                    </div>
-                  </div>
+            Healthcare needs its own blockchain - this is it
 
-                  <div class="text-right">
-                    <div class="text-xl font-semibold text-[#666] dark:text-white">
-                      ${{ ticker?.converted_last?.usd }}
-                    </div>
-                    <div class="text-sm" :class="store.priceColor">
-                      {{ store.priceChange }}%
-                    </div>
-                  </div>
+            🔎 Explorer: https://river.hippoprotocol.ai
+
+            Hippo Protocol is a purpose-built Layer 1 designed to unify fragmented healthcare systems with
+            interoperable, privacy-preserving infrastructure
+
+            Experience true data sovereignty without compromising usability or regulatory compliance
+          </div>
+          <div class="flex justify-between items-center self-stretch">
+            Sep 25, 2025
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="13" viewBox="0 0 12 13" fill="none">
+              <path
+                d="M8.58803 2H9.96809L6.95307 5.81231L10.5 11H7.72278L5.54756 7.85369L3.05861 11H1.67772L4.90259 6.92231L1.5 2H4.34773L6.31393 4.87585L8.58803 2ZM8.10367 10.0862H8.86838L3.93221 2.86585H3.1116L8.10367 10.0862Z"
+                fill="white" />
+            </svg>
+          </div>
+        </a>
+
+        <div class="flex w-[220px] h-[130px] justify-center items-center rounded-[12px] overflow-hidden">
+          <img src="/src/assets/images/hippo-social.jpg" class="object-contain" />
+        </div>
+      </div>
+    </div>
+
+    <div v-if="coinInfo && coinInfo.name"
+      class="bg-black rounded shadow px-[40px] pt-[44px] pb-[48px] flex flex-col gap-[16px] border-t border-[#2C3443]">
+      <div class="flex justify-between px-[20px] items-center max-w-[1150px]">
+        <h3 class="text-[21px] font-bold text-white">Market</h3>
+        <div class="tabs tabs-boxed bg-black p-[4px] gap-[4px] items-center rounded-[24px] border border-[#1d1f23]">
+          <a class="tab text-xs mr-2 text-white !font-bold !rounded-[20px]"
+            :class="{ 'tab-active !text-black !bg-white': kind === 'price' }" @click="changeChart('price')">
+            Price
+          </a>
+          <a class="tab text-xs text-white !font-bold !rounded-[20px]"
+            :class="{ 'tab-active !text-black !bg-white': kind === 'volume' }" @click="changeChart('volume')">
+            Volume
+          </a>
+        </div>
+      </div>
+      <div class="flex gap-[16px] h-[262px]">
+        <div class=" p-[24px] rounded-[32px] border border-[#1e1f22] bg-gra-dark min-w-[300px]">
+          <label class="flex flex-col gap-[16px] h-full">
+            <div class="flex flex-col flex-grow justify-between">
+              <div
+                class="bg-[#191B1D] flex items-center justify-between px-[20px] py-[12px] cursor-pointer rounded-[12px] dropdown dropdown-hover">
+                <div class="font-bold text-[20px] text-white">
+                  {{ ticker?.market?.name || '' }}
                 </div>
-              </label>
-              <div class="dropdown-content pt-1">
-                <div class="h-64 overflow-auto w-full shadow rounded">
-                  <ul class="menu w-full bg-gray-100 rounded dark:bg-[#384059]">
-                    <li v-for="(item, index) in store.coinInfo.tickers" :key="index" @click="store.selectTicker(index)">
-                      <div class="flex items-center justify-between hover:bg-base-100">
-                        <div class="flex-1">
-                          <div class="text-main text-sm" :class="trustColor(item.trust_score)">
-                            {{ item?.market?.name }}
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10" fill="none">
+                  <path
+                    d="M7.78109 9.02291C7.38076 9.52369 6.61923 9.52369 6.2189 9.02291L0.50434 1.87441C-0.0191299 1.21959 0.447095 0.250001 1.28543 0.250001L12.7146 0.250002C13.5529 0.250002 14.0191 1.21959 13.4957 1.87442L7.78109 9.02291Z"
+                    fill="#424B5A" />
+                </svg>
+                <div class="dropdown-content pt-1 top-[50px]">
+                  <div class="h-64 overflow-auto w-full shadow rounded">
+                    <ul class="menu w-full bg-gray-100 rounded dark:bg-[#384059]">
+                      <li v-for="(item, index) in store.coinInfo.tickers" :key="index"
+                        @click="store.selectTicker(index)">
+                        <div class="flex items-center justify-between hover:bg-base-100">
+                          <div class="flex-1">
+                            <div class="text-main text-sm" :class="trustColor(item.trust_score)">
+                              {{ item?.market?.name }}
+                            </div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">
+                              {{ shortName(item?.base, item?.coin_id) }}/{{
+                                shortName(item?.target, item?.target_coin_id)
+                              }}
+                            </div>
                           </div>
-                          <div class="text-sm text-gray-500 dark:text-gray-400">
-                            {{ shortName(item?.base, item?.coin_id) }}/{{
-                              shortName(item?.target, item?.target_coin_id)
-                            }}
-                          </div>
-                        </div>
 
-                        <div class="text-base text-main">
-                          ${{ item?.converted_last?.usd }}
+                          <div class="text-base text-main">
+                            ${{ item?.converted_last?.usd }}
+                          </div>
                         </div>
-                      </div>
-                    </li>
-                  </ul>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
 
+              <div class="text-[22px] font-bold text-white text-right">
+                ${{ ticker?.converted_last?.usd }}
+              </div>
+            </div>
+            <div class="flex justify-between">
+              <div class="text-info text-sm text-[#98A9CE]">
+                {{ shortName(ticker?.base, ticker?.coin_id) }}/{{
+                  shortName(ticker?.target, ticker?.target_coin_id)
+                }}
+              </div>
+              <div class="text-sm" :class="store.priceColor">
+                {{ store.priceChange }}%
+              </div>
+            </div>
             <div class="flex">
-              <label class="btn btn-primary !px-1 my-5 mr-2" for="calculator">
-                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff"
-                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                  <g id="SVGRepo_iconCarrier">
-                    <rect x="4" y="2" width="16" height="20" rx="2"></rect>
-                    <line x1="8" x2="16" y1="6" y2="6"></line>
-                    <line x1="16" x2="16" y1="14" y2="18"></line>
-                    <path d="M16 10h.01"></path>
-                    <path d="M12 10h.01"></path>
-                    <path d="M8 10h.01"></path>
-                    <path d="M12 14h.01"></path>
-                    <path d="M8 14h.01"></path>
-                    <path d="M12 18h.01"></path>
-                    <path d="M8 18h.01"></path>
-                  </g>
+              <label
+                class="btn !px-[10px] !py-[12px] rounded-[12px] border border-[#19181C] bg-gra-dark-button !min-h-[auto] !h-[42px]"
+                for="calculator">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M2 10.2162H9.78378M10.2162 18V1.99999M6.10811 7.62161V4.8108M4.7027 6.21621H7.51351M4.7027 14.5405H7.51351M12.8108 11.7297H15.6216M12.8108 9.13513H15.6216M4.16216 18H15.8378H18V1.99999H15.8378H4.16216H2V18H4.16216Z"
+                    stroke="white" stroke-linecap="square" />
                 </svg>
               </label>
               <!-- Put this part before </body> tag -->
@@ -261,172 +314,198 @@ const amount = computed({
                 </div>
                 <label class="modal-backdrop" for="calculator">{{ $t('index.close') }}</label>
               </div>
-              <a class="my-5 !text-white btn grow"
+              <a class="!px-[10px] !py-[12px] !text-white btn grow ml-[8px] !h-[42px] !bg-[#10DF89] !rounded-[12px] !min-h-[auto]"
                 :class="{ '!btn-success': store.trustColor === 'green', '!btn-warning': store.trustColor === 'yellow' }"
-                :href="'https://apps.apple.com/app/data-hippo/id6738997275'" target="_blank">
-                GET HP
+                :href="ticker.trade_url" target="_blank">
+                Get HP
               </a>
+            </div>
+          </label>
+        </div>
+        <PriceMarketChart :kind="kind" class="max-w-[826px] grow" />
+
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 w-full">
+      <div
+        class="bg-black shadow px-[40px] pt-[44px] pb-[48px] flex flex-col gap-[16px] border-t border-r border-[#2C3443]">
+        <h3 class="text-[21px] font-bold text-white px-[20px]">Onchain Metrics</h3>
+        <div class="grid grid-cols-1 gap-[8px] md:!grid-cols-2">
+          <div v-for="(item, key) in store.stats" :key="key">
+            <CardStatisticsVertical v-bind="item" />
+          </div>
+        </div>
+      </div>
+      <div class="bg-black shadow px-[40px] pt-[44px] pb-[48px] flex flex-col gap-[16px] border-t border-[#2C3443]">
+        <div class="flex justify-between text-[21px] font-bold text-main">
+          <span class="truncate px-[20px]">{{ walletStore.currentAddress || 'Not Connected' }}</span>
+          <label v-if="!walletStore.currentAddress" class="flex items-center gap-[8px] cursor-pointer"
+            for="PingConnectWallet">
+            <span class="text-[12px] font-normal">Connect Wallet</span>
+            <div class="w-[28px] h-[28px] p-[4px] flex items-center justify-center rounded-[32px] bg-white">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M5.83333 1L10 6M10 6L5.83333 11M10 6L0 6" stroke="black" stroke-width="2" />
+              </svg>
+            </div>
+          </label>
+        </div>
+
+        <div
+          class="bg-gra-dark rounded-[32px] px-[32px] py-[20px] flex flex-col gap-[24px] justify-center min-h-[320px] border border-[#1E1F22]">
+          <div
+            class="px-[20px] flex flex-col gap-[16px] justify-between items-start self-stretch rounded-[20px] border border-[#1E1F22] py-[16px]">
+            <div class="text-sm mb-1 text-[#98A9CE]">{{ $t('account.balance') }}</div>
+            <div class="flex items-center justify-between self-stretch">
+              <div class="text-sm text-right" :class="color">
+                ${{ format.tokenValue(walletStore.balanceOfStakingToken) }}
+              </div>
+              <div class="text-lg font-semibold text-main text-right">
+                {{ format.formatToken(walletStore.balanceOfStakingToken) }}
+              </div>
+            </div>
+          </div>
+          <div class="px-[20px] flex justify-between items-start self-stretch">
+            <div class="text-sm mb-1 text-[#98A9CE]">{{ $t('module.staking') }}</div>
+            <div class="flex gap-[12px] items-center">
+              <div class="text-sm text-right" :class="color">
+                ${{ format.tokenValue(walletStore.stakingAmount) }}
+              </div>
+              <div class="text-lg font-semibold text-main text-right">
+                {{ format.formatToken(walletStore.stakingAmount) }}
+              </div>
+            </div>
+          </div>
+          <div class="px-[20px] flex justify-between items-start self-stretch">
+            <div class="text-sm mb-1 text-[#98A9CE]">{{ $t('index.reward') }}</div>
+            <div class="flex gap-[12px] items-center">
+              <div class="text-sm text-right" :class="color">
+                ${{ format.tokenValue(walletStore.rewardAmount) }}
+              </div>
+              <div class="text-lg font-semibold text-main text-right">
+                {{ format.formatToken(walletStore.rewardAmount) }}
+              </div>
+            </div>
+          </div>
+          <div class="px-[20px] flex justify-between items-start self-stretch">
+            <div class="text-sm mb-1 text-[#98A9CE]">{{ $t('index.unbonding') }}</div>
+            <div class="flex gap-[12px] items-center">
+              <div class="text-sm text-right" :class="color">
+                ${{ format.tokenValue(walletStore.unbondingAmount) }}
+              </div>
+              <div class="text-lg font-semibold text-main text-right">
+                {{ format.formatToken(walletStore.unbondingAmount) }}
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="col-span-2">
-          <PriceMarketChart />
-        </div>
-      </div>
-      <div class="h-[1px] w-full bg-gray-100 dark:bg-[#384059]"></div>
-      <div class="max-h-[250px] overflow-auto p-4 text-sm">
-        <MdEditor :model-value="coinInfo.description?.en" previewOnly></MdEditor>
-      </div>
-      <div class="mx-4 flex flex-wrap items-center">
-        <div v-for="tag in coinInfo.categories"
-          class="mr-2 mb-4 text-xs bg-gray-100 dark:bg-[#384059] px-3 rounded-full py-1">
-          {{ tag }}
-        </div>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 gap-4 md:!grid-cols-4 lg:!grid-cols-4 mt-4">
-      <div v-for="(item, key) in store.stats" :key="key">
-        <CardStatisticsVertical v-bind="item" />
-      </div>
-    </div>
-
-    <AdBanner id="chain-home-banner-ad" unit="banner" width="970px" height="90px" />
-
-    <div v-if="blockchain.supportModule('governance') && store?.proposals?.proposals.length > 0"
-      class="bg-base-100 rounded mt-4 shadow">
-      <div class="px-4 pt-4 pb-2 text-lg font-semibold text-main">
-        {{ $t('index.active_proposals') }}
-      </div>
-      <div class="px-4 pb-4">
-        <ProposalListItem :proposals="store?.proposals" />
-      </div>
-      <div class="pb-8 text-center" v-if="store.proposals?.proposals?.length === 0">
-        {{ $t('index.no_active_proposals') }}
-      </div>
-    </div>
-
-    <div class="bg-base-100 rounded mt-4 shadow">
-      <div class="flex justify-between px-4 pt-4 pb-2 text-lg font-semibold text-main">
-        <span class="truncate">{{ walletStore.currentAddress || 'Not Connected' }}</span>
-        <RouterLink v-if="walletStore.currentAddress"
-          class="float-right text-sm cursor-pointert link link-primary no-underline font-medium"
-          :to="`/${chain}/account/${walletStore.currentAddress}`">{{ $t('index.more') }}</RouterLink>
-      </div>
-      <div class="grid grid-cols-1 md:!grid-cols-4 auto-cols-auto gap-4 px-4 pb-6">
-        <div class="bg-gray-100 dark:bg-[#373f59] rounded-sm px-4 py-3">
-          <div class="text-sm mb-1">{{ $t('account.balance') }}</div>
-          <div class="text-lg font-semibold text-main">
-            {{ format.formatToken(walletStore.balanceOfStakingToken) }}
-          </div>
-          <div class="text-sm" :class="color">
-            ${{ format.tokenValue(walletStore.balanceOfStakingToken) }}
-          </div>
-        </div>
-        <div class="bg-gray-100 dark:bg-[#373f59] rounded-sm px-4 py-3">
-          <div class="text-sm mb-1">{{ $t('module.staking') }}</div>
-          <div class="text-lg font-semibold text-main">
-            {{ format.formatToken(walletStore.stakingAmount) }}
-          </div>
-          <div class="text-sm" :class="color">
-            ${{ format.tokenValue(walletStore.stakingAmount) }}
-          </div>
-        </div>
-        <div class="bg-gray-100 dark:bg-[#373f59] rounded-sm px-4 py-3">
-          <div class="text-sm mb-1">{{ $t('index.reward') }}</div>
-          <div class="text-lg font-semibold text-main">
-            {{ format.formatToken(walletStore.rewardAmount) }}
-          </div>
-          <div class="text-sm" :class="color">
-            ${{ format.tokenValue(walletStore.rewardAmount) }}
-          </div>
-        </div>
-        <div class="bg-gray-100 dark:bg-[#373f59] rounded-sm px-4 py-3">
-          <div class="text-sm mb-1">{{ $t('index.unbonding') }}</div>
-          <div class="text-lg font-semibold text-main">
-            {{ format.formatToken(walletStore.unbondingAmount) }}
-          </div>
-          <div class="text-sm" :class="color">
-            ${{ format.tokenValue(walletStore.unbondingAmount) }}
-          </div>
-        </div>
-      </div>
-
-      <div v-if="walletStore.delegations.length > 0" class="px-4 pb-4 overflow-auto">
-        <table class="table table-compact w-full table-zebra">
-          <thead>
-            <tr>
-              <th>{{ $t('account.validator') }}</th>
-              <th>{{ $t('account.delegations') }}</th>
-              <th>{{ $t('account.rewards') }}</th>
-              <th>{{ $t('staking.actions') }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in walletStore.delegations" :key="index">
-              <td>
-                <RouterLink class="link link-primary no-underline"
-                  :to="`/${chain}/staking/${item?.delegation?.validator_address}`">
-                  {{
-                    format.validatorFromBech32(
-                      item?.delegation?.validator_address
-                    )
-                  }}
-                </RouterLink>
-              </td>
-              <td>{{ format.formatToken(item?.balance) }}</td>
-              <td>
-                {{
-                  format.formatTokens(
-                    walletStore?.rewards?.rewards?.find(
-                      (el) =>
-                        el?.validator_address ===
+        <div v-if="walletStore.delegations.length > 0" class="px-4 pb-4 overflow-auto">
+          <table class="table table-compact w-full table-zebra">
+            <thead>
+              <tr>
+                <th>{{ $t('account.validator') }}</th>
+                <th>{{ $t('account.delegations') }}</th>
+                <th>{{ $t('account.rewards') }}</th>
+                <th>{{ $t('staking.actions') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in walletStore.delegations" :key="index">
+                <td>
+                  <RouterLink class="link link-primary no-underline"
+                    :to="`/${chain}/staking/${item?.delegation?.validator_address}`">
+                    {{
+                      format.validatorFromBech32(
                         item?.delegation?.validator_address
-                    )?.reward)
-                }}
-              </td>
-              <td>
-                <div>
-                  <label for="delegate" class="btn !btn-xs !btn-primary btn-ghost rounded-sm mr-2"
-                    @click="dialog.open('delegate', { validator_address: item.delegation.validator_address, fees: { amount: '150000000000000000', denom: 'ahp' } }, updateState)">
-                    {{ $t('account.btn_delegate') }}
-                  </label>
-                  <label for="unbond" class="btn !btn-xs !btn-primary btn-ghost rounded-sm" @click="
-                    dialog.open(
-                      'unbond',
-                      {
-                        validator_address: item.delegation.validator_address,
-                        fees: { amount: '150000000000000000', denom: 'ahp' }
-                      },
-                      updateState
-                    )
-                    ">{{ $t('account.btn_unbond') }}</label>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                      )
+                    }}
+                  </RouterLink>
+                </td>
+                <td>{{ format.formatToken(item?.balance) }}</td>
+                <td>
+                  {{
+                    format.formatTokens(
+                      walletStore?.rewards?.rewards?.find(
+                        (el) =>
+                          el?.validator_address ===
+                          item?.delegation?.validator_address
+                      )?.reward)
+                  }}
+                </td>
+                <td>
+                  <div>
+                    <label for="delegate" class="btn !btn-xs !bg-white !text-black btn-ghost rounded-sm mr-2"
+                      @click="dialog.open('delegate', { validator_address: item.delegation.validator_address, fees: { amount: '150000000000000000', denom: 'ahp' } }, updateState)">
+                      {{ $t('account.btn_delegate') }}
+                    </label>
+                    <label for="unbond" class="btn !btn-xs !bg-white !text-black btn-ghost rounded-sm" @click="
+                      dialog.open(
+                        'unbond',
+                        {
+                          validator_address: item.delegation.validator_address,
+                          fees: { amount: '150000000000000000', denom: 'ahp' }
+                        },
+                        updateState
+                      )
+                      ">{{ $t('account.btn_unbond') }}</label>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="grid grid-cols-2 gap-4 text-[16px] text-bold">
+          <label for="PingTokenConvert"
+            class="btn !bg-[#10df89] round-[12px] text-white flex gap-[8px] items-center"><svg
+              xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+              <path
+                d="M8.80005 6.5C9.25478 4.49601 11.047 3 13.1885 3C15.6738 3 17.6885 5.01472 17.6885 7.5C17.6885 9.80209 15.9599 11.7004 13.7298 11.9678M5.80005 5L7.80005 3L5.80005 1M1.80005 7V3H7.5M14.8001 15L12.8001 17L14.8001 19M18.8001 13V17H13.1885M10.8 13.5C10.8 15.9853 8.78533 18 6.30005 18C3.81477 18 1.80005 15.9853 1.80005 13.5C1.80005 11.0147 3.81477 9 6.30005 9C8.78533 9 10.8 11.0147 10.8 13.5Z"
+                stroke="white" stroke-linecap="square" />
+            </svg>{{ $t('index.btn_swap') }}</label>
+          <label for="send" class="btn !bg-[#666CFF] round-[12px] text-white flex gap-[8px] items-center"
+            @click="dialog.open('send', {}, updateState)"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="20"
+              viewBox="0 0 21 20" fill="none">
+              <path
+                d="M5.40018 5.00037V8.50037M15.4002 5.00037V8.50037M14.9002 12.0004H16.9002H18.5V2.00012L16.9002 2.00037H3.90018H2.5V12.0005L3.90018 12.0004H5.90018M7.57096 15.1718L10.3994 18.0002M10.3994 18.0002L13.0373 15.3623M10.3994 18.0002L10.3995 12.2149M12.4002 7.00037C12.4002 8.10494 11.5048 9.00037 10.4002 9.00037C9.29561 9.00037 8.40018 8.10494 8.40018 7.00037C8.40018 5.8958 9.29561 5.00037 10.4002 5.00037C11.5048 5.00037 12.4002 5.8958 12.4002 7.00037Z"
+                stroke="white" stroke-linecap="square" />
+            </svg>{{
+              $t('account.btn_send') }}</label>
+          <label for="delegate" class="btn !bg-[#FF57CC] round-[12px] text-white flex gap-[8px] items-center"
+            @click="dialog.open('delegate', { fees: { amount: '150000000000000000', denom: 'ahp' } }, updateState)"><svg
+              xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path
+                d="M6.70259 17.0512C7.67243 16.7307 9.93538 17.5177 11.5518 17.3718C12.834 17.2559 13.3042 17.2905 14.4613 16.7307C15.4685 16.2434 16.5409 15.0809 17.2414 14.2233C17.6875 13.6773 17.5355 12.8866 16.9458 12.4968C16.441 12.1632 15.7689 12.2292 15.34 12.6545L14.0596 13.9239C13.6958 14.2845 13.2024 14.4871 12.688 14.4871L10 14.5M6.70259 12.5641L7.68664 12.0762C8.31509 11.7647 9.00806 11.6025 9.71069 11.6025H9.97584C10.3781 11.6025 10.7786 11.6557 11.1667 11.7606L12.5257 12.1281C13.2441 12.3224 13.4828 13.2136 12.9563 13.7357L12.1983 14.4871M9.6121 6.79483C9.6121 8.21095 10.77 9.35893 12.1983 9.35893C13.6267 9.35893 14.7846 8.21095 14.7846 6.79483C14.7846 5.37872 13.6267 4.23073 12.1983 4.23073M9.6121 6.79483C9.6121 5.37872 10.77 4.23073 12.1983 4.23073M9.6121 6.79483C8.18376 6.79483 7.02587 5.64684 7.02587 4.23073C7.02587 2.81461 8.18376 1.66663 9.6121 1.66663C11.0404 1.66663 12.1983 2.81461 12.1983 4.23073M2.5 18.5H6.5V11H2.5V18.5Z"
+                stroke="white" />
+            </svg>{{
+              $t('account.btn_delegate') }}</label>
+          <label for="withdraw"
+            class="btn !bg-[#41AAFF] round-[12px] text-white flex gap-[8px] items-center !flex-nowrap"
+            @click="dialog.open('withdraw', {}, updateState)"><svg xmlns="http://www.w3.org/2000/svg" width="21"
+              height="20" viewBox="0 0 21 20" fill="none">
+              <path
+                d="M17.3002 12.2999V16H2.10024L2.09985 4H17.3002V7.64244M18.1002 12.2999H15.5002C14.2852 12.2999 13.3002 11.3149 13.3002 10.0999C13.3002 8.88488 14.2852 7.8999 15.5002 7.8999H18.1002V12.2999Z"
+                stroke="white" stroke-linecap="square" />
+            </svg>{{ $t('index.btn_withdraw_reward') }}</label>
+          <label for="transfer" class="btn !bg-[#FF5E3A] round-[12px] text-white flex gap-[8px] items-center"><svg
+              xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+              <path
+                d="M8.61113 14.9017C8.27714 14.9662 7.9316 15 7.57781 15C4.6998 15 2.3667 12.7614 2.3667 10C2.3667 7.23858 4.6998 5 7.57781 5C7.9316 5 8.27714 5.03383 8.61113 5.09829M19.0334 10C19.0334 12.7614 16.7003 15 13.8223 15C10.9442 15 8.61113 12.7614 8.61113 10C8.61113 7.23858 10.9442 5 13.8223 5C16.7003 5 19.0334 7.23858 19.0334 10Z"
+                stroke="white" stroke-linecap="square" />
+            </svg>Transfer</label>
+        </div>
       </div>
-
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 px-4 pb-6 mt-4">
-        <label for="PingTokenConvert" class="btn btn-primary text-white">{{ $t('index.btn_swap') }}</label>
-        <label for="send" class="btn !bg-yes !border-yes text-white" @click="dialog.open('send', {}, updateState)">{{
-          $t('account.btn_send') }}</label>
-        <label for="delegate" class="btn !bg-info !border-info text-white"
-          @click="dialog.open('delegate', { fees: { amount: '150000000000000000', denom: 'ahp' } }, updateState)">{{
-            $t('account.btn_delegate') }}</label>
-        <label for="withdraw" class="btn !bg-lime-500 !border-info text-white"
-          @click="dialog.open('withdraw', {}, updateState)">{{ $t('index.btn_withdraw_reward') }}</label>
-        <RouterLink to="/wallet/receive" class="btn !bg-info !border-info text-white hidden">{{ $t('index.receive') }}
-        </RouterLink>
-      </div>
-      <Teleport to="body">
-        <ping-token-convert :chain-name="blockchain?.current?.prettyName" :endpoint="blockchain?.endpoint?.address"
-          :hd-path="walletStore?.connectedWallet?.hdPath"></ping-token-convert>
-      </Teleport>
     </div>
 
+    <ActiveProposals type="dashboard" />
+
+
+    <Teleport to="body">
+      <ping-token-convert :chain-name="blockchain?.current?.prettyName" :endpoint="blockchain?.endpoint?.address"
+        :hd-path="walletStore?.connectedWallet?.hdPath"></ping-token-convert>
+    </Teleport>
+
+    <!-- TODO Hippo Blog -->
 
     <div v-if="!store.coingeckoId" class="bg-base-100 rounded mt-4">
       <div class="px-4 pt-4 pb-2 text-lg font-semibold text-main">
