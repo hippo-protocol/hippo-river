@@ -349,6 +349,14 @@ function changeChart(type: string) {
               </svg>
             </div>
           </label>
+          <RouterLink v-if="walletStore.currentAddress" class="flex items-center gap-[8px] cursor-pointer"
+            :to="`/${blockchain.chainName}/account/${walletStore.currentAddress}`">
+            <div class="w-[28px] h-[28px] p-[4px] flex items-center justify-center rounded-[32px] bg-white">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M5.83333 1L10 6M10 6L5.83333 11M10 6L0 6" stroke="black" stroke-width="2" />
+              </svg>
+            </div>
+          </RouterLink>
         </div>
 
         <div
