@@ -92,7 +92,7 @@ dayjs()
 </script>
 
 <template>
-  <div class="bg-black">
+  <div class="bg-black min-w-[800px]">
     <!-- sidebar -->
     <div class="w-64 fixed z-50 left-0 top-0 bottom-0 overflow-auto border-r border-bg bg-black items-center"
       :class="{ block: sidebarShow, 'hidden xl:!block': !sidebarShow }">
