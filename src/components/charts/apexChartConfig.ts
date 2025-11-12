@@ -239,7 +239,7 @@ export const getMarketPriceChartConfig = (
           fontFamily: 'GT Planar',
         },
         formatter: function (value: string) {
-          const pattern = Number(value) > 0.01 ? '0.0[0]a' : '0.00[000]';
+          const pattern = '0.00[00]';
           return numeral(value).format(pattern);
         },
       },
