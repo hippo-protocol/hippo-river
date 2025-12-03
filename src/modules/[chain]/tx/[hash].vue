@@ -102,7 +102,7 @@ const messages = computed(() => {
                         </tr>
                         <tr>
                             <td>Data</td>
-                            <td>{{ tx.tx.body.memo }}</td>
+                            <td style="overflow-wrap: anywhere;">{{ tx.tx.body.memo }}</td>
                         </tr>
                     </tbody>
                 </table>
