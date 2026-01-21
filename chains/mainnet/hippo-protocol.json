@@ -1,7 +1,7 @@
 {
   "chain_name": "hippoprotocol",
   "api": ["https://api.hippo-protocol.com", "https://hippo-api.polkachu.com"],
-  "rpc": ["https://rpc.hippo-protocol.com", "https://hippo-rpc.polkachu.com"],
+  "rpc": ["https://hippo-rpc.polkachu.com", "https://rpc.hippo-protocol.com"],
   "snapshot_provider": "",
   "sdk_version": "0.50.13",
   "coin_type": "0",
