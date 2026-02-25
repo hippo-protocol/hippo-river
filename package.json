@@ -52,7 +52,7 @@
     "vue3-perfect-scrollbar": "^1.6.1"
   },
   "devDependencies": {
-    "@types/marked": "^4.0.8",
+    "@types/marked": "^6.0.0",
     "@types/node": "^18.11.12",
     "@types/numeral": "^2.0.2",
     "@types/semver": "7.5.0",
