@@ -12,7 +12,7 @@ import { post } from '@/libs';
 
 import { JsonViewer } from "vue3-json-viewer"
 // if you used v1.0.5 or latster ,you should add import "vue3-json-viewer/dist/index.css"
-import "vue3-json-viewer/dist/index.css";
+import "vue3-json-viewer/dist/vue3-json-viewer.css";
 import WasmVerification from '@/components/WasmVerification.vue';
 
 const chainStore = useBlockchain();
