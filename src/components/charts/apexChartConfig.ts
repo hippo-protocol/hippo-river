@@ -318,6 +318,9 @@ export const getDonutChartConfig = (theme: string, labels: string[]) => {
     colorVariables(theme);
 
   return {
+    chart: {
+      events: {},
+    },
     stroke: { width: 0 },
     labels,
     colors: donutColors,
