@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model AccountBalance {
+  id        Int      @id @default(autoincrement())
+  address   String   @unique
+  balance   String
+  denom     String   @default("ahp")
+  updatedAt DateTime @updatedAt
+
+  @@index([balance])
+}

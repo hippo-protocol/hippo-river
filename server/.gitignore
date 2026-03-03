@@ -1,0 +1,13 @@
+node_modules
+
+.env
+
+# build
+dist/
+*.js
+*.js.map
+*.d.ts
+
+# database
+*.db
+*.db-journal
