@@ -66,7 +66,7 @@ function extractSignerAddressFromEvents(events: any[]): string | null {
 /**
  * Fetches a block and its transactions from the node, then saves them to the DB.
  */
-export async function indexBlock(height: number): Promise<void> {
+export async function indexBlock(height: number, updateWatermark: boolean = false): Promise<void> {
     try {
         // 1. Fetch block data
         const blockRes = await fetch(`${config.restUrl}/cosmos/base/tendermint/v1beta1/blocks/${height}`);
@@ -148,14 +148,16 @@ export async function indexBlock(height: number): Promise<void> {
             );
         }
 
-        // Update SyncState
-        dbOperations.push(
-            prisma.syncState.upsert({
-                where: { id: 'last_indexed_height' },
-                update: { value: height },
-                create: { id: 'last_indexed_height', value: height },
-            })
-        );
+        if (updateWatermark) {
+            // Update watermark only if the block was indexed by sync process
+            dbOperations.push(
+                prisma.syncState.upsert({
+                    where: { id: 'last_indexed_height' },
+                    update: { value: height },
+                    create: { id: 'last_indexed_height', value: height },
+                })
+            );
+        }
 
         // Execute all bundled operations in a single fast, atomic transaction
         await prisma.$transaction(dbOperations);

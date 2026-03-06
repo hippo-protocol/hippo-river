@@ -1,7 +1,7 @@
 import { prisma } from '../db/index.js';
 
 interface RichlistResult {
-    count: number;
+    total_count: number;
     data: { address: string; balance: string }[];
 }
 
@@ -10,7 +10,7 @@ interface RichlistResult {
  * Balance is sorted numerically by padding with leading zeros.
  */
 export async function getRichlist(page: number, limit: number): Promise<RichlistResult> {
-    const [count, data] = await Promise.all([
+    const [total_count, data] = await Promise.all([
         prisma.accountBalance.count(),
         prisma.accountBalance.findMany({
             select: { address: true, balance: true },
@@ -27,5 +27,5 @@ export async function getRichlist(page: number, limit: number): Promise<Richlist
         balance: item.balance.replace(/^0+(?=\d)/, '')
     }));
 
-    return { count, data: formattedData };
+    return { total_count, data: formattedData };
 }

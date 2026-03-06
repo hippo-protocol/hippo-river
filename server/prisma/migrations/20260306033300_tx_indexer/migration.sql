@@ -6,7 +6,7 @@ CREATE TABLE "SyncState" (
 
 -- CreateTable
 CREATE TABLE "Block" (
-    "height" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "height" INTEGER NOT NULL PRIMARY KEY,
     "hash" TEXT NOT NULL,
     "time" DATETIME NOT NULL,
     "proposerAddress" TEXT NOT NULL,

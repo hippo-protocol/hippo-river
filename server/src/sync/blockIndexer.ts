@@ -32,7 +32,7 @@ export async function syncBlocks() {
             where: { id: 'last_indexed_height' },
         });
 
-        // Default to 1 if nothing is indexed yet
+        // Default to 0 if nothing is indexed yet (so we start from block 1)
         const lastIndexedHeight = syncState ? syncState.value : 0;
 
         if (networkHeight > lastIndexedHeight) {
@@ -43,7 +43,8 @@ export async function syncBlocks() {
 
             // Sync strictly missing blocks sequentially
             for (let h = lastIndexedHeight + 1; h <= networkHeight; h++) {
-                await indexBlock(h);
+                // Pass true to atomically update the progressive watermark alongside the block insertion
+                await indexBlock(h, true);
                 await new Promise((resolve) => setTimeout(resolve, 50)); // sleep 50ms to prevent node overload
             }
         }
