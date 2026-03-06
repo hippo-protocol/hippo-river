@@ -97,19 +97,24 @@ export async function syncRichlist(): Promise<void> {
                 })
             );
 
-            // Upsert each result
-            for (const { address, balance } of results) {
+            // Bundle the entire batch into a single atomic DB transaction
+            const dbOperations = results.map(({ address, balance }) => {
                 if (balance === '0') {
                     // Remove zero-balance entries
-                    await prisma.accountBalance.deleteMany({ where: { address } });
+                    return prisma.accountBalance.deleteMany({ where: { address } });
                 } else {
-                    await prisma.accountBalance.upsert({
+                    // Zero-pad the balance string up to 64 chars so that SQLite's 
+                    // lexicographical string order natively matches numeric sorting.
+                    const paddedBalance = balance.padStart(64, '0');
+                    return prisma.accountBalance.upsert({
                         where: { address },
-                        update: { balance, denom: 'ahp' },
-                        create: { address, balance, denom: 'ahp' },
+                        update: { balance: paddedBalance, denom: 'ahp' },
+                        create: { address, balance: paddedBalance, denom: 'ahp' },
                     });
                 }
-            }
+            });
+
+            await prisma.$transaction(dbOperations);
 
             synced += batch.length;
             if (synced % 100 === 0) {

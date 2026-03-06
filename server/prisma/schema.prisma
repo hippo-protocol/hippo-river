@@ -15,3 +15,43 @@ model AccountBalance {
 
   @@index([balance])
 }
+
+model SyncState {
+  id    String @id
+  value Int
+}
+
+model Block {
+  height          Int      @id
+  hash            String   @unique
+  time            DateTime
+  proposerAddress String
+  numTxs          Int
+
+  txs Transaction[]
+
+  @@index([height(sort: Desc)])
+}
+
+model Transaction {
+  hash          String   @id
+  height        Int
+  index         Int
+  tx            String
+  code          Int
+  codespace     String?
+  data          String?
+  events        String
+  gasUsed       String
+  gasWanted     String
+  info          String?
+  log           String?
+  timestamp     DateTime
+  senderAddress String?
+
+  block Block @relation(fields: [height], references: [height], onDelete: Cascade)
+
+  @@index([height(sort: Desc)])
+  @@index([timestamp(sort: Desc)])
+  @@index([senderAddress, height(sort: Desc)])
+}

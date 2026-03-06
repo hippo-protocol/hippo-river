@@ -24,6 +24,11 @@ process.on('SIGINT', async () => {
     await prisma.$disconnect();
     process.exit(0);
 });
+process.on('SIGTERM', async () => {
+    console.log('\nShutting down...');
+    await prisma.$disconnect();
+    process.exit(0);
+});
 
 app.listen(config.port, () => {
     console.log(`Server is running on port ${config.port}`);

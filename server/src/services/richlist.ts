@@ -15,15 +15,17 @@ export async function getRichlist(page: number, limit: number): Promise<Richlist
         prisma.accountBalance.findMany({
             select: { address: true, balance: true },
             orderBy: { balance: 'desc' },
-            skip: page * limit,
+            skip: Math.max(0, page - 1) * limit,
             take: limit,
         }),
     ]);
 
-    // Sort numerically (SQLite sorts strings lexicographically)
-    // For correct numeric sorting, we sort in JS after fetching
-    // This is fine for paginated results since we fetch small batches
-    // For a production-grade solution, we'd store a numeric sort key
+    // Strip the 64-char zero-padding before returning it to the frontend.
+    // The (?=\d) ensures that a value of "0" isn't fully erased.
+    const formattedData = data.map(item => ({
+        address: item.address,
+        balance: item.balance.replace(/^0+(?=\d)/, '')
+    }));
 
-    return { count, data };
+    return { count, data: formattedData };
 }
