@@ -168,7 +168,7 @@ export class CosmosRestClient extends BaseRestClient<RequestRegistry> {
     return this.request(this.registry.slashing_params, {});
   }
   async getSlashingSigningInfos() {
-    const query = '?pagination.limit=300';
+    const query = '?pagination.limit=50';
     return this.request(this.registry.slashing_signing_info, {}, query);
   }
   // Gov
@@ -258,7 +258,7 @@ export class CosmosRestClient extends BaseRestClient<RequestRegistry> {
   async getStakingPool() {
     return this.request(this.registry.staking_pool, {});
   }
-  async getStakingValidators(status: string, limit = 200) {
+  async getStakingValidators(status: string, limit = 50) {
     return this.request(this.registry.staking_validators, { status, limit });
   }
   async getStakingValidator(validator_addr: string) {
