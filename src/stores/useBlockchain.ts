@@ -152,8 +152,20 @@ export const useBlockchain = defineStore('blockchain', {
       }
     },
 
+    randomRpcEndpoint(chainName?: string): Endpoint | undefined {
+      const chain = chainName
+        ? this.dashboard.chains[chainName]
+        : this.current;
+      const all = chain?.endpoints?.rpc;
+      if (all) {
+        const rn = Math.random();
+        const endpoint = all[Math.floor(rn * all.length)];
+        return endpoint;
+      }
+    },
+
     setRpc() {
-      const rpc = this.current?.endpoints?.rpc?.at(0);
+      const rpc = this.randomRpcEndpoint();
       this.rpc.endpointRpc = rpc?.address || '';
     },
 
