@@ -174,7 +174,7 @@ export const useStakingStore = defineStore('stakingStore', {
           this.blockchain.current.providerChain.api[0].address
         );
         await client
-          .getStakingValidators('BOND_STATUS_BONDED', 500)
+          .getStakingValidators('BOND_STATUS_BONDED', 99)
           .then((res) => {
             this.validators = res.validators;
           });
@@ -199,7 +199,7 @@ export const useStakingStore = defineStore('stakingStore', {
         vs.push(cons);
       }
     },
-    async fetchValidators(status: string, limit = 300) {
+    async fetchValidators(status: string, limit = 99) {
       return this.blockchain.rpc
         ?.getStakingValidators(status, limit)
         .then((res) => {
