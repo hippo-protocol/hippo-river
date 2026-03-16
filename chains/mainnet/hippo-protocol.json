@@ -1,7 +1,7 @@
 {
   "chain_name": "hippoprotocol",
-  "api": ["https://api.hippo-protocol.com", "https://hippo-mainnet-api.shazoes.xyz","https://hippo-api.polkachu.com", "https://hippo-api.endorphinestake.com", "https://api.hippo.nodestake.org/", "https://hippo.api.nodeshub.online"],
-  "rpc": ["https://rpc.hippo-protocol.com", "https://hippo-mainnet-rpc.shazoes.xyz", "https://hippo-rpc.polkachu.com", "https://hippo-rpc.endorphinestake.com", "https://rpc.hippo.nodestake.org/", "https://hippo.rpc.nodeshub.online:443"],
+  "api": ["https://api.hippo-protocol.com", "https://hippo-api.polkachu.com", "https://hippo.api.nodeshub.online"],
+  "rpc": ["https://rpc.hippo-protocol.com", "https://hippo-rpc.polkachu.com", "https://hippo.rpc.nodeshub.online:443"],
   "snapshot_provider": "",
   "sdk_version": "0.50.13",
   "coin_type": "0",
