@@ -38,10 +38,10 @@ const contractAddress = String(route.query.contract)
 
 const history = JSON.parse(localStorage.getItem("contract_history") || "{}")
 
-if(history[chainStore.chainName]) {
-    if(!history[chainStore.chainName].includes(contractAddress)) {
+if (history[chainStore.chainName]) {
+    if (!history[chainStore.chainName].includes(contractAddress)) {
         history[chainStore.chainName].push(contractAddress)
-        if(history[chainStore.chainName].length > 10) {
+        if (history[chainStore.chainName].length > 10) {
             history[chainStore.chainName].shift()
         }
     }
@@ -142,51 +142,58 @@ const query = ref('');
 const result = ref({});
 </script>
 <template>
-    <div>
-        <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
-            <h2 class="card-title truncate w-full">
+    <div class="px-[48px] py-[76px] text-white">
+        <div>
+            <h2 class="truncate w-full mb-[35px] text-[21px] font-bold">
                 {{ $t('cosmwasm.contract_detail') }}
             </h2>
             <DynamicComponent :value="info" />
         </div>
 
-        <div class="text-center mb-4">
-            <RouterLink :to="`../${info.code_id}/contracts`"><span class="btn btn-xs text-xs mr-2"> Back </span> </RouterLink>
-            <label @click="showFunds()" for="modal-contract-funds" class="btn btn-primary btn-xs text-xs mr-2">{{
-                $t('cosmwasm.btn_funds') }}</label>
-            <label class="btn btn-primary btn-xs text-xs mr-2" for="modal-contract-states" @click="showState()">
+        <div class="text-center mb-4 flex flex-wrap justify-center gap-2 mt-4">
+            <label @click="showFunds()" for="modal-contract-funds"
+                class="btn btn-secondary btn-sm !text-black !bg-white !rounded-[20px] !px-[20px] !py-[7px]">{{
+                    $t('cosmwasm.btn_funds') }}</label>
+            <label class="btn btn-secondary btn-sm !text-black !bg-white !rounded-[20px] !px-[20px] !py-[7px]"
+                for="modal-contract-states" @click="showState()">
                 {{ $t('cosmwasm.btn_states') }}
             </label>
-            <label for="modal-contract-query" class="btn btn-primary btn-xs text-xs mr-2" @click="showQuery()">
+            <label for="modal-contract-query"
+                class="btn btn-secondary btn-sm !text-black !bg-white !rounded-[20px] !px-[20px] !py-[7px]"
+                @click="showQuery()">
                 {{ $t('cosmwasm.btn_query') }}
             </label>
-            <label for="wasm_execute_contract" class="btn btn-primary btn-xs text-xs mr-2"
+            <label for="wasm_execute_contract"
+                class="btn btn-secondary btn-sm !text-black !bg-white !rounded-[20px] !px-[20px] !py-[7px]"
                 @click="dialog.open('wasm_execute_contract', { contract: contractAddress })">
                 {{ $t('cosmwasm.btn_execute') }}
             </label>
 
-            <label for="wasm_migrate_contract" class="btn btn-primary btn-xs text-xs mr-2"
+            <label for="wasm_migrate_contract"
+                class="btn btn-secondary btn-sm !text-black !bg-white !rounded-[20px] !px-[20px] !py-[7px]"
                 @click="dialog.open('wasm_migrate_contract', { contract: contractAddress })">
                 {{ $t('cosmwasm.btn_migrate') }}
             </label>
 
-            <label for="wasm_update_admin" class="btn btn-primary btn-xs text-xs mr-2"
+            <label for="wasm_update_admin"
+                class="btn btn-secondary btn-sm !text-black !bg-white !rounded-[20px] !px-[20px] !py-[7px]"
                 @click="dialog.open('wasm_update_admin', { contract: contractAddress })">
                 {{ $t('cosmwasm.btn_update_admin') }}
             </label>
 
-            <label for="wasm_clear_admin" class="btn btn-primary btn-xs text-xs mr-2"
+            <label for="wasm_clear_admin"
+                class="btn btn-secondary btn-sm !text-black !bg-white !rounded-[20px] !px-[20px] !py-[7px]"
                 @click="dialog.open('wasm_clear_admin', { contract: contractAddress })">
                 {{ $t('cosmwasm.btn_clear_admin') }}
             </label>
 
         </div>
 
-        <div class="bg-base-100 px-4 pt-3 pb-4 rounded mb-4 shadow">
-            <h2 class="card-title truncate w-full mt-4 mb-2">Transactions</h2>
-            <table class="table">
-                <thead class=" bg-base-200">
-                    <tr>
+        <div class="mt-[40px]">
+            <h2 class="truncate w-full mb-[35px] text-[21px] font-bold">Transactions</h2>
+            <table class="table table-compact w-full mt-4 text-sm">
+                <thead class="text-white">
+                    <tr class="border-0">
                         <td> {{ $t('ibc.height') }}</td>
                         <td>{{ $t('ibc.txhash') }}</td>
                         <td> {{ $t('ibc.messages') }}</td>
@@ -216,12 +223,12 @@ const result = ref({});
             <PaginationBar :limit="page.limit" :total="txs.pagination?.total" :callback="pageload" />
         </div>
 
-        <WasmVerification :contract="contractAddress"/>
+        <!-- <WasmVerification :contract="contractAddress"/> -->
 
         <div>
             <input type="checkbox" id="modal-contract-funds" class="modal-toggle" />
             <label for="modal-contract-funds" class="modal cursor-pointer">
-                <label class="modal-box relative p-2" for="">
+                <label class="modal-box relative p-2 bg-[#0E0F11] border border-[#1D1D1D] text-white" for="">
                     <div>
                         <div class="flex items-center justify-between px-3 pt-2">
                             <div class="text-lg">{{ $t('cosmwasm.contract_balances') }}</div>
@@ -229,7 +236,8 @@ const result = ref({});
                         </div>
                         <ul class="menu mt-5">
                             <li v-for="b in balances.balances">
-                                <a class="flex justify-between"><span>{{ format.formatToken(b) }}</span> {{ b.amount }} </a>
+                                <a class="flex justify-between"><span>{{ format.formatToken(b) }}</span> {{ b.amount }}
+                                </a>
                             </li>
                             <li v-if="balances.pagination?.total === '0'" class="my-10 text-center">{{
                                 $t('cosmwasm.no_escrowed_assets') }}</li>
@@ -240,14 +248,17 @@ const result = ref({});
 
             <input type="checkbox" id="modal-contract-states" class="modal-toggle" />
             <label for="modal-contract-states" class="modal cursor-pointer">
-                <label class="modal-box !w-11/12 !max-w-5xl" for="">
+                <label class="modal-box !w-11/12 !max-w-5xl bg-[#0E0F11] border border-[#1D1D1D] text-white" for="">
                     <div>
                         <div class="flex items-center justify-between px-3 pt-2 mb-4">
                             <div class="text-lg">{{ $t('cosmwasm.contract_states') }}</div>
                             <label for="modal-contract-states" class="btn btn-sm btn-circle">✕</label>
                         </div>
                         <div class="overflow-auto">
-                            <JsonViewer :value="state.models?.map(v => ({key: format.hexToString(v.key), value: JSON.parse(format.base64ToString(v.value))}))||''" :theme="baseStore.theme||'dark'" style="background: transparent;" copyable boxed sort :expand-depth="5"/>
+                            <JsonViewer
+                                :value="state.models?.map(v => ({ key: format.hexToString(v.key), value: JSON.parse(format.base64ToString(v.value)) })) || ''"
+                                :theme="baseStore.theme || 'dark'" style="background: transparent;" copyable boxed sort
+                                :expand-depth="5" />
                             <PaginationBar :limit="pageRequest.limit" :total="state.pagination?.total"
                                 :callback="pageloadState" />
                         </div>
@@ -257,7 +268,7 @@ const result = ref({});
 
             <input type="checkbox" id="modal-contract-query" class="modal-toggle" />
             <label for="modal-contract-query" class="modal cursor-pointer">
-                <label class="modal-box !w-11/12 !max-w-5xl" for="">
+                <label class="modal-box !w-11/12 !max-w-5xl bg-[#0E0F11] border border-[#1D1D1D] text-white" for="">
                     <div>
                         <div class="flex items-center justify-between px-3 pt-2 mb-4">
                             <div class="text-lg font-semibold">{{ $t('cosmwasm.query_contract') }}</div>
@@ -270,7 +281,8 @@ const result = ref({});
                                         :key="index" :class="{ 'pt-2': index === 0 }">
                                         <label class="label cursor-pointer justify-start"
                                             @click="selectedRadio = item?.value">
-                                            <input type="radio" name="radio-10" class="radio radio-sm radio-primary mr-4"
+                                            <input type="radio" name="radio-10"
+                                                class="radio radio-sm radio-primary mr-4"
                                                 :checked="item?.value === selectedRadio"
                                                 style="border: 1px solid #d2d6dc" />
                                             <div>
@@ -284,8 +296,9 @@ const result = ref({});
                                 </div>
                                 <textarea v-model="query" placeholder="Query String, {}" label="Query String"
                                     class="my-2 textarea textarea-bordered w-full" />
-                                
-                                <JsonViewer :value="result" :theme="baseStore.theme" style="background: transparent;" copyable boxed sort :expand-depth="5"/>
+
+                                <JsonViewer :value="result" :theme="baseStore.theme" style="background: transparent;"
+                                    copyable boxed sort :expand-depth="5" />
 
                             </div>
                             <div class="mt-4 mb-4 text-center">
