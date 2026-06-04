@@ -495,8 +495,9 @@ function changeChart(type: string) {
                 d="M17.3002 12.2999V16H2.10024L2.09985 4H17.3002V7.64244M18.1002 12.2999H15.5002C14.2852 12.2999 13.3002 11.3149 13.3002 10.0999C13.3002 8.88488 14.2852 7.8999 15.5002 7.8999H18.1002V12.2999Z"
                 stroke="white" stroke-linecap="square" />
             </svg>{{ $t('index.btn_withdraw_reward') }}</label>
-          <label for="transfer" class="btn !bg-[#FF5E3A] round-[12px] text-white flex gap-[8px] items-center"><svg
-              xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+          <label for="transfer" class="btn !bg-[#FF5E3A] round-[12px] text-white flex gap-[8px] items-center"
+            @click="dialog.open('transfer', {}, updateState)"><svg xmlns="http://www.w3.org/2000/svg" width="21"
+              height="20" viewBox="0 0 21 20" fill="none">
               <path
                 d="M8.61113 14.9017C8.27714 14.9662 7.9316 15 7.57781 15C4.6998 15 2.3667 12.7614 2.3667 10C2.3667 7.23858 4.6998 5 7.57781 5C7.9316 5 8.27714 5.03383 8.61113 5.09829M19.0334 10C19.0334 12.7614 16.7003 15 13.8223 15C10.9442 15 8.61113 12.7614 8.61113 10C8.61113 7.23858 10.9442 5 13.8223 5C16.7003 5 19.0334 7.23858 19.0334 10Z"
                 stroke="white" stroke-linecap="square" />
