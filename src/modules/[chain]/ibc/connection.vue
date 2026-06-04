@@ -1,13 +1,9 @@
 <script lang="ts" setup>
-import PaginationBar from '@/components/PaginationBar.vue';
-import { useBlockchain, useFormatter } from '@/stores';
+import { useBlockchain } from '@/stores';
 import { PageRequest, type Connection, type Pagination } from '@/types';
-import { computed, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { ref } from 'vue';
 
-import ChainRegistryClient from '@ping-pub/chain-registry-client';
-import type { IBCPath } from '@ping-pub/chain-registry-client/dist/types';
-import router from '@/router';
 import { useIBCModule } from './connStore';
 
 const props = defineProps(['chain']);
@@ -17,6 +13,7 @@ const list = ref([] as Connection[]);
 const pageRequest = ref(new PageRequest())
 const pageResponse = ref({} as Pagination)
 const tab = ref('registry');
+const defaultConnectionId = chainStore.chainName === 'hippoprotocol' ? 'connection-2' : 'connection-0'
 
 onMounted(() => {
   pageload(1)
@@ -29,7 +26,7 @@ function pageload(p: number) {
     list.value = x.connections;
     pageResponse.value = x.pagination
     if (x.pagination.total && Number(x.pagination.total) > 0) {
-      ibcStore.showConnection(0)
+      ibcStore.showConnection(defaultConnectionId)
     }
   });
 }
@@ -63,7 +60,7 @@ function pageload(p: number) {
             <input v-model="ibcStore.connectionId" type=number class="input input-bordered w-40 join-item" min="0"
               :max="pageResponse.total || 0" :placeholder="`0~${pageResponse.total}`" />
             <button class="join-item btn  btn-primary" @click="ibcStore.showConnection()">{{ $t('ibc.btn_apply')
-            }}</button>
+              }}</button>
           </div>
         </div>
       </div>
