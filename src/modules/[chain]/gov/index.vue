@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useGovStore, useTxDialog } from '@/stores';
 import ProposalListItem from '@/components/ProposalListItem.vue';
-import { ref, onMounted } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import PaginationBar from '@/components/PaginationBar.vue';
 import { PageRequest } from '@/types';
 import ActiveProposals from '@/components/ActiveProposals.vue';
@@ -9,18 +9,23 @@ import ActiveProposals from '@/components/ActiveProposals.vue';
 const tab = ref('0');
 const store = useGovStore();
 const pageRequest = ref(new PageRequest());
+pageRequest.value.setPageSize(5);
 const dialog = useTxDialog();
 const proposeModalRef = ref<HTMLDialogElement | null>(null);
+const currentProposals = computed(() => {
+  const proposals = store.proposals[tab.value];
+  return proposals && { ...proposals, proposals: proposals.proposals.slice(0, pageRequest.value.limit) };
+});
 
 onMounted(() => {
-  store.fetchProposals('0').then((x) => {
+  store.fetchProposals('0', pageRequest.value).then((x) => {
     if (x?.proposals?.length === 0) {
       return;
     }
-    store.fetchProposals('1');
-    store.fetchProposals('2');
-    store.fetchProposals('3');
-    store.fetchProposals('4');
+    store.fetchProposals('1', pageRequest.value);
+    store.fetchProposals('2', pageRequest.value);
+    store.fetchProposals('3', pageRequest.value);
+    store.fetchProposals('4', pageRequest.value);
   });
 });
 
@@ -35,9 +40,9 @@ function onPageChange(p: number) {
 
 const proposeCallback = () => {
   // when User Propose new Proposal, then fetch proposals status of ALL, DEPOSIT, VOTING
-  store.fetchProposals('0');
-  store.fetchProposals('1');
-  store.fetchProposals('2');
+  store.fetchProposals('0', pageRequest.value);
+  store.fetchProposals('1', pageRequest.value);
+  store.fetchProposals('2', pageRequest.value);
 };
 
 const openProposeModal = () => {
@@ -101,7 +106,7 @@ const closeProposeModal = () => {
         </form>
       </dialog>
     </div>
-    <ProposalListItem :proposals="store?.proposals[tab]" :tab="tab" />
+    <ProposalListItem :proposals="currentProposals" :tab="tab" />
     <PaginationBar :total="store?.proposals[tab]?.pagination?.total" :limit="pageRequest.limit"
       :callback="onPageChange" />
   </div>
