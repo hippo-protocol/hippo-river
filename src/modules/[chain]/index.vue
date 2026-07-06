@@ -444,7 +444,7 @@ function changeChart(type: string) {
                 <td>
                   <div>
                     <label for="delegate" class="btn !btn-xs !bg-white !text-black btn-ghost rounded-sm mr-2"
-                      @click="dialog.open('delegate', { validator_address: item.delegation.validator_address, fees: { amount: '150000000000000000', denom: 'ahp' } }, updateState)">
+                      @click="dialog.open('delegate', { validator_address: item.delegation.validator_address, fees: { amount: '1500000000000000000', denom: 'ahp' } }, updateState)">
                       {{ $t('account.btn_delegate') }}
                     </label>
                     <label for="unbond" class="btn !btn-xs !bg-white !text-black btn-ghost rounded-sm" @click="
@@ -452,7 +452,7 @@ function changeChart(type: string) {
                         'unbond',
                         {
                           validator_address: item.delegation.validator_address,
-                          fees: { amount: '150000000000000000', denom: 'ahp' }
+                          fees: { amount: '1500000000000000000', denom: 'ahp' }
                         },
                         updateState
                       )
@@ -480,7 +480,7 @@ function changeChart(type: string) {
             </svg>{{
               $t('account.btn_send') }}</label>
           <label for="delegate" class="btn !bg-[#FF57CC] round-[12px] text-white flex gap-[8px] items-center"
-            @click="dialog.open('delegate', { fees: { amount: '150000000000000000', denom: 'ahp' } }, updateState)"><svg
+            @click="dialog.open('delegate', { fees: { amount: '1500000000000000000', denom: 'ahp' } }, updateState)"><svg
               xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path
                 d="M6.70259 17.0512C7.67243 16.7307 9.93538 17.5177 11.5518 17.3718C12.834 17.2559 13.3042 17.2905 14.4613 16.7307C15.4685 16.2434 16.5409 15.0809 17.2414 14.2233C17.6875 13.6773 17.5355 12.8866 16.9458 12.4968C16.441 12.1632 15.7689 12.2292 15.34 12.6545L14.0596 13.9239C13.6958 14.2845 13.2024 14.4871 12.688 14.4871L10 14.5M6.70259 12.5641L7.68664 12.0762C8.31509 11.7647 9.00806 11.6025 9.71069 11.6025H9.97584C10.3781 11.6025 10.7786 11.6557 11.1667 11.7606L12.5257 12.1281C13.2441 12.3224 13.4828 13.2136 12.9563 13.7357L12.1983 14.4871M9.6121 6.79483C9.6121 8.21095 10.77 9.35893 12.1983 9.35893C13.6267 9.35893 14.7846 8.21095 14.7846 6.79483C14.7846 5.37872 13.6267 4.23073 12.1983 4.23073M9.6121 6.79483C9.6121 5.37872 10.77 4.23073 12.1983 4.23073M9.6121 6.79483C8.18376 6.79483 7.02587 5.64684 7.02587 4.23073C7.02587 2.81461 8.18376 1.66663 9.6121 1.66663C11.0404 1.66663 12.1983 2.81461 12.1983 4.23073M2.5 18.5H6.5V11H2.5V18.5Z"

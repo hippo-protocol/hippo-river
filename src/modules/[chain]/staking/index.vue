@@ -448,7 +448,7 @@ const refresh = () => {
                     @click="
                       dialog.open('delegate', {
                         validator_address: v.operator_address,
-                        fees: { amount: '150000000000000000', denom: 'ahp' }
+                        fees: { amount: '1500000000000000000', denom: 'ahp' }
                       }, refresh)
                       ">{{ $t('account.btn_delegate') }}
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
