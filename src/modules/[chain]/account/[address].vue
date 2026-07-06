@@ -281,7 +281,7 @@ function mapAmount(events: { type: string, attributes: { key: string, value: str
         <h2 class="card-title mb-4">{{ $t('account.delegations') }}</h2>
         <div class="flex justify-end mb-4">
           <label for="delegate" class="btn !text-black !bg-white btn-sm mr-2"
-            @click="dialog.open('delegate', { fees: { amount: '150000000000000000', denom: 'ahp' } }, updateEvent)">{{
+            @click="dialog.open('delegate', { fees: { amount: '1500000000000000000', denom: 'ahp' } }, updateEvent)">{{
               $t('account.btn_delegate') }}</label>
           <label for="withdraw" class="btn !text-black !bg-white btn-sm" @click="dialog.open('withdraw', {}, updateEvent)">{{
             $t('account.btn_withdraw') }}</label>
@@ -329,7 +329,7 @@ function mapAmount(events: { type: string, attributes: { key: string, value: str
                       'delegate',
                       {
                         validator_address: v.delegation.validator_address,
-                        fees: { amount: '150000000000000000', denom: 'ahp' }
+                        fees: { amount: '1500000000000000000', denom: 'ahp' }
                       },
                       updateEvent
                     )
@@ -339,7 +339,7 @@ function mapAmount(events: { type: string, attributes: { key: string, value: str
                       'redelegate',
                       {
                         validator_address: v.delegation.validator_address,
-                        fees: { amount: '150000000000000000', denom: 'ahp' }
+                        fees: { amount: '1500000000000000000', denom: 'ahp' }
                       },
                       updateEvent
                     )
@@ -349,7 +349,7 @@ function mapAmount(events: { type: string, attributes: { key: string, value: str
                       'unbond',
                       {
                         validator_address: v.delegation.validator_address,
-                        fees: { amount: '150000000000000000', denom: 'ahp' }
+                        fees: { amount: '1500000000000000000', denom: 'ahp' }
                       },
                       updateEvent
                     )
